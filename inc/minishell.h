@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:53:42 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/24 18:18:55 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/05/24 19:01:37 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,10 @@
 # include "vector.h"
 # include "parsing.h"
 
-typedef char *	*t_arguments;
-
 typedef struct s_minishell
 {
 	t_vector		tokens;
-	t_arguments		argv;
+	char			**argv;
 	int				argc;
 	t_vector		env;
 }	t_minishell;

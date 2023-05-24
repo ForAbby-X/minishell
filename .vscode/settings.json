@@ -4,6 +4,7 @@
 		"vector.h": "c",
 		"unistd.h": "c",
 		"history.h": "c",
-		"readline.h": "c"
+		"readline.h": "c",
+		"error.h": "c"
 	}
 }

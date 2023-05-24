@@ -6,21 +6,11 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 02:24:50 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/24 17:44:11 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/05/24 19:05:55 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
-
-static char const *const	g_type_write[] = {
-	"BLANK",
-	"WORD",
-	"NAME",
-	"METACHAR",
-	"OPERATOR",
-	"SINGLE_QUOTED",
-	"DOUBLE_QUOTED"
-};
 
 void	token_display(void *const object)
 {

@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/24 18:33:17 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/05/24 19:06:11 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static inline t_merror	__init_env(char **env, t_vector *const vector)
 static inline t_merror	__init_minishell(
 	t_minishell *const minishell,
 	int argc,
-	t_arguments argv,
+	char **argv,
 	char **env)
 {
 	minishell->tokens = vector_create(sizeof(t_token));
@@ -79,7 +79,7 @@ static inline void	__destroy_minishell(t_minishell *const minishell)
 
 int	main(
 	int argc,
-	t_arguments argv,
+	char **argv,
 	char **env)
 {
 	t_minishell	minishell;

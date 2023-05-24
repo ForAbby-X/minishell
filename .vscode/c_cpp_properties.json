@@ -5,8 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/inc",
-                "${workspaceFolder}/c-vectorlib/inc",
-                "${workspaceFolder}/inc"
+                "${workspaceFolder}/c-vectorlib/inc"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
