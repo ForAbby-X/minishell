@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 02:24:50 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/24 19:05:55 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/05/24 23:51:23 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	token_display(void *const object)
 {
 	t_token *const	token = object;
 
-	printf("[%s]token : %s\n", g_type_write[token->type], token->data);
+	printf("[%s] - %s\n", g_type_write[token->type], token->data);
 }
 
 void	token_destroy(void *const object)
