@@ -1,22 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   word.c                                             :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:08 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/25 02:44:53 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/01 23:44:08 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-// static inline int	__is_whitespace(char const c)
-// {
-// 	return (c == ' ' || c == '\f' || c == '\n'
-// 		|| c == '\r' || c == '\t' || c == '\v');
-// }
 
 typedef struct s_op
 {
@@ -36,31 +30,17 @@ static t_op const	g_op_list[] = {
 {NULL, 0, 0}
 };
 
-static inline int	__is_separator(char const c)
-{
-	return (c == ' ' || c == '\f' || c == '\n'
-		|| c == '\r' || c == '\t' || c == '\v');
-}
-
-static inline int	__is_quotes(char const c)
-{
-	return (c == '\'' || c == '"');
-}
-
-static inline int	__is_operator(char const c)
-{
-	return (c == '|' || c == '<' || c == '>');
-}
-
-static inline t_merror	__parse_separator(
+static inline t_merror	__lexer_separator(
 		char const *const line,
 		t_length *const index,
 		t_vector *const tokens)
 {
 	t_token			token;
 
-	while (__is_separator(line[*index]))
+	while (is_separator(line[*index]))
 		(*index)++;
+	if (vector_size(tokens) == 0)
+		return (SUCCESS);
 	token.type = SEPARATOR;
 	token.data = NULL;
 	if (tokens_add(tokens, &token) == NULL)
@@ -68,7 +48,7 @@ static inline t_merror	__parse_separator(
 	return (SUCCESS);
 }
 
-static inline t_merror	__parse_quotes(
+static inline t_merror	__lexer_quotes(
 		char const *const line,
 		t_length *const index,
 		t_vector *const tokens)
@@ -96,7 +76,7 @@ static inline t_merror	__parse_quotes(
 	return (PARSING_ERROR);
 }
 
-static inline t_merror	__parse_simple(
+static inline t_merror	__lexer_word(
 		char const *const line,
 		t_length *const index,
 		t_vector *const tokens)
@@ -104,8 +84,8 @@ static inline t_merror	__parse_simple(
 	t_length const	start_i = *index;
 	t_token			token;
 
-	while (!__is_separator(line[*index]) && !__is_quotes(line[*index])
-		&& !__is_operator(line[*index]) && line[*index])
+	while (!is_separator(line[*index]) && !is_quotes(line[*index])
+		&& !is_operator(line[*index]) && line[*index])
 		(*index)++;
 	token.data = malloc(*index - start_i + 1);
 	if (token.data == NULL)
@@ -118,17 +98,7 @@ static inline t_merror	__parse_simple(
 	return (SUCCESS);
 }
 
-static inline int	__ft_strncmp(char const *str0, char const *str1, size_t len)
-{
-	while (--len && *str0 && *str0 == *str1)
-	{
-		++str0;
-		++str1;
-	}
-	return (*str0 - *str1);
-}
-
-static inline t_merror	__parse_operator(
+static inline t_merror	__lexer_operator(
 		char const *const line,
 		t_length *const index,
 		t_vector *const tokens)
@@ -138,7 +108,7 @@ static inline t_merror	__parse_operator(
 
 	i = 0;
 	while (g_op_list[i].op
-		&& __ft_strncmp(line + *index, g_op_list[i].op, g_op_list[i].size))
+		&& ft_strncmp(line + *index, g_op_list[i].op, g_op_list[i].size))
 		i++;
 	if (i == 0 || i == 1)
 		return (PARSING_ERROR);
@@ -153,9 +123,7 @@ static inline t_merror	__parse_operator(
 	return (SUCCESS);
 }
 
-t_merror	parse_everything(
-	char const *const line,
-	t_vector *const tokens)
+t_merror	lexer(char const *const line, t_vector *const tokens)
 {
 	t_length	index;
 	t_merror	error;
@@ -163,16 +131,16 @@ t_merror	parse_everything(
 	index = 0;
 	while (line[index])
 	{
-		if (__is_separator(line[index]))
-			error = __parse_separator(line, &index, tokens);
-		else if (__is_quotes(line[index]))
-			error = __parse_quotes(line, &index, tokens);
-		else if (__is_operator(line[index]))
-			error = __parse_operator(line, &index, tokens);
+		if (is_separator(line[index]))
+			error = __lexer_separator(line, &index, tokens);
+		else if (is_quotes(line[index]))
+			error = __lexer_quotes(line, &index, tokens);
+		else if (is_operator(line[index]))
+			error = __lexer_operator(line, &index, tokens);
 		else
-			error = __parse_simple(line, &index, tokens);
+			error = __lexer_word(line, &index, tokens);
 		if (error)
 			return (error);
 	}
-	return (SUCCESS);
+	return (parser(tokens));
 }

@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/24 19:14:00 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/05/31 04:58:11 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ static inline t_merror	__launch_minishell(t_minishell *const minishell)
 	error = SUCCESS;
 	while (error == SUCCESS || error == PARSING_ERROR)
 	{
-		line = readline("minishell>");
+		line = readline("minishell$ ");
 		if (line && line[0])
 		{
 			add_history(line);
-			error = parse_everything(line, &minishell->tokens);
+			error = lexer(line, &minishell->tokens);
 			if (error == SUCCESS)
 				vector_for_each(&minishell->tokens, &token_display);
 			else if (error == PARSING_ERROR)

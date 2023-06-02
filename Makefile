@@ -6,7 +6,7 @@
 #    By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/05/24 19:21:41 by alde-fre         ###   ########.fr        #
+#    Updated: 2023/06/01 22:10:41 by alde-fre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,16 @@ OBJDIR	=	./obj
 # src / includes / obj files
 SRC		=	main.c \
 			token.c \
+			redirs.c \
 			\
-			parsing/word.c \
+			parsing/utils.c \
+			parsing/error.c \
+			parsing/lexer.c \
+			parsing/parser.c \
 
 INC		= 	minishell.h \
 			token.h \
+			redirs.h \
 			parsing.h \
 
 OBJ		= 	$(addprefix $(OBJDIR)/,$(SRC:.c=.o))
