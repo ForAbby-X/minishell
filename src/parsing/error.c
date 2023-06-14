@@ -6,13 +6,13 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 01:30:36 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/30 20:38:01 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/12 16:11:02 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-void		pars_error(char *const str)
+void	pars_error(char *const str)
 {
 	(void)str;
 }

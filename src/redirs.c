@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 22:00:20 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/01 22:22:42 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/14 20:11:33 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	redir_display(void *const object)
 	t_redir *const	redir = object;
 
 	if (redir->path)
-		printf("[%s] - %s\n", g_redirs_write[redir->type], redir->path);
+		printf("[%s, %s] ", g_redirs_write[redir->type], redir->path);
 	else
-		printf("[%s]\n", g_redirs_write[redir->type]);
+		printf("[%s] ", g_redirs_write[redir->type]);
 }
 
 void	redir_destroy(void *const object)

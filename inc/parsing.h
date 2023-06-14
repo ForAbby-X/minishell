@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:31 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/30 20:39:57 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/14 13:06:48 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "error.h"
 # include "token.h"
+# include "command.h"
 
 int			is_separator(char const c);
 int			is_quotes(char const c);
@@ -25,6 +26,6 @@ void		pars_error(char *const str);
 
 t_merror	lexer(char const *const line, t_vector *const tokens);
 
-t_merror	parser(t_vector *const tokens);
+t_merror	parser(char const *const line, t_vector *const commands);
 
 #endif

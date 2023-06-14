@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/31 04:58:11 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/14 21:08:04 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static inline t_merror	__init_env(char **env, t_vector *const vector)
 			return (MEMORY_ERROR);
 		env++;
 	}
+	vector_addback(vector, &(char *){0});
 	return (SUCCESS);
 }
 
@@ -29,16 +30,16 @@ static inline t_merror	__init_minishell(
 	char **argv,
 	char **env)
 {
-	minishell->tokens = vector_create(sizeof(t_token));
-	if (minishell->tokens.buffer == NULL)
+	minishell->commands = vector_create(sizeof(t_command));
+	if (minishell->commands.buffer == NULL)
 		return (MEMORY_ERROR);
 	minishell->argc = argc;
 	minishell->argv = argv;
 	minishell->env = vector_create(sizeof(char *));
 	if (minishell->env.buffer == NULL)
-		return (vector_destroy(&minishell->tokens), MEMORY_ERROR);
+		return (command_destroy(&minishell->commands), MEMORY_ERROR);
 	if (__init_env(env, &minishell->env))
-		return (vector_destroy(&minishell->tokens),
+		return (command_destroy(&minishell->commands),
 			vector_destroy(&minishell->env), MEMORY_ERROR);
 	return (SUCCESS);
 }
@@ -55,14 +56,13 @@ static inline t_merror	__launch_minishell(t_minishell *const minishell)
 		if (line && line[0])
 		{
 			add_history(line);
-			error = lexer(line, &minishell->tokens);
+			error = parser(line, &minishell->commands);
 			if (error == SUCCESS)
-				vector_for_each(&minishell->tokens, &token_display);
+				vector_for_each(&minishell->commands, &command_display);
 			else if (error == PARSING_ERROR)
 				printf("PARSING ERROR\n");
 		}
-		vector_for_each(&minishell->tokens, &token_destroy);
-		vector_clear(&minishell->tokens);
+		vector_for_each(&minishell->commands, &command_clear);
 		free(line);
 		if (line == NULL)
 			break ;
@@ -73,7 +73,8 @@ static inline t_merror	__launch_minishell(t_minishell *const minishell)
 static inline void	__destroy_minishell(t_minishell *const minishell)
 {
 	vector_destroy(&minishell->env);
-	vector_destroy(&minishell->tokens);
+	vector_for_each(&minishell->commands, &command_destroy);
+	vector_destroy(&minishell->commands);
 	rl_clear_history();
 }
 

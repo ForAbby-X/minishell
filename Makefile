@@ -6,7 +6,7 @@
 #    By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/01 22:10:41 by alde-fre         ###   ########.fr        #
+#    Updated: 2023/06/14 21:12:52 by alde-fre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ OBJDIR	=	./obj
 SRC		=	main.c \
 			token.c \
 			redirs.c \
+			command.c\
 			\
 			parsing/utils.c \
 			parsing/error.c \
@@ -31,11 +32,11 @@ INC		= 	minishell.h \
 			token.h \
 			redirs.h \
 			parsing.h \
+			command.h \
 
 OBJ		= 	$(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 
 DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
--include $(DEPENDS)
 
 # compiler
 CC		= cc
@@ -59,15 +60,10 @@ debug: CFLAGS += -g3
 debug: obj $(VECTOR_LIB) $(NAME)
 
 obj:
-	@rm -rf .print
 	@mkdir -p $(OBJDIR)
 
 $(VECTOR_LIB):
 	make -C ./c-vectorlib
-
-.print:
-	@> $@
-	@echo "\e[1;36mCompiling...\e[0m"
 
 $(NAME): $(OBJ)
 	@echo "\e[1;35mLinking...\e[0m"
@@ -90,3 +86,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+-include $(DEPENDS)

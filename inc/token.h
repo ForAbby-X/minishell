@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 02:26:36 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/02 00:05:31 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/14 11:30:45 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,27 @@
 # include "vector.h"
 
 static char const *const	g_type_write[] = {
-	"BLANK",
 	"WORD",
+	"SINGLE_QUOTED",
+	"DOUBLE_QUOTED",
 	"SEPARATOR",
 	"HEREDOC",
 	"APPEND",
 	"IN",
 	"OUT",
-	"PIPE",
-	"SINGLE_QUOTED",
-	"DOUBLE_QUOTED",
-	"CMD"
+	"PIPE"
 };
 
 typedef enum e_type_token {
-	BLANK,
 	WORD,
+	SINGLE_QUOTED,
+	DOUBLE_QUOTED,
 	SEPARATOR,
 	HEREDOC,
 	APPEND,
 	IN,
 	OUT,
-	PIPE,
-	SINGLE_QUOTED,
-	DOUBLE_QUOTED,
-	CMD
+	PIPE
 }	t_ttoken;
 
 typedef struct s_token

@@ -1,37 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   command.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/18 19:53:42 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/14 11:33:36 by alde-fre         ###   ########.fr       */
+/*   Created: 2023/06/14 11:22:43 by alde-fre          #+#    #+#             */
+/*   Updated: 2023/06/14 20:43:46 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <unistd.h>
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+#ifndef COMMAND_H
+# define COMMAND_H
 
 # include "vector.h"
 # include "error.h"
 # include "token.h"
 # include "redirs.h"
-# include "command.h"
-# include "parsing.h"
 
-typedef struct s_minishell
+typedef struct s_command
 {
-	t_vector		commands;
-	char			**argv;
-	int				argc;
-	t_vector		env;
-}	t_minishell;
+	t_vector		tokens;
+	t_vector		redirs;
+}	t_command;
+
+void		command_display(void *const object);
+t_merror	command_init(t_command *const command);
+void		command_destroy(void *const object);
+void		command_clear(void *const object);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:08 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/01 23:44:08 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/14 12:56:54 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ t_merror	lexer(char const *const line, t_vector *const tokens)
 	t_merror	error;
 
 	index = 0;
+	error = SUCCESS;
 	while (line[index])
 	{
 		if (is_separator(line[index]))
@@ -142,5 +143,5 @@ t_merror	lexer(char const *const line, t_vector *const tokens)
 		if (error)
 			return (error);
 	}
-	return (parser(tokens));
+	return (error);
 }
