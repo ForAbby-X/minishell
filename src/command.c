@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 11:24:54 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/14 21:05:58 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/16 01:08:35 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	command_display(void *const object)
 {
 	t_command *const	command = object;
 
-	printf("Command:\ntokens: ");
+	printf("--Command--\ntokens: ");
 	vector_for_each(&command->tokens, &token_display);
 	printf("\nredirs : ");
 	vector_for_each(&command->redirs, &redir_display);

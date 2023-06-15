@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 01:41:00 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/27 01:43:53 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/15 23:16:22 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,9 @@ int	is_operator(char const c)
 	return (c == '|' || c == '<' || c == '>');
 }
 
-int	ft_strncmp(char const *str0, char const *str1, size_t len)
+int	is_tok_alpha(t_token const *const token)
 {
-	while (--len && *str0 && *str0 == *str1)
-	{
-		++str0;
-		++str1;
-	}
-	return (*str0 - *str1);
+	return (token->type == WORD
+		|| token->type == DOUBLE_QUOTED
+		|| token->type == SINGLE_QUOTED);
 }
