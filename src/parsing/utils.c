@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 01:41:00 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/27 01:43:53 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/16 17:18:17 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,4 @@ int	is_quotes(char const c)
 int	is_operator(char const c)
 {
 	return (c == '|' || c == '<' || c == '>');
-}
-
-int	ft_strncmp(char const *str0, char const *str1, size_t len)
-{
-	while (--len && *str0 && *str0 == *str1)
-	{
-		++str0;
-		++str1;
-	}
-	return (*str0 - *str1);
 }

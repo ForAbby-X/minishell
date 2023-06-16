@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+         #
+#    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/01 22:10:41 by alde-fre         ###   ########.fr        #
+#    Updated: 2023/06/16 17:44:18 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,20 +26,22 @@ SRC		=	main.c \
 			parsing/error.c \
 			parsing/lexer.c \
 			parsing/parser.c \
+			utils/env_utils.c \
 
 INC		= 	minishell.h \
 			token.h \
 			redirs.h \
 			parsing.h \
+			env.h \
 
 OBJ		= 	$(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 
 DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
--include $(DEPENDS)
 
 # compiler
 CC		= cc
-CFLAGS	= -MMD -MP -Wall -Wextra -Werror
+CFLAGS	= -MMD -MP -Wall -Wextra
+# -Werror
 
 # vector library
 VECTOR		= ./c-vectorlib/
@@ -47,16 +49,22 @@ VECTOR_LIB	= $(addprefix $(VECTOR),libvector.a)
 VECTOR_INC	= -I $(addprefix $(VECTOR),inc)
 VECTOR_LNK	= -l Xext -l X11 -L $(VECTOR) -l libvector -l m
 
-all: obj $(VECTOR_LIB) $(NAME)
+# libft library
+LIBFT		= ./libft/
+LIBFT_LIB	= $(addprefix $(LIBFT),libft.a)
+LIBFT_INC	= -I $(addprefix $(LIBFT),inc)
+LIBFT_LNK	= -l Xext -l X11 -L $(LIBFT) -l llibft -l m
+
+all: obj $(NAME)
 
 raw: CFLAGS += -O0
-raw: obj $(VECTOR_LIB) $(NAME)
+raw: obj $(NAME)
 
 fast: CFLAGS += -Ofast
-fast: obj $(VECTOR_LIB) $(NAME)
+fast: obj $(NAME)
 
 debug: CFLAGS += -g3
-debug: obj $(VECTOR_LIB) $(NAME)
+debug: obj $(NAME)
 
 obj:
 	@rm -rf .print
@@ -65,28 +73,36 @@ obj:
 $(VECTOR_LIB):
 	make -C ./c-vectorlib
 
+
+$(LIBFT_LIB):
+	make -C $(LIBFT)
+
 .print:
 	@> $@
 	@echo "\e[1;36mCompiling...\e[0m"
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(VECTOR_LIB) $(LIBFT_LIB)
 	@echo "\e[1;35mLinking...\e[0m"
-	@$(CC) -o $(NAME) $+ $(VECTOR_LIB) -l readline
+	@$(CC) -o $(NAME) $+ $(VECTOR_LIB) $(LIBFT_LIB) -l readline
 	@echo "\e[1;32m➤" $@ "created succesfully !\e[0m"
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	@echo "\e[0;36m ↳\e[0;36m" $<"\e[0m"
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) $(VECTOR_INC) -I $(INCDIR) -c $< -o $@
+	@$(CC) $(CFLAGS) $(VECTOR_INC) $(LIBFT_INC) -I $(INCDIR) -c $< -o $@
 
 clean:
 	rm -rf $(OBJDIR)
 	@make -C $(VECTOR) clean
+	@make -C $(LIBFT) clean
 
 fclean: clean
 	rm -rf $(NAME)
 	@make -C $(VECTOR) fclean
+	@make -C $(LIBFT) fclean
 
 re: fclean all
+
+-include $(DEPENDS)
 
 .PHONY: all clean fclean re

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:53:42 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/01 22:01:16 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/16 17:20:11 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include "token.h"
 # include "vector.h"
 # include "parsing.h"
+# include "env.h"
+# include "libft.h"
 
 typedef struct s_minishell
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/31 04:58:11 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/16 18:05:31 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,22 @@ static inline void	__destroy_minishell(t_minishell *const minishell)
 	rl_clear_history();
 }
 
+// int	main(
+// 	int argc,
+// 	char **argv,
+// 	char **env)
+// {
+// 	t_minishell	minishell;
+// 	t_merror	error;
+
+// 	if (!isatty(0) || __init_minishell(&minishell, argc, argv, env))
+// 		return (1);
+// 	error = __launch_minishell(&minishell);
+// 	if (error == SUCCESS)
+// 		__destroy_minishell(&minishell);
+// 	return (error);
+// }
+
 int	main(
 	int argc,
 	char **argv,
@@ -84,10 +100,14 @@ int	main(
 {
 	t_minishell	minishell;
 	t_merror	error;
-
+	char		*tmp;
 	if (!isatty(0) || __init_minishell(&minishell, argc, argv, env))
 		return (1);
-	error = __launch_minishell(&minishell);
+	// error = __launch_minishell(&minishell);
+	tmp = ft_getenv(&minishell.env, "PATH");
+	printf("%s\n", tmp);
+	free(tmp);
+	error = SUCCESS;
 	if (error == SUCCESS)
 		__destroy_minishell(&minishell);
 	return (error);
