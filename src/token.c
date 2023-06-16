@@ -6,11 +6,12 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 02:24:50 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/14 20:11:47 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/16 15:35:05 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
+#include "libft.h"
 
 void	token_display(void *const object)
 {
@@ -29,19 +30,14 @@ void	token_destroy(void *const object)
 	free(token->data);
 }
 
-t_token	*tokens_add(t_vector *const vector, t_token	*const obj)
+void	*token_cpy(void *dest, void *src, t_length const len)
 {
-	return ((t_token *)vector_addback(vector, obj));
-}
+	t_token *const	dest1 = dest;
+	t_token *const	src1 = src;
 
-t_token	*tokens_get(t_vector *const vector, t_length const index)
-{
-	return ((t_token *)vector_get(vector, index));
-}
-
-int	is_tok_operator(t_token *const token)
-{
-	if (token->type >= HEREDOC && token->type <= PIPE)
-		return (1);
-	return (0);
+	(void)len;
+	*dest1 = *src1;
+	if (dest1->data)
+		dest1->data = ft_strdup(dest1->data);
+	return (dest1);
 }

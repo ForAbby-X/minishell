@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 11:22:43 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/14 20:43:46 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/16 11:42:07 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_command
 
 void		command_display(void *const object);
 t_merror	command_init(t_command *const command);
+void		*command_cpy(void *dest, void *src, t_length const len);
 void		command_destroy(void *const object);
 void		command_clear(void *const object);
 

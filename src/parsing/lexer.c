@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:08 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/14 12:56:54 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/16 11:40:13 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static inline t_merror	__lexer_separator(
 		return (SUCCESS);
 	token.type = SEPARATOR;
 	token.data = NULL;
-	if (tokens_add(tokens, &token) == NULL)
+	if (vector_addback(tokens, &token) == NULL)
 		return (MEMORY_ERROR);
 	return (SUCCESS);
 }
@@ -69,7 +69,7 @@ static inline t_merror	__lexer_quotes(
 		token.data[*index - start_i] = '\0';
 		token.type = SINGLE_QUOTED + (char_type == '"');
 		(*index)++;
-		if (tokens_add(tokens, &token) == NULL)
+		if (vector_addback(tokens, &token) == NULL)
 			return (free(token.data), MEMORY_ERROR);
 		return (SUCCESS);
 	}
@@ -93,7 +93,7 @@ static inline t_merror	__lexer_word(
 	_vec_memcpy(token.data, (void *)line + start_i, *index - start_i);
 	token.data[*index - start_i] = '\0';
 	token.type = WORD;
-	if (tokens_add(tokens, &token) == NULL)
+	if (vector_addback(tokens, &token) == NULL)
 		return (free(token.data), MEMORY_ERROR);
 	return (SUCCESS);
 }
@@ -117,7 +117,7 @@ static inline t_merror	__lexer_operator(
 		return (MEMORY_ERROR);
 	_vec_memcpy(token.data, g_op_list[i].op, g_op_list[i].size + 1);
 	token.type = g_op_list[i].type;
-	if (tokens_add(tokens, &token) == NULL)
+	if (vector_addback(tokens, &token) == NULL)
 		return (free(token.data), MEMORY_ERROR);
 	(*index) += g_op_list[i].size;
 	return (SUCCESS);

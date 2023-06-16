@@ -6,7 +6,7 @@
 #    By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/16 01:01:41 by alde-fre         ###   ########.fr        #
+#    Updated: 2023/06/16 21:30:37 by alde-fre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,10 @@ SRC		=	main.c \
 			parsing/utils.c \
 			parsing/error.c \
 			parsing/lexer.c \
+			parsing/expand.c \
 			parsing/parser.c \
 			parsing/merge_tokens.c \
+			parsing/merge_redirs.c \
 			parsing/split_to_commands.c \
 
 INC		= 	minishell.h \

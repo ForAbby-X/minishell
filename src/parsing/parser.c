@@ -6,29 +6,11 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 01:29:55 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/16 01:27:10 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/16 22:47:48 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-static inline t_merror	__set_redirections(
-	t_vector *const tokens,
-	t_token *const last_token,
-	t_token *const token,
-	t_length const index)
-{
-	if (is_tok_operator(last_token)
-		&& last_token->type != PIPE && token->type == WORD)
-	{
-		free(last_token->data);
-		last_token->data = ft_strdup(token->data);
-		token_destroy(token);
-		vector_erase(tokens, index);
-		return (FAILURE);
-	}
-	return (SUCCESS);
-}
 
 static inline t_merror	__remove_separators(t_vector *const tokens)
 {
@@ -38,7 +20,7 @@ static inline t_merror	__remove_separators(t_vector *const tokens)
 	index = 0;
 	while (index < vector_size(tokens))
 	{
-		token = tokens_get(tokens, index);
+		token = vector_get(tokens, index);
 		if (token->type == SEPARATOR)
 		{
 			token_destroy(token);
@@ -50,38 +32,31 @@ static inline t_merror	__remove_separators(t_vector *const tokens)
 	return (SUCCESS);
 }
 
-static inline t_merror	__remove_separators_op(
-	t_vector *const tokens,
-	t_token *const last_token,
-	t_token *const token,
-	t_length const index)
+static inline int	__is_tok_expandable(t_token *const token)
 {
-	if (token->type == SEPARATOR && (is_tok_operator(last_token)
-			|| index == 0 || index == vector_size(tokens) - 1))
-	{
-		token_destroy(token);
-		vector_erase(tokens, index);
-		return (FAILURE);
-	}
-	return (SUCCESS);
-}
+	return ((token->type == WORD || token->type == DOUBLE_QUOTED)
+		&& ft_strchr(token->data, '$'));
+}	
 
-static inline t_merror	__clean_and_redir(t_vector *const tokens)
+static inline t_merror	__expand_all(t_vector *const tokens)
 {
-	t_token		*last_token;
 	t_token		*token;
 	t_length	index;
+	t_vector	sub;
 
 	index = 0;
-	last_token = &(t_token){NULL, PIPE};
 	while (index < vector_size(tokens))
 	{
-		token = tokens_get(tokens, index);
-		if (__remove_separators_op(tokens, last_token, token, index))
-			continue ;
-		if (__set_redirections(tokens, last_token, token, index))
-			continue ;
-		last_token = token;
+		token = vector_get(tokens, index);
+		if (__is_tok_expandable(token))
+		{
+			sub = expand_token(token);
+			token_destroy(vector_erase(tokens, index));
+			vector_insert_vector(tokens, &sub, index);
+			index += vector_size(&sub);
+			printf("Expanded %u\n", vector_size(&sub));
+			vector_destroy(&sub);
+		}
 		index++;
 	}
 	return (SUCCESS);
@@ -90,15 +65,21 @@ static inline t_merror	__clean_and_redir(t_vector *const tokens)
 t_merror	parser(char const *const line, t_vector *const commands)
 {
 	t_vector	tokens;
+	t_merror	error;
 
 	tokens = vector_create(sizeof(t_token));
 	if (tokens.buffer == NULL)
 		return (MEMORY_ERROR);
-	lexer(line, &tokens);
-	__clean_and_redir(&tokens);
+	error = lexer(line, &tokens);
+	if (error)
+		return (vector_for_each(&tokens, &token_destroy),
+			vector_destroy(&tokens), error);
+	__expand_all(&tokens);
 	merge_all_tokens(&tokens);
 	__remove_separators(&tokens);
+	merge_redirs(&tokens);
 	split_to_commands(&tokens, commands);
+	vector_for_each(&tokens, &token_destroy);
 	vector_destroy(&tokens);
 	return (SUCCESS);
 }

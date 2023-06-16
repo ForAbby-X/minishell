@@ -1,37 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   merge_tokens.c                                     :+:      :+:    :+:   */
+/*   merge_redirs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 22:20:04 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/16 22:44:08 by alde-fre         ###   ########.fr       */
+/*   Created: 2023/06/16 16:27:15 by alde-fre          #+#    #+#             */
+/*   Updated: 2023/06/16 22:43:35 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-static inline t_merror	__merge_two_tokens(
-	t_token *const first,
-	t_token *const second,
-	t_vector *const tokens,
-	t_length const index)
-{
-	char	*temp;
-
-	first->type = WORD;
-	temp = first->data;
-	first->data = ft_strjoin(first->data, second->data);
-	free(temp);
-	token_destroy(second);
-	vector_erase(tokens, index);
-	if (first->data == NULL)
-		return (MEMORY_ERROR);
-	return (SUCCESS);
-}
-
-t_merror	merge_all_tokens(t_vector *const tokens)
+t_merror	merge_redirs(t_vector *const tokens)
 {
 	t_token		*last_token;
 	t_token		*token;
@@ -42,13 +23,17 @@ t_merror	merge_all_tokens(t_vector *const tokens)
 	while (index < vector_size(tokens))
 	{
 		token = vector_get(tokens, index);
-		if (is_tok_alpha(token) && is_tok_alpha(last_token))
+		if (is_tok_operator(last_token)
+			&& last_token->type != PIPE && is_tok_alpha(token))
 		{
-			if (__merge_two_tokens(last_token, token, tokens, index))
-				return (MEMORY_ERROR);
-			continue ;
+			free(last_token->data);
+			last_token->data = ft_strdup(token->data);
+			token_destroy(token);
+			vector_erase(tokens, index);
+			last_token = &(t_token){NULL, SEPARATOR};
 		}
-		last_token = token;
+		else
+			last_token = token;
 		index++;
 	}
 	return (SUCCESS);
