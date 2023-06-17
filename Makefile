@@ -39,7 +39,7 @@ OBJ		= 	$(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
 
 # compiler
-CC		= cc
+CC		= clang
 CFLAGS	= -MMD -MP -Wall -Wextra
 # -Werror
 
