@@ -100,13 +100,16 @@ int	main(
 {
 	t_minishell	minishell;
 	t_merror	error;
-	char		*tmp;
+	t_vector	tmp_args;
 	if (!isatty(0) || __init_minishell(&minishell, argc, argv, env))
 		return (1);
 	// error = __launch_minishell(&minishell);
-	tmp = ft_getenv(&minishell.env, "PATH");
-	printf("%s\n", tmp);
-	free(tmp);
+	//tmp = ft_getenv(&minishell.env, "PATH");
+	tmp_args = vector_create(sizeof(char *));
+	//	free(tmp);
+	ft_execvpe("ls", &tmp_args, &(minishell.env));
+
+	vector_destroy(&tmp_args);
 	error = SUCCESS;
 	if (error == SUCCESS)
 		__destroy_minishell(&minishell);

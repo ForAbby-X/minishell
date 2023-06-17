@@ -27,6 +27,9 @@ SRC		=	main.c \
 			parsing/lexer.c \
 			parsing/parser.c \
 			utils/env_utils.c \
+			exec/path/get_command_path.c \
+			exec/path/path_utils.c \
+			exec/ft_execvpe.c \
 
 INC		= 	minishell.h \
 			token.h \

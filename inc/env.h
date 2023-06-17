@@ -1,6 +1,9 @@
 #ifndef ENV_H
 # define ENV_H
 
+# include "vector.h"
+# include "libft.h"
+
 char	**env_add(t_vector *const vector, char	*const obj)
 		__attribute__((always_inline));
 

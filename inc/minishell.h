@@ -24,6 +24,7 @@
 # include "vector.h"
 # include "parsing.h"
 # include "env.h"
+# include "exec.h"
 # include "libft.h"
 
 typedef struct s_minishell
