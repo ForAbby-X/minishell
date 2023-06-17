@@ -25,7 +25,8 @@ int	ft_execvpe(char *file, t_vector  const *argv, t_vector *const env)
 	if (path == NULL)
 		errno = 2;
 	else
-		execve(path, argv->buffer, env->buffer);
+		execve(path, argv->data, 
+		env->data);
 	free(path);
 	return (-1);
 }

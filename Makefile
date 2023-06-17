@@ -26,10 +26,12 @@ SRC		=	main.c \
 			parsing/error.c \
 			parsing/lexer.c \
 			parsing/parser.c \
-			utils/env_utils.c \
+			env/env_utils.c \
 			exec/path/get_command_path.c \
 			exec/path/path_utils.c \
 			exec/ft_execvpe.c \
+			exec/args.c \
+			exec/exec_command.c \
 
 INC		= 	minishell.h \
 			token.h \
@@ -43,7 +45,7 @@ DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
 
 # compiler
 CC		= clang
-CFLAGS	= -MMD -MP -Wall -Wextra
+CFLAGS	= -MMD -MP -Wall -Wextra -g
 # -Werror
 
 # vector library

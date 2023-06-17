@@ -24,10 +24,10 @@ static char const *const	g_redirs_write[] = {
 
 typedef enum e_tredir
 {
-	REDIR_IN,
-	REDIR_OUT,
-	HEREDOC,
-	APPEND
+	R_REDIR_IN,
+	R_REDIR_OUT,
+	R_HEREDOC,
+	R_APPEND
 }	t_tredir;
 
 typedef struct s_redir

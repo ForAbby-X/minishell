@@ -20,6 +20,8 @@ static inline t_merror	__init_env(char **env, t_vector *const vector)
 			return (MEMORY_ERROR);
 		env++;
 	}
+	if (vector_addback(vector, env) == NULL)
+		return (MEMORY_ERROR);
 	return (SUCCESS);
 }
 
@@ -93,23 +95,47 @@ static inline void	__destroy_minishell(t_minishell *const minishell)
 // 	return (error);
 // }
 
+
+t_exec_command fake_cmd()
+{
+	t_exec_command cmd;
+	char *tmp;
+
+	exec_command_init(&cmd);
+	tmp = ft_strdup("ls");
+	vector_addback(&(cmd.args), &tmp);
+	tmp = ft_strdup("-l");
+	vector_addback(&(cmd.args), &tmp);
+	tmp = ft_strdup("-a");
+	vector_addback(&(cmd.args), &tmp);
+	tmp = NULL;
+	vector_addback(&(cmd.args), &tmp);
+	exec_command_display(&cmd);
+	return (cmd);
+}
+
+
 int	main(
 	int argc,
 	char **argv,
 	char **env)
 {
-	t_minishell	minishell;
-	t_merror	error;
-	t_vector	tmp_args;
+	t_minishell		minishell;
+	t_merror		error;
+	t_exec_command	cmd;
+	
 	if (!isatty(0) || __init_minishell(&minishell, argc, argv, env))
 		return (1);
 	// error = __launch_minishell(&minishell);
 	//tmp = ft_getenv(&minishell.env, "PATH");
-	tmp_args = vector_create(sizeof(char *));
 	//	free(tmp);
-	ft_execvpe("ls", &tmp_args, &(minishell.env));
 
-	vector_destroy(&tmp_args);
+	cmd = fake_cmd();
+	exec_command_display(&cmd);
+
+	ft_execvpe(*(char **)vector_get(&(cmd.args), 0), &(cmd.args), &(minishell.env));
+	exec_command_destroy(&cmd);
+	//vector_destroy(&tmp_args);
 	error = SUCCESS;
 	if (error == SUCCESS)
 		__destroy_minishell(&minishell);
