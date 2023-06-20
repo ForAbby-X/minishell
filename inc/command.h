@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 11:22:43 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/16 11:42:07 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/20 17:49:10 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "vector.h"
 # include "error.h"
 # include "token.h"
-# include "redirs.h"
 
 typedef struct s_command
 {

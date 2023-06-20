@@ -6,7 +6,7 @@
 #    By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/16 21:30:37 by alde-fre         ###   ########.fr        #
+#    Updated: 2023/06/20 17:58:17 by alde-fre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,6 @@ OBJDIR	=	./obj
 # src / includes / obj files
 SRC		=	main.c \
 			token.c \
-			redirs.c \
 			command.c\
 			\
 			parsing/utils.c \

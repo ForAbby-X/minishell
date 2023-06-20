@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:53:42 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/14 11:33:36 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:11:13 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include "vector.h"
 # include "error.h"
 # include "token.h"
-# include "redirs.h"
 # include "command.h"
 # include "parsing.h"
 

@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:08 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/20 01:00:14 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/20 17:58:56 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,15 @@ typedef struct s_op
 }	t_op;
 
 static t_op const	g_op_list[] = {
-{"<<<", 3, 0},
-{">>>", 3, 0},
 {"<<", 2, HEREDOC},
 {">>", 2, APPEND},
-{"<", 1, OUT},
-{">", 1, IN},
+{"<", 1, IN},
+{">", 1, OUT},
 {"|", 1, PIPE},
 {NULL, 0, 0}
 };
 
-t_merror	lexer_separator(
+static inline t_merror	__lexer_separator(
 		char const *const line,
 		t_length *const index,
 		t_vector *const tokens)
@@ -110,8 +108,6 @@ static inline t_merror	__lexer_operator(
 	while (g_op_list[i].op
 		&& ft_strncmp(line + *index, g_op_list[i].op, g_op_list[i].size))
 		i++;
-	if (i == 0 || i == 1)
-		return (PARSING_ERROR);
 	token.data = malloc(g_op_list[i].size + 1);
 	if (token.data == NULL)
 		return (MEMORY_ERROR);
@@ -133,7 +129,7 @@ t_merror	lexer(char const *const line, t_vector *const tokens)
 	while (line[index])
 	{
 		if (is_separator(line[index]))
-			error = lexer_separator(line, &index, tokens);
+			error = __lexer_separator(line, &index, tokens);
 		else if (is_quotes(line[index]))
 			error = __lexer_quotes(line, &index, tokens);
 		else if (is_operator(line[index]))

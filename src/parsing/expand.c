@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/20 03:37:40 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/20 21:20:48 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static inline t_merror	__expand_word(
 	**str = tmp;
 	if (temp_token.data == NULL)
 		return (MEMORY_ERROR);
-	printf("-ADDING WORD\n");
 	vector_insert(tokens, &temp_token, *index);
 	*index += 1;
 	return (SUCCESS);
@@ -97,25 +96,24 @@ static inline t_merror	__expand_var(
 
 	ptr = *str + 1;
 	if (*ptr == '$')
-		return (*str += 1, SUCCESS);
-	if (!ft_isdigit(*ptr) || *ptr == '_')
-	{
-		start = ptr;
-		while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
-			ptr++;
-		tmp = *ptr;
-		*ptr = '\0';
-		var = getenv(start); // REPLACE WITH CUSTOM GETENV
-		*ptr = tmp;
-		*str = ptr;
-		if (var == NULL)
-			return (SUCCESS);
-		if (token->type == WORD)
-			return (__expand_var_word(tokens, index, var));
-		else if (token->type == DOUBLE_QUOTED)
-			return (__expand_var_quoted(tokens, index, var));
-	}
-	return (SUCCESS);
+		return (*str += 2, __expand_var_quoted(tokens, index, "PROCESS_PID"));
+	if (*ptr == '?')
+		return (*str += 2, __expand_var_quoted(tokens, index, "ERROR_CODE"));
+	if (ft_isdigit(*ptr))
+		return (*str += 2, SUCCESS);
+	start = ptr;
+	while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
+		ptr++;
+	tmp = *ptr;
+	*ptr = '\0';
+	var = getenv(start); // REPLACE WITH CUSTOM GETENV
+	*ptr = tmp;
+	*str = ptr;
+	if (var == NULL)
+		return (SUCCESS);
+	if (token->type == WORD)
+		return (__expand_var_word(tokens, index, var));
+	return (__expand_var_quoted(tokens, index, var));
 }
 
 t_merror	expand_token(
@@ -131,8 +129,11 @@ t_merror	expand_token(
 	vector_erase(tokens, *index);
 	while (*start)
 	{
-		if (*start == '$' && __expand_var(tokens, index, &temp, &start))
-			return (MEMORY_ERROR);
+		if (*start == '$')
+		{
+			if (__expand_var(tokens, index, &temp, &start))
+				return (MEMORY_ERROR);
+		}
 		else if (__expand_word(tokens, index, &temp, &start))
 			return (MEMORY_ERROR);
 	}

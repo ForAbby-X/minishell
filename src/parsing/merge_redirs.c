@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:27:15 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/16 22:43:35 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/20 17:26:23 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,11 @@ t_merror	merge_redirs(t_vector *const tokens)
 		{
 			free(last_token->data);
 			last_token->data = ft_strdup(token->data);
-			token_destroy(token);
-			vector_erase(tokens, index);
-			last_token = &(t_token){NULL, SEPARATOR};
+			token_destroy(vector_erase(tokens, index));
+			if (last_token->data == NULL)
+				return (MEMORY_ERROR);
 		}
-		else
-			last_token = token;
+		last_token = token;
 		index++;
 	}
 	return (SUCCESS);

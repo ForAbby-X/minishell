@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/19 18:36:53 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/20 17:48:59 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ static inline t_merror	__launch_minishell(t_minishell *const minishell)
 			error = parser(line, &minishell->commands);
 			if (error == SUCCESS)
 				vector_for_each(&minishell->commands, &command_display);
-			else if (error == PARSING_ERROR)
-				printf("PARSING ERROR\n");
 		}
 		vector_for_each(&minishell->commands, &command_destroy);
 		vector_clear(&minishell->commands);
@@ -69,7 +67,7 @@ static inline t_merror	__launch_minishell(t_minishell *const minishell)
 		if (line == NULL)
 			break ;
 	}
-	return (error);
+	return (SUCCESS);
 }
 
 static inline void	__destroy_minishell(t_minishell *const minishell)
@@ -91,7 +89,6 @@ int	main(
 	if (!isatty(STDIN_FILENO) || __init_minishell(&minishell, argc, argv, env))
 		return (1);
 	error = __launch_minishell(&minishell);
-	if (error == SUCCESS)
-		__destroy_minishell(&minishell);
+	__destroy_minishell(&minishell);
 	return (error);
 }
