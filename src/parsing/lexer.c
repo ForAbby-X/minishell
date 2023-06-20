@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:08 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/16 11:40:13 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/20 01:00:14 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_op const	g_op_list[] = {
 {NULL, 0, 0}
 };
 
-static inline t_merror	__lexer_separator(
+t_merror	lexer_separator(
 		char const *const line,
 		t_length *const index,
 		t_vector *const tokens)
@@ -133,7 +133,7 @@ t_merror	lexer(char const *const line, t_vector *const tokens)
 	while (line[index])
 	{
 		if (is_separator(line[index]))
-			error = __lexer_separator(line, &index, tokens);
+			error = lexer_separator(line, &index, tokens);
 		else if (is_quotes(line[index]))
 			error = __lexer_quotes(line, &index, tokens);
 		else if (is_operator(line[index]))

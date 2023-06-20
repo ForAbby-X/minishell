@@ -6,24 +6,136 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/16 23:10:45 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/20 03:37:40 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-t_vector	expand_token(t_token *const token)
+static inline t_merror	__expand_var_word(
+	t_vector *const tokens,
+	t_length *index,
+	char *var)
 {
-	t_vector	sub;
+	t_token	token;
+	char	temp;
+	char	*start;
+
+	while (*var)
+	{
+		while (*var && is_separator(*var))
+			var++;
+		start = var;
+		while (*var && !is_separator(*var))
+			var++;
+		temp = *var;
+		*var = '\0';
+		token.data = ft_strdup(start);
+		if (token.data == NULL)
+			return (MEMORY_ERROR);
+		*var = temp;
+		token.type = WORD;
+		if (is_separator(*var))
+			vector_insert(tokens, &(t_token){NULL, SEPARATOR}, *index);
+		vector_insert(tokens, &token, *index);
+		*index += 1 + is_separator(*var);
+	}
+	return (SUCCESS);
+}
+
+static inline t_merror	__expand_var_quoted(
+	t_vector *const tokens,
+	t_length *index,
+	char const *const var)
+{
+	t_token	token;
+
+	token.type = WORD;
+	token.data = ft_strdup(var);
+	if (token.data == NULL)
+		return (MEMORY_ERROR);
+	vector_insert(tokens, &token, *index);
+	*index += 1;
+	return (SUCCESS);
+}
+
+static inline t_merror	__expand_word(
+	t_vector *const tokens,
+	t_length *const index,
+	t_token *const token,
+	char **const str)
+{
+	char *const	start = *str;
+	char		tmp;
+	t_token		temp_token;
 
 	(void)token;
-	sub = vector_create(sizeof(t_token));
-	if (sub.data == NULL)
-		return ((t_vector){0});
-	if (lexer("alde-fre oui >oui je test tout", &sub))
+	while (**str && **str != '$')
+		*str += 1;
+	tmp = **str;
+	**str = '\0';
+	temp_token = (t_token){ft_strdup(start), WORD};
+	**str = tmp;
+	if (temp_token.data == NULL)
+		return (MEMORY_ERROR);
+	printf("-ADDING WORD\n");
+	vector_insert(tokens, &temp_token, *index);
+	*index += 1;
+	return (SUCCESS);
+}
+
+static inline t_merror	__expand_var(
+	t_vector *const tokens,
+	t_length *const index,
+	t_token *const token,
+	char **const str)
+{
+	char	*ptr;
+	char	*start;
+	char	*var;
+	char	tmp;
+
+	ptr = *str + 1;
+	if (*ptr == '$')
+		return (*str += 1, SUCCESS);
+	if (!ft_isdigit(*ptr) || *ptr == '_')
 	{
-		vector_for_each(&sub, &token_destroy);
-		return (vector_destroy(&sub), (t_vector){0});
+		start = ptr;
+		while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
+			ptr++;
+		tmp = *ptr;
+		*ptr = '\0';
+		var = getenv(start); // REPLACE WITH CUSTOM GETENV
+		*ptr = tmp;
+		*str = ptr;
+		if (var == NULL)
+			return (SUCCESS);
+		if (token->type == WORD)
+			return (__expand_var_word(tokens, index, var));
+		else if (token->type == DOUBLE_QUOTED)
+			return (__expand_var_quoted(tokens, index, var));
 	}
-	return (sub);
+	return (SUCCESS);
+}
+
+t_merror	expand_token(
+	t_vector *const tokens,
+	t_length *const index,
+	t_token *const token)
+{
+	t_token	temp;
+	char	*start;
+
+	temp = *token;
+	start = token->data;
+	vector_erase(tokens, *index);
+	while (*start)
+	{
+		if (*start == '$' && __expand_var(tokens, index, &temp, &start))
+			return (MEMORY_ERROR);
+		else if (__expand_word(tokens, index, &temp, &start))
+			return (MEMORY_ERROR);
+	}
+	free(temp.data);
+	return (SUCCESS);
 }

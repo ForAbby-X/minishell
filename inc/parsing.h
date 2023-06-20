@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:31 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/16 21:30:17 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/19 02:36:25 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,15 @@ int			is_tok_operator(t_token const *const token);
 
 void		pars_error(char *const str);
 
-t_vector	expand_token(t_token *const token);
+t_merror	lexer_separator(
+				char const *const line,
+				t_length *const index,
+				t_vector *const tokens);
+
+t_merror	expand_token(
+				t_vector *const tokens,
+				t_length *const index,
+				t_token *const token);
 
 t_merror	parser(char const *const line, t_vector *const commands);
 t_merror	lexer(char const *const line, t_vector *const tokens);
