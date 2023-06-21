@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 13:45:19 by olimarti          #+#    #+#             */
-/*   Updated: 2023/05/09 01:12:21 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/22 01:22:15 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,7 @@ char	*get_command_path(char *file, t_vector *const env)
 
 	if (ft_strchr(file, '/'))
 	{
-		if (access(file, F_OK) == 0)
-			return (ft_strdup(file));
-		else
-			return (NULL);
+		return (ft_strdup(file));
 	}
 	paths_str = ft_getenv(env, "PATH");
 	path = NULL;
