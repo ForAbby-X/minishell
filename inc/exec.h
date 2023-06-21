@@ -12,6 +12,8 @@
 # include <stdlib.h>
 # include <errno.h>
 
+# include <sys/wait.h>
+
 typedef struct s_exec_command
 {
 	t_vector	args;
@@ -32,6 +34,10 @@ void		exec_command_clear(void *const object);
 
 void		arg_display(void *const object);
 void		arg_destroy(void *const object);
+
+t_merror run_command(t_exec_command *command, t_vector *env);
+
+t_merror handle_redirs(t_vector *redirs);
 
 
 #endif

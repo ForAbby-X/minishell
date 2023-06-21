@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/16 18:05:31 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/22 00:55:19 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,32 @@ t_exec_command fake_cmd()
 {
 	t_exec_command cmd;
 	char *tmp;
+	t_redir redir;
 
 	exec_command_init(&cmd);
-	tmp = ft_strdup("ls");
+	// tmp = ft_strdup("ls");
+	// vector_addback(&(cmd.args), &tmp);
+	// tmp = ft_strdup("-l");
+	// vector_addback(&(cmd.args), &tmp);
+	// tmp = ft_strdup("-a");
+	// vector_addback(&(cmd.args), &tmp);
+	// tmp = NULL;
+	// vector_addback(&(cmd.args), &tmp);
+	tmp = ft_strdup("cat");
 	vector_addback(&(cmd.args), &tmp);
-	tmp = ft_strdup("-l");
-	vector_addback(&(cmd.args), &tmp);
-	tmp = ft_strdup("-a");
+	tmp = ft_strdup("-e");
 	vector_addback(&(cmd.args), &tmp);
 	tmp = NULL;
 	vector_addback(&(cmd.args), &tmp);
+	
+	redir.path = ft_strdup("test.txt");
+	redir.type = R_REDIR_IN;
+	vector_addback(&(cmd.redirs), &redir);
+
+	redir.path = ft_strdup("test2.txt");
+	redir.type = R_APPEND;
+	vector_addback(&(cmd.redirs), &redir);
+
 	exec_command_display(&cmd);
 	return (cmd);
 }
@@ -132,8 +148,7 @@ int	main(
 
 	cmd = fake_cmd();
 	exec_command_display(&cmd);
-
-	ft_execvpe(*(char **)vector_get(&(cmd.args), 0), &(cmd.args), &(minishell.env));
+	run_command(&cmd, &(minishell.env));
 	exec_command_destroy(&cmd);
 	//vector_destroy(&tmp_args);
 	error = SUCCESS;
@@ -141,3 +156,4 @@ int	main(
 		__destroy_minishell(&minishell);
 	return (error);
 }
+

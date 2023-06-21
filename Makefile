@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/16 17:44:18 by olimarti         ###   ########.fr        #
+#    Updated: 2023/06/22 00:29:23 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,9 +29,11 @@ SRC		=	main.c \
 			env/env_utils.c \
 			exec/path/get_command_path.c \
 			exec/path/path_utils.c \
-			exec/ft_execvpe.c \
-			exec/args.c \
-			exec/exec_command.c \
+			exec/exec/ft_execvpe.c \
+			exec/exec/args.c \
+			exec/exec/exec_command.c \
+			exec/core/run_command.c \
+			exec/redirs/redirs.c \
 
 INC		= 	minishell.h \
 			token.h \

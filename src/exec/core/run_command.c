@@ -1,27 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   run_command.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 15:40:35 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/22 00:32:16 by olimarti         ###   ########.fr       */
+/*   Created: 2023/06/21 21:48:41 by olivier           #+#    #+#             */
+/*   Updated: 2023/06/22 01:01:11 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "exec.h"
 
-#ifndef ERROR_H
-# define ERROR_H
 
-# include <string.h>
+t_merror run_command(t_exec_command *command, t_vector *env)
+{
+	handle_redirs(&command->redirs);
+	ft_execvpe(*(char **)vector_get(&(command->args), 0), &(command->args), env);
+	return (FAILURE);
+}
 
-typedef enum e_merror {
-	SUCCESS,
-	FAILURE,
-	MEMORY_ERROR,
-	PARSING_ERROR,
-	CHILD_ERROR,
-}	t_merror;
+// t_merror spawn_command(t_exec_command *command, t_vector *env)
+// {
+// 	int cpid;
 
-#endif
+// 	cpid = fork();
+// 	if (cpid == 0)
+// 	{
+// 		//PARENT
+// 	}
+// 	else
+// 	{
+// 		//child
+// 	}
+// }
