@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 00:28:11 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/22 02:20:19 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/22 05:00:25 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,13 @@ static t_merror apply_redir(t_redir *redir)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
 			return (close(fd), FAILURE);
+		close(fd);
 	}
 	else if (redir->type == R_REDIR_OUT | redir->type == R_APPEND)
 	{
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			return (close(fd), FAILURE);
+		close(fd);
 	}
 	close(fd);
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:25:45 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/16 18:04:31 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/22 04:38:53 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_getenv(t_vector *const env, const char *name)
 {
-	unsigned int	i;
+	t_length	i;
 	int				name_len;
 	char			*current;
 

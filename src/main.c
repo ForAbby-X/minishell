@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/22 02:17:57 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/22 05:35:57 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,21 +122,65 @@ t_exec_command fake_cmd()
 	redir.type = R_REDIR_IN;
 	vector_addback(&(cmd.redirs), &redir);
 
-	redir.path = ft_strdup("test2.txt");
-	redir.type = R_REDIR_IN;
-	vector_addback(&(cmd.redirs), &redir);
+	// redir.path = ft_strdup("test2.txt");
+	// redir.type = R_REDIR_IN;
+	// vector_addback(&(cmd.redirs), &redir);
 	
-	redir.path = ft_strdup("test3.txt");
-	redir.type = R_APPEND;
-	vector_addback(&(cmd.redirs), &redir);
+	// redir.path = ft_strdup("test3.txt");
+	// redir.type = R_APPEND;
+	// vector_addback(&(cmd.redirs), &redir);
 
-	redir.path = ft_strdup("test4.txt");
-	redir.type = R_APPEND;
-	vector_addback(&(cmd.redirs), &redir);
+	// redir.path = ft_strdup("test4.txt");
+	// redir.type = R_APPEND;
+	// vector_addback(&(cmd.redirs), &redir);
 
 	exec_command_display(&cmd);
 	return (cmd);
 }
+
+
+t_exec_command fake_cmd2()
+{
+	t_exec_command cmd;
+	char *tmp;
+	t_redir redir;
+
+	exec_command_init(&cmd);
+	// tmp = ft_strdup("ls");
+	// vector_addback(&(cmd.args), &tmp);
+	// tmp = ft_strdup("-l");
+	// vector_addback(&(cmd.args), &tmp);
+	// tmp = ft_strdup("-a");
+	// vector_addback(&(cmd.args), &tmp);
+	// tmp = NULL;
+	// vector_addback(&(cmd.args), &tmp);
+	tmp = ft_strdup("rev");
+	vector_addback(&(cmd.args), &tmp);
+	// tmp = ft_strdup("-e");
+	// vector_addback(&(cmd.args), &tmp);
+	tmp = NULL;
+	vector_addback(&(cmd.args), &tmp);
+	
+	// redir.path = ft_strdup("test.txt");
+	// redir.type = R_REDIR_IN;
+	// vector_addback(&(cmd.redirs), &redir);
+
+	// redir.path = ft_strdup("test2.txt");
+	// redir.type = R_REDIR_IN;
+	// vector_addback(&(cmd.redirs), &redir);
+	
+	// redir.path = ft_strdup("test3.txt");
+	// redir.type = R_APPEND;
+	// vector_addback(&(cmd.redirs), &redir);
+
+	// redir.path = ft_strdup("test4.txt");
+	// redir.type = R_APPEND;
+	// vector_addback(&(cmd.redirs), &redir);
+
+	exec_command_display(&cmd);
+	return (cmd);
+}
+
 
 t_exec_command fake_cmd_not_exist()
 {
@@ -160,17 +204,52 @@ t_exec_command fake_cmd_not_exist()
 	tmp = NULL;
 	vector_addback(&(cmd.args), &tmp);
 	
-	redir.path = ft_strdup("test.txt");
-	redir.type = R_REDIR_IN;
-	vector_addback(&(cmd.redirs), &redir);
+	// redir.path = ft_strdup("test.txt");
+	// redir.type = R_REDIR_IN;
+	// vector_addback(&(cmd.redirs), &redir);
 
-	redir.path = ft_strdup("test2.txt");
-	redir.type = R_APPEND;
-	vector_addback(&(cmd.redirs), &redir);
+	// redir.path = ft_strdup("test2.txt");
+	// redir.type = R_APPEND;
+	// vector_addback(&(cmd.redirs), &redir);
 
 	exec_command_display(&cmd);
 	return (cmd);
 }
+
+
+// int	main(
+// 	int argc,
+// 	char **argv,
+// 	char **env)
+// {
+// 	t_minishell		minishell;
+// 	t_merror		error;
+// 	t_exec_command	cmd;
+	
+// 	if (!isatty(0) || __init_minishell(&minishell, argc, argv, env))
+// 		return (1);
+// 	// error = __launch_minishell(&minishell);
+// 	//tmp = ft_getenv(&minishell.env, "PATH");
+// 	//	free(tmp);
+
+// 	cmd = fake_cmd();
+// 	exec_command_display(&cmd);
+// 	//run_command(&cmd, &(minishell.env));
+// 	if (spawn_command(&cmd, &(minishell.env), 0,1) == SUCCESS)
+// 	{
+// 		ft_putstr_fd("--WAIT--\n", 2);
+// 		wait(NULL);
+// 		ft_putstr_fd("--WAIT finished--\n", 2);
+// 	}
+// 	ft_putstr_fd("EXIT\n", 2);
+// 	exec_command_destroy(&cmd);
+// 	//vector_destroy(&tmp_args);
+// 	error = SUCCESS;
+// 	if (error == SUCCESS)
+// 		__destroy_minishell(&minishell);
+// 	return (error);
+// }
+
 
 
 int	main(
@@ -181,25 +260,28 @@ int	main(
 	t_minishell		minishell;
 	t_merror		error;
 	t_exec_command	cmd;
-	
+	t_exec_command	cmd2;
+	t_vector		cmds;
+
 	if (!isatty(0) || __init_minishell(&minishell, argc, argv, env))
 		return (1);
 	// error = __launch_minishell(&minishell);
 	//tmp = ft_getenv(&minishell.env, "PATH");
 	//	free(tmp);
 
+	cmds = vector_create(sizeof(t_exec_command));
 	cmd = fake_cmd();
+	vector_addback(&cmds, &cmd);
 	exec_command_display(&cmd);
+	cmd2 = fake_cmd2();
+	vector_addback(&cmds, &cmd2);
+	exec_command_display(&cmd2);
 	//run_command(&cmd, &(minishell.env));
-	if (spawn_command(&cmd, &(minishell.env), 0,1) == SUCCESS)
-	{
-		ft_putstr_fd("--WAIT--\n", 2);
-		wait(NULL);
-		ft_putstr_fd("--WAIT finished--\n", 2);
-	}
+	exec_piped_commands(cmds.data, cmds.size, &(minishell.env));
 	ft_putstr_fd("EXIT\n", 2);
-	exec_command_destroy(&cmd);
-	//vector_destroy(&tmp_args);
+	// exec_command_destroy(&cmd);
+	// exec_command_destroy(&cmd2);
+	vector_destroy(&cmds);
 	error = SUCCESS;
 	if (error == SUCCESS)
 		__destroy_minishell(&minishell);

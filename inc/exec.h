@@ -41,5 +41,7 @@ t_merror handle_redirs(t_vector *redirs);
 
 t_merror spawn_command(t_exec_command *command, t_vector *env, int in_fd, int out_fd);
 
+t_merror exec_piped_commands(t_exec_command *commands, t_length commands_count, t_vector *env);
+
 
 #endif
