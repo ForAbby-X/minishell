@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 00:28:11 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/22 00:28:19 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/22 02:20:19 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static int const redir_flag_table[] = {
 
 static int	get_redir_fd(t_redir *redir)
 {
-	printf("%i\n", redir_flag_table[redir->type]);
 	return (open(redir->path, redir_flag_table[redir->type], 0644));
 }
 
@@ -40,20 +39,20 @@ static t_merror apply_redir(t_redir *redir)
 {
 	int	fd;
 
-	printf("REDIRECT OUTPUT\n");
 	fd = get_redir_fd(redir);
 	if (fd == -1)
 		return (FAILURE);
 	if (redir->type == R_REDIR_IN | redir->type == R_HEREDOC)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
-			return (FAILURE);
+			return (close(fd), FAILURE);
 	}
 	else if (redir->type == R_REDIR_OUT | redir->type == R_APPEND)
 	{
 		if (dup2(fd, STDOUT_FILENO) == -1)
-			return (FAILURE);
+			return (close(fd), FAILURE);
 	}
+	close(fd);
 	return (SUCCESS);
 }
 

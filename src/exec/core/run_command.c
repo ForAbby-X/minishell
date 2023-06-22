@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 21:48:41 by olivier           #+#    #+#             */
-/*   Updated: 2023/06/22 01:25:33 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/22 02:13:25 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,29 @@ t_merror run_command(t_exec_command *command, t_vector *env)
 	return (FAILURE);
 }
 
-// t_merror spawn_command(t_exec_command *command, t_vector *env, int in_fd, int out_fd)
-// {
-// 	int cpid;
+t_merror spawn_command(t_exec_command *command, t_vector *env, int in_fd, int out_fd)
+{
+	int cpid;
 
-// 	cpid = fork();
-// 	if (cpid == -1)
-// 	{
-// 		//ERROR
-// 	}
-// 	if (cpid == 0)
-// 	{
-// 		close(in_fd);
-// 		close(out_fd);
-// 		return (SUCCESS);
-// 	}
-// 	else
-// 	{	
-// 		//child
-// 		dup2(in_fd, STDIN_FILENO);
-// 		dup2(out_fd, STDOUT_FILENO);
-// 		run_command(command, env);
-// 		//child failed to execute
-// 		//fd_in and fd_out are closed in run_command
-// 		return (CHILD_ERROR);
-// 	}
-// }
+	cpid = fork();
+	if (cpid == -1)
+	{
+		//ERROR
+	}
+	if (cpid == 0)
+	{
+		//child
+		dup2(in_fd, STDIN_FILENO);
+		dup2(out_fd, STDOUT_FILENO);
+		run_command(command, env);
+		//child failed to execute
+		//fd_in and fd_out are closed in run_command
+		return (CHILD_ERROR);
+	}
+	else
+	{	
+		close(in_fd);
+		close(out_fd);
+		return (SUCCESS);
+	}
+}

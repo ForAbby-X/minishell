@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/22 01:23:25 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/22 02:17:57 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,14 @@ t_exec_command fake_cmd()
 	vector_addback(&(cmd.redirs), &redir);
 
 	redir.path = ft_strdup("test2.txt");
+	redir.type = R_REDIR_IN;
+	vector_addback(&(cmd.redirs), &redir);
+	
+	redir.path = ft_strdup("test3.txt");
+	redir.type = R_APPEND;
+	vector_addback(&(cmd.redirs), &redir);
+
+	redir.path = ft_strdup("test4.txt");
 	redir.type = R_APPEND;
 	vector_addback(&(cmd.redirs), &redir);
 
@@ -180,9 +188,16 @@ int	main(
 	//tmp = ft_getenv(&minishell.env, "PATH");
 	//	free(tmp);
 
-	cmd = fake_cmd_not_exist();
+	cmd = fake_cmd();
 	exec_command_display(&cmd);
-	run_command(&cmd, &(minishell.env));
+	//run_command(&cmd, &(minishell.env));
+	if (spawn_command(&cmd, &(minishell.env), 0,1) == SUCCESS)
+	{
+		ft_putstr_fd("--WAIT--\n", 2);
+		wait(NULL);
+		ft_putstr_fd("--WAIT finished--\n", 2);
+	}
+	ft_putstr_fd("EXIT\n", 2);
 	exec_command_destroy(&cmd);
 	//vector_destroy(&tmp_args);
 	error = SUCCESS;

@@ -39,5 +39,7 @@ t_merror run_command(t_exec_command *command, t_vector *env);
 
 t_merror handle_redirs(t_vector *redirs);
 
+t_merror spawn_command(t_exec_command *command, t_vector *env, int in_fd, int out_fd);
+
 
 #endif
