@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 15:40:35 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/25 01:11:57 by alde-fre         ###   ########.fr       */
+/*   Created: 2022/09/21 20:13:51 by alde-fre          #+#    #+#             */
+/*   Updated: 2022/09/21 20:13:56 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 
-#ifndef ERROR_H
-# define ERROR_H
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	t_list	*end;
 
-# include <string.h>
-
-typedef enum e_merror {
-	SUCCESS,
-	FAILURE,
-	MEMORY_ERROR,
-	PARSING_ERROR,
-	CHILD_ERROR,
-}	t_merror;
-
-#endif
+	if (!(*lst))
+	{
+		*lst = new;
+		return ;
+	}
+	end = ft_lstlast(*lst);
+	end->next = new;
+}

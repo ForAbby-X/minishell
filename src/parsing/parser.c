@@ -6,57 +6,77 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 01:29:55 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/02 00:11:01 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/20 21:25:58 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-static inline t_merror	__set_cmd(
-	t_token *const last_token,
-	t_token *const token)
+static inline t_merror __remove_separators(t_vector *const tokens)
 {
-	if (last_token->type == PIPE
-		&& (token->type == WORD || token->type == SINGLE_QUOTED
-			|| token->type == DOUBLE_QUOTED))
-		token->type = CMD;
-	return (FAILURE);
-}
+	t_token *token;
+	t_length index;
 
-static inline t_merror	__rem_sep(
-	t_vector *const tokens,
-	t_token *const last_token,
-	t_token *const token,
-	t_length const index
-	)
-{
-	if (token->type == SEPARATOR
-		&& (last_token->type != WORD && last_token->type != SINGLE_QUOTED
-			&& last_token->type != DOUBLE_QUOTED))
+	index = 0;
+	while (index < vector_size(tokens))
 	{
-		token_destroy(token);
-		vector_erase(tokens, index);
-		return (FAILURE);
+		token = vector_get(tokens, index);
+		if (token->type == SEPARATOR)
+		{
+			token_destroy(token);
+			vector_erase(tokens, index);
+		}
+		else
+			index++;
 	}
 	return (SUCCESS);
 }
 
-t_merror	parser(t_vector *const tokens)
+static inline int __is_tok_expandable(t_token *const token)
 {
-	t_token		*last_token;
-	t_token		*token;
-	t_length	index;
+	return ((token->type == WORD || token->type == DOUBLE_QUOTED) && ft_strchr(token->data, '$'));
+}
+
+static inline t_merror __expand_all(t_vector *const tokens)
+{
+	t_token *token;
+	t_length index;
 
 	index = 0;
-	last_token = &(t_token){NULL, PIPE};
 	while (index < vector_size(tokens))
 	{
-		token = tokens_get(tokens, index);
-		if (__rem_sep(tokens, last_token, token, index))
-			continue ;
-		__set_cmd(last_token, token);
-		last_token = token;
+		token = vector_get(tokens, index);
+		if (__is_tok_expandable(token) && expand_token(tokens, &index, token))
+			return (FAILURE);
 		index++;
 	}
 	return (SUCCESS);
+}
+
+t_merror	parser(char const *const line, t_vector *const commands)
+{
+	t_vector	tokens;
+	t_merror	error;
+
+	tokens = vector_create(sizeof(t_token));
+	if (tokens.buffer == NULL)
+		return (MEMORY_ERROR);
+	error = lexer(line, &tokens);
+	if (error || __expand_all(&tokens) || merge_all_alpha(&tokens)
+		|| __remove_separators(&tokens))
+	{
+		if (error == PARSING_ERROR)
+			pars_error("[QUOTE]");
+		vector_for_each(&tokens, &token_destroy);
+		return (vector_destroy(&tokens), error);
+	}
+	error = check_tok_error(&tokens);
+	if (error)
+	{
+		vector_for_each(&tokens, &token_destroy);
+		return (vector_destroy(&tokens), error);
+	}
+	error |= (merge_redirs(&tokens) || split_to_commands(&tokens, commands));
+	vector_for_each(&tokens, &token_destroy);
+	return (vector_destroy(&tokens), error);
 }

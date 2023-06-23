@@ -4,7 +4,7 @@
 # include "vector.h"
 # include "error.h"
 # include "env.h"
-# include "redirs.h"
+# include "token.h"
 
 # include <unistd.h>
 # include <fcntl.h>
@@ -43,5 +43,6 @@ t_merror spawn_command(t_exec_command *command, t_vector *env, int in_fd, int ou
 
 t_merror exec_piped_commands(t_exec_command *commands, t_length commands_count, t_vector *env);
 
+t_merror exec_commands(t_vector *commands, t_vector *env);
 
 #endif

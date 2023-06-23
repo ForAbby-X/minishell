@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 15:40:35 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/25 01:11:57 by alde-fre         ###   ########.fr       */
+/*   Created: 2022/09/21 20:14:05 by alde-fre          #+#    #+#             */
+/*   Updated: 2022/09/21 20:14:07 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 
-#ifndef ERROR_H
-# define ERROR_H
+void	ft_lstclear(t_list **lst, void (*del)(void *))
+{
+	t_list	*test;
+	t_list	*new;
 
-# include <string.h>
-
-typedef enum e_merror {
-	SUCCESS,
-	FAILURE,
-	MEMORY_ERROR,
-	PARSING_ERROR,
-	CHILD_ERROR,
-}	t_merror;
-
-#endif
+	test = *lst;
+	while (test)
+	{
+		new = test->next;
+		ft_lstdelone(test, (*del));
+		test = new;
+	}
+	*lst = 0;
+}

@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 15:40:35 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/25 01:11:57 by alde-fre         ###   ########.fr       */
+/*   Created: 2022/09/21 20:15:00 by alde-fre          #+#    #+#             */
+/*   Updated: 2022/09/21 20:15:02 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 
-#ifndef ERROR_H
-# define ERROR_H
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*test;
 
-# include <string.h>
-
-typedef enum e_merror {
-	SUCCESS,
-	FAILURE,
-	MEMORY_ERROR,
-	PARSING_ERROR,
-	CHILD_ERROR,
-}	t_merror;
-
-#endif
+	test = malloc(sizeof(t_list));
+	if (!test)
+		return (NULL);
+	test->content = content;
+	test->next = NULL;
+	return (test);
+}

@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 15:40:35 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/05/25 01:11:57 by alde-fre         ###   ########.fr       */
+/*   Created: 2022/09/21 20:19:40 by alde-fre          #+#    #+#             */
+/*   Updated: 2022/09/21 20:19:42 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 
-#ifndef ERROR_H
-# define ERROR_H
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
+{
+	unsigned int	i;
 
-# include <string.h>
-
-typedef enum e_merror {
-	SUCCESS,
-	FAILURE,
-	MEMORY_ERROR,
-	PARSING_ERROR,
-	CHILD_ERROR,
-}	t_merror;
-
-#endif
+	if (!s || !f)
+		return ;
+	i = 0;
+	while (s[i])
+	{
+		f(i, s + i);
+		i++;
+	}
+}

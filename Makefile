@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/22 00:29:23 by olimarti         ###   ########.fr        #
+#    Updated: 2023/06/01 22:10:41 by alde-fre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,16 @@ OBJDIR	=	./obj
 # src / includes / obj files
 SRC		=	main.c \
 			token.c \
-			redirs.c \
+			command.c\
 			\
 			parsing/utils.c \
 			parsing/error.c \
 			parsing/lexer.c \
+			parsing/expand.c \
 			parsing/parser.c \
+			parsing/merge_tokens.c \
+			parsing/merge_redirs.c \
+			parsing/split_to_commands.c \
 			env/env_utils.c \
 			exec/path/get_command_path.c \
 			exec/path/path_utils.c \
@@ -40,6 +44,7 @@ INC		= 	minishell.h \
 			redirs.h \
 			parsing.h \
 			env.h \
+			command.h \
 
 OBJ		= 	$(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 
@@ -54,12 +59,12 @@ CFLAGS	= -MMD -MP -Wall -Wextra -g
 VECTOR		= ./c-vectorlib/
 VECTOR_LIB	= $(addprefix $(VECTOR),libvector.a)
 VECTOR_INC	= -I $(addprefix $(VECTOR),inc)
-VECTOR_LNK	= -l Xext -l X11 -L $(VECTOR) -l libvector -l m
+VECTOR_LNK	= -L $(VECTOR) -l libvector
 
 # libft library
 LIBFT		= ./libft/
 LIBFT_LIB	= $(addprefix $(LIBFT),libft.a)
-LIBFT_INC	= -I $(addprefix $(LIBFT),inc)
+LIBFT_INC	= -I $(LIBFT)
 LIBFT_LNK	= -l Xext -l X11 -L $(LIBFT) -l llibft -l m
 
 all: obj $(NAME)
@@ -74,8 +79,8 @@ debug: CFLAGS += -g3
 debug: obj $(NAME)
 
 obj:
-	@rm -rf .print
 	@mkdir -p $(OBJDIR)
+
 
 $(VECTOR_LIB):
 	make -C ./c-vectorlib
@@ -113,3 +118,5 @@ re: fclean all
 -include $(DEPENDS)
 
 .PHONY: all clean fclean re
+
+-include $(DEPENDS)

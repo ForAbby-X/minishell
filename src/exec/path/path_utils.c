@@ -12,6 +12,22 @@
 
 #include "exec.h"
 
+#include <unistd.h>
+
+//TODO put this functions in utils
+static int	ft_strcpy(char *dst, char *src)
+{
+	size_t	i;
+
+	i = 0;
+	while (src[i] != 0)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	return (i);
+}
+
 char	**parse_paths(char *path_str)
 {
 	char	**paths;

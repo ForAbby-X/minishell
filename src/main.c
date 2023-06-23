@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/22 05:35:57 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/20 17:48:59 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ static inline t_merror	__init_env(char **env, t_vector *const vector)
 			return (MEMORY_ERROR);
 		env++;
 	}
-	if (vector_addback(vector, env) == NULL)
-		return (MEMORY_ERROR);
+	vector_addback(vector, &(char *){0});
 	return (SUCCESS);
 }
 
@@ -31,16 +30,17 @@ static inline t_merror	__init_minishell(
 	char **argv,
 	char **env)
 {
-	minishell->tokens = vector_create(sizeof(t_token));
-	if (minishell->tokens.buffer == NULL)
+	minishell->commands = vector_create(sizeof(t_command));
+	if (minishell->commands.buffer == NULL)
 		return (MEMORY_ERROR);
+	vector_set_copy_method(&minishell->commands, &command_cpy);
 	minishell->argc = argc;
 	minishell->argv = argv;
 	minishell->env = vector_create(sizeof(char *));
 	if (minishell->env.buffer == NULL)
-		return (vector_destroy(&minishell->tokens), MEMORY_ERROR);
+		return (command_destroy(&minishell->commands), MEMORY_ERROR);
 	if (__init_env(env, &minishell->env))
-		return (vector_destroy(&minishell->tokens),
+		return (command_destroy(&minishell->commands),
 			vector_destroy(&minishell->env), MEMORY_ERROR);
 	return (SUCCESS);
 }
@@ -57,234 +57,40 @@ static inline t_merror	__launch_minishell(t_minishell *const minishell)
 		if (line && line[0])
 		{
 			add_history(line);
-			error = lexer(line, &minishell->tokens);
+			error = parser(line, &minishell->commands);
 			if (error == SUCCESS)
-				vector_for_each(&minishell->tokens, &token_display);
-			else if (error == PARSING_ERROR)
-				printf("PARSING ERROR\n");
+				vector_for_each(&minishell->commands, &command_display);
+		//	exec_piped_commands((t_command*)minishell->commands.data, minishell->commands.size, &(minishell->env));
+			error |= exec_commands(&(minishell->commands), &(minishell->env));
 		}
-		vector_for_each(&minishell->tokens, &token_destroy);
-		vector_clear(&minishell->tokens);
+		vector_for_each(&minishell->commands, &command_destroy);
+		vector_clear(&minishell->commands);
 		free(line);
 		if (line == NULL)
 			break ;
 	}
-	return (error);
+	return (SUCCESS);
 }
 
 static inline void	__destroy_minishell(t_minishell *const minishell)
 {
 	vector_destroy(&minishell->env);
-	vector_destroy(&minishell->tokens);
+	vector_for_each(&minishell->commands, &command_destroy);
+	vector_destroy(&minishell->commands);
 	rl_clear_history();
 }
-
-// int	main(
-// 	int argc,
-// 	char **argv,
-// 	char **env)
-// {
-// 	t_minishell	minishell;
-// 	t_merror	error;
-
-// 	if (!isatty(0) || __init_minishell(&minishell, argc, argv, env))
-// 		return (1);
-// 	error = __launch_minishell(&minishell);
-// 	if (error == SUCCESS)
-// 		__destroy_minishell(&minishell);
-// 	return (error);
-// }
-
-
-t_exec_command fake_cmd()
-{
-	t_exec_command cmd;
-	char *tmp;
-	t_redir redir;
-
-	exec_command_init(&cmd);
-	// tmp = ft_strdup("ls");
-	// vector_addback(&(cmd.args), &tmp);
-	// tmp = ft_strdup("-l");
-	// vector_addback(&(cmd.args), &tmp);
-	// tmp = ft_strdup("-a");
-	// vector_addback(&(cmd.args), &tmp);
-	// tmp = NULL;
-	// vector_addback(&(cmd.args), &tmp);
-	tmp = ft_strdup("cat");
-	vector_addback(&(cmd.args), &tmp);
-	tmp = ft_strdup("-e");
-	vector_addback(&(cmd.args), &tmp);
-	tmp = NULL;
-	vector_addback(&(cmd.args), &tmp);
-	
-	redir.path = ft_strdup("test.txt");
-	redir.type = R_REDIR_IN;
-	vector_addback(&(cmd.redirs), &redir);
-
-	// redir.path = ft_strdup("test2.txt");
-	// redir.type = R_REDIR_IN;
-	// vector_addback(&(cmd.redirs), &redir);
-	
-	// redir.path = ft_strdup("test3.txt");
-	// redir.type = R_APPEND;
-	// vector_addback(&(cmd.redirs), &redir);
-
-	// redir.path = ft_strdup("test4.txt");
-	// redir.type = R_APPEND;
-	// vector_addback(&(cmd.redirs), &redir);
-
-	exec_command_display(&cmd);
-	return (cmd);
-}
-
-
-t_exec_command fake_cmd2()
-{
-	t_exec_command cmd;
-	char *tmp;
-	t_redir redir;
-
-	exec_command_init(&cmd);
-	// tmp = ft_strdup("ls");
-	// vector_addback(&(cmd.args), &tmp);
-	// tmp = ft_strdup("-l");
-	// vector_addback(&(cmd.args), &tmp);
-	// tmp = ft_strdup("-a");
-	// vector_addback(&(cmd.args), &tmp);
-	// tmp = NULL;
-	// vector_addback(&(cmd.args), &tmp);
-	tmp = ft_strdup("rev");
-	vector_addback(&(cmd.args), &tmp);
-	// tmp = ft_strdup("-e");
-	// vector_addback(&(cmd.args), &tmp);
-	tmp = NULL;
-	vector_addback(&(cmd.args), &tmp);
-	
-	// redir.path = ft_strdup("test.txt");
-	// redir.type = R_REDIR_IN;
-	// vector_addback(&(cmd.redirs), &redir);
-
-	// redir.path = ft_strdup("test2.txt");
-	// redir.type = R_REDIR_IN;
-	// vector_addback(&(cmd.redirs), &redir);
-	
-	// redir.path = ft_strdup("test3.txt");
-	// redir.type = R_APPEND;
-	// vector_addback(&(cmd.redirs), &redir);
-
-	// redir.path = ft_strdup("test4.txt");
-	// redir.type = R_APPEND;
-	// vector_addback(&(cmd.redirs), &redir);
-
-	exec_command_display(&cmd);
-	return (cmd);
-}
-
-
-t_exec_command fake_cmd_not_exist()
-{
-	t_exec_command cmd;
-	char *tmp;
-	t_redir redir;
-
-	exec_command_init(&cmd);
-	// tmp = ft_strdup("ls");
-	// vector_addback(&(cmd.args), &tmp);
-	// tmp = ft_strdup("-l");
-	// vector_addback(&(cmd.args), &tmp);
-	// tmp = ft_strdup("-a");
-	// vector_addback(&(cmd.args), &tmp);
-	// tmp = NULL;
-	// vector_addback(&(cmd.args), &tmp);
-	tmp = ft_strdup("cot");
-	vector_addback(&(cmd.args), &tmp);
-	tmp = ft_strdup("-e");
-	vector_addback(&(cmd.args), &tmp);
-	tmp = NULL;
-	vector_addback(&(cmd.args), &tmp);
-	
-	// redir.path = ft_strdup("test.txt");
-	// redir.type = R_REDIR_IN;
-	// vector_addback(&(cmd.redirs), &redir);
-
-	// redir.path = ft_strdup("test2.txt");
-	// redir.type = R_APPEND;
-	// vector_addback(&(cmd.redirs), &redir);
-
-	exec_command_display(&cmd);
-	return (cmd);
-}
-
-
-// int	main(
-// 	int argc,
-// 	char **argv,
-// 	char **env)
-// {
-// 	t_minishell		minishell;
-// 	t_merror		error;
-// 	t_exec_command	cmd;
-	
-// 	if (!isatty(0) || __init_minishell(&minishell, argc, argv, env))
-// 		return (1);
-// 	// error = __launch_minishell(&minishell);
-// 	//tmp = ft_getenv(&minishell.env, "PATH");
-// 	//	free(tmp);
-
-// 	cmd = fake_cmd();
-// 	exec_command_display(&cmd);
-// 	//run_command(&cmd, &(minishell.env));
-// 	if (spawn_command(&cmd, &(minishell.env), 0,1) == SUCCESS)
-// 	{
-// 		ft_putstr_fd("--WAIT--\n", 2);
-// 		wait(NULL);
-// 		ft_putstr_fd("--WAIT finished--\n", 2);
-// 	}
-// 	ft_putstr_fd("EXIT\n", 2);
-// 	exec_command_destroy(&cmd);
-// 	//vector_destroy(&tmp_args);
-// 	error = SUCCESS;
-// 	if (error == SUCCESS)
-// 		__destroy_minishell(&minishell);
-// 	return (error);
-// }
-
-
 
 int	main(
 	int argc,
 	char **argv,
 	char **env)
 {
-	t_minishell		minishell;
-	t_merror		error;
-	t_exec_command	cmd;
-	t_exec_command	cmd2;
-	t_vector		cmds;
+	t_minishell	minishell;
+	t_merror	error;
 
-	if (!isatty(0) || __init_minishell(&minishell, argc, argv, env))
+	if (!isatty(STDIN_FILENO) || __init_minishell(&minishell, argc, argv, env))
 		return (1);
-	// error = __launch_minishell(&minishell);
-	//tmp = ft_getenv(&minishell.env, "PATH");
-	//	free(tmp);
-
-	cmds = vector_create(sizeof(t_exec_command));
-	cmd = fake_cmd();
-	vector_addback(&cmds, &cmd);
-	exec_command_display(&cmd);
-	cmd2 = fake_cmd2();
-	vector_addback(&cmds, &cmd2);
-	exec_command_display(&cmd2);
-	//run_command(&cmd, &(minishell.env));
-	exec_piped_commands(cmds.data, cmds.size, &(minishell.env));
-	ft_putstr_fd("EXIT\n", 2);
-	// exec_command_destroy(&cmd);
-	// exec_command_destroy(&cmd2);
-	vector_destroy(&cmds);
-	error = SUCCESS;
-	if (error == SUCCESS)
-		__destroy_minishell(&minishell);
+	error = __launch_minishell(&minishell);
+	__destroy_minishell(&minishell);
 	return (error);
 }
-

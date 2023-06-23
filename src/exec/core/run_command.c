@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "exec.h"
+#include "command.h"
 
 t_merror		run_command_error(t_exec_command *command, char *const str)
 {
@@ -58,7 +59,11 @@ t_merror spawn_command(t_exec_command *command, t_vector *env, int in_fd, int ou
 	}
 	else
 	{	
-		return (close(in_fd), close(out_fd), SUCCESS);
+		if (in_fd != STDIN_FILENO)
+			close(in_fd);
+		if (out_fd != STDOUT_FILENO)
+			close(out_fd);
+		return (SUCCESS); //close(out_fd)
 	}
 }
 
@@ -111,7 +116,8 @@ static void apply_pipe_redirect(int cpid, int prev_pipe_rd, int pipefd[2])
 	}
 	else
 	{	
-		close(prev_pipe_rd);
+		if (prev_pipe_rd != STDIN_FILENO)
+			close(prev_pipe_rd);
 		close(pipefd[1]);
 	}
 }
@@ -140,7 +146,6 @@ t_merror exec_piped_commands(t_exec_command *commands, t_length commands_count, 
 	
 	prev_pipe_rd = STDIN_FILENO;
 	i = 0;
-
 	while (i < commands_count - 1)
 	{
 		if (pipe(pipefd) == -1)
@@ -160,6 +165,81 @@ t_merror exec_piped_commands(t_exec_command *commands, t_length commands_count, 
 	return(SUCCESS);
 }
 
+
+t_merror command_to_exec_cmd(t_command *const command, t_exec_command *exec_cmd)
+{
+	t_length	i;
+	char	 	*tmp;
+
+	exec_command_display(command);
+	i = 0;
+	if (exec_command_init(exec_cmd) != SUCCESS)
+		return (MEMORY_ERROR);
+	if (vector_reserve(&(exec_cmd->redirs), command->redirs.size) != 0)
+		return (exec_command_destroy(exec_cmd), MEMORY_ERROR);
+	vector_copy(&(exec_cmd->redirs), &(command->redirs));
+	if (vector_reserve(&(exec_cmd->args), command->tokens.size) != 0)
+		return (exec_command_destroy(exec_cmd), MEMORY_ERROR);	
+	while (i < command->tokens.size)
+	{
+		tmp = ft_strdup(((t_token *)vector_get(&(command->tokens), i))->data);
+		if (tmp == NULL || vector_addback(&(exec_cmd->args), &tmp) == NULL)
+		{
+			free(tmp);
+			exec_command_destroy(exec_cmd);
+			return (MEMORY_ERROR);
+		}
+		i++;
+	}
+	vector_addback(&(exec_cmd->args), &(char *){0});
+	return (SUCCESS);	
+}
+
+t_merror convert_vect_commands(t_vector *const commands, t_vector *exec_cmds)
+{
+	t_length i;
+	t_exec_command tmp_cmd;
+
+	*exec_cmds = vector_create(sizeof(t_exec_command));
+	i = 0;
+	while (i < commands->size)
+	{
+		if (command_to_exec_cmd(vector_get(commands, i), &tmp_cmd) != SUCCESS)
+			return (vector_destroy(exec_cmds), MEMORY_ERROR);
+		if (vector_addback(exec_cmds, &tmp_cmd) == NULL)
+			return (exec_command_destroy(&tmp_cmd), vector_destroy(exec_cmds), MEMORY_ERROR);
+		i++;
+	}
+	return (SUCCESS);
+}
+
+
+// t_merror add_null_args(t_vector *const commands)
+// {
+// 	t_length i;
+
+// 	i = 0;
+// 	while (i < commands->size)
+// 	{
+// 		vector_addback(&(((t_command*)vector_get(commands, i))->tokens), &(char *){0});
+// 		i++;
+// 	}
+// 	return (SUCCESS);
+// }
+
+t_merror exec_commands(t_vector *commands, t_vector *env)
+{
+	t_vector	converted_cmd;
+	t_merror	result;
+
+	if (convert_vect_commands(commands, &converted_cmd) != SUCCESS)
+		return (MEMORY_ERROR);
+	result = exec_piped_commands((t_exec_command*)(converted_cmd.data), commands->size, env);
+	vector_for_each(&converted_cmd, exec_command_destroy);
+	vector_destroy(&converted_cmd);
+	return (result);
+	
+}
 
 
 // t_merror exec_piped_commands(t_exec_command *commands, int commands_count, t_vector *env)

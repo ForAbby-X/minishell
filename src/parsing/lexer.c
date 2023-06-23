@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:08 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/22 00:02:36 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/20 17:58:56 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@ typedef struct s_op
 }	t_op;
 
 static t_op const	g_op_list[] = {
-{"<<<", 3, 0},
-{">>>", 3, 0},
 {"<<", 2, HEREDOC},
 {">>", 2, APPEND},
-{">", 1, OUT},
 {"<", 1, IN},
+{">", 1, OUT},
 {"|", 1, PIPE},
 {NULL, 0, 0}
 };
@@ -43,7 +41,7 @@ static inline t_merror	__lexer_separator(
 		return (SUCCESS);
 	token.type = SEPARATOR;
 	token.data = NULL;
-	if (tokens_add(tokens, &token) == NULL)
+	if (vector_addback(tokens, &token) == NULL)
 		return (MEMORY_ERROR);
 	return (SUCCESS);
 }
@@ -69,7 +67,7 @@ static inline t_merror	__lexer_quotes(
 		token.data[*index - start_i] = '\0';
 		token.type = SINGLE_QUOTED + (char_type == '"');
 		(*index)++;
-		if (tokens_add(tokens, &token) == NULL)
+		if (vector_addback(tokens, &token) == NULL)
 			return (free(token.data), MEMORY_ERROR);
 		return (SUCCESS);
 	}
@@ -93,7 +91,7 @@ static inline t_merror	__lexer_word(
 	_vec_memcpy(token.data, (void *)line + start_i, *index - start_i);
 	token.data[*index - start_i] = '\0';
 	token.type = WORD;
-	if (tokens_add(tokens, &token) == NULL)
+	if (vector_addback(tokens, &token) == NULL)
 		return (free(token.data), MEMORY_ERROR);
 	return (SUCCESS);
 }
@@ -110,14 +108,12 @@ static inline t_merror	__lexer_operator(
 	while (g_op_list[i].op
 		&& ft_strncmp(line + *index, g_op_list[i].op, g_op_list[i].size))
 		i++;
-	if (i == 0 || i == 1)
-		return (PARSING_ERROR);
 	token.data = malloc(g_op_list[i].size + 1);
 	if (token.data == NULL)
 		return (MEMORY_ERROR);
 	_vec_memcpy(token.data, g_op_list[i].op, g_op_list[i].size + 1);
 	token.type = g_op_list[i].type;
-	if (tokens_add(tokens, &token) == NULL)
+	if (vector_addback(tokens, &token) == NULL)
 		return (free(token.data), MEMORY_ERROR);
 	(*index) += g_op_list[i].size;
 	return (SUCCESS);
@@ -129,6 +125,7 @@ t_merror	lexer(char const *const line, t_vector *const tokens)
 	t_merror	error;
 
 	index = 0;
+	error = SUCCESS;
 	while (line[index])
 	{
 		if (is_separator(line[index]))
@@ -142,5 +139,5 @@ t_merror	lexer(char const *const line, t_vector *const tokens)
 		if (error)
 			return (error);
 	}
-	return (parser(tokens));
+	return (error);
 }
