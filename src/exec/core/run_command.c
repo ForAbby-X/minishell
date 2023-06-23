@@ -24,8 +24,8 @@ t_merror		run_command_error(t_exec_command *command, char *const str)
 t_merror run_command(t_exec_command *command, t_vector *env)
 {
 	int err;
-	fprintf(stderr, "RUN COMMAND %s\n", *(char **)vector_get(&(command->args), 0));
-	handle_redirs(&(command->redirs));
+	if (handle_redirs(&(command->redirs)) != SUCCESS)
+		return (FAILURE);
 	err = ft_execvpe(*(char **)vector_get(&(command->args), 0), &(command->args), env);
 	if (err == -2)
 		run_command_error(command, "command not found");
