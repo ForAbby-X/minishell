@@ -37,6 +37,7 @@ SRC		=	main.c \
 			exec/exec/args.c \
 			exec/exec/exec_command.c \
 			exec/core/run_command.c \
+			exec/core/interface.c \
 			exec/redirs/redirs.c \
 
 INC		= 	minishell.h \
