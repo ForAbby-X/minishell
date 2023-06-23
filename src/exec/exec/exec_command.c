@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_command.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/24 00:59:11 by olimarti          #+#    #+#             */
+/*   Updated: 2023/06/24 00:59:32 by olimarti         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "exec.h"
 
 void	exec_command_display(void *const object)
@@ -5,12 +17,11 @@ void	exec_command_display(void *const object)
 	t_exec_command *const	command = object;
 
 	printf("--Command--\nargs: ");
-	vector_for_each(&command->args, &arg_display); //TODO use custom function
+	vector_for_each(&command->args, &arg_display);
 	printf("\nredirs : ");
 	printf("REDIRS COUNT : %i\n", command->redirs.size);
 	vector_for_each(&command->redirs, &token_display);
 	printf("\n");
-
 }
 
 t_merror	exec_command_init(t_exec_command *const command)

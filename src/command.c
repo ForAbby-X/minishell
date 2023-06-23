@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 11:24:54 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/20 17:52:24 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/24 00:39:10 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	command_display(void *const object)
 	printf("\nredirs : ");
 	vector_for_each(&command->redirs, &token_display);
 	printf("\n");
-
 }
 
 t_merror	command_init(t_command *const command)

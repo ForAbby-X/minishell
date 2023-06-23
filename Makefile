@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/01 22:10:41 by alde-fre         ###   ########.fr        #
+#    Updated: 2023/06/24 01:08:02 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRC		=	main.c \
 			exec/exec/args.c \
 			exec/exec/exec_command.c \
 			exec/core/run_command.c \
+			exec/core/spawn_commands.c \
 			exec/core/interface.c \
 			exec/redirs/redirs.c \
 

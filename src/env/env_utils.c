@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:25:45 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/22 04:38:53 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/24 01:00:23 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 char	*ft_getenv(t_vector *const env, const char *name)
 {
 	t_length	i;
-	int				name_len;
-	char			*current;
+	int			name_len;
+	char		*current;
 
 	i = 0;
 	name_len = ft_strlen(name);
@@ -29,7 +29,6 @@ char	*ft_getenv(t_vector *const env, const char *name)
 	}
 	return (NULL);
 }
-
 
 char	**env_add(t_vector *const vector, char	*const obj)
 {

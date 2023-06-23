@@ -6,15 +6,21 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 00:28:11 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/22 05:00:25 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/24 00:57:28 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "exec.h"
+#include "parsing.h"
 
+static int const	g_redir_flag_table[] = {
+[IN] = O_RDONLY,
+[OUT] = O_WRONLY | O_CREAT | O_TRUNC,
+[APPEND] = O_WRONLY | O_CREAT | O_APPEND,
+[HEREDOC] = 0,
+};
 
-t_merror		redir_error(t_token *redir, char *const str)
+static t_merror	redir_error(t_token *redir, char *const str)
 {
 	ft_putstr_fd(redir->data, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
@@ -23,19 +29,12 @@ t_merror		redir_error(t_token *redir, char *const str)
 	return (FAILURE);
 }
 
-static int const redir_flag_table[] = {
-   [IN] = O_RDONLY,
-   [OUT] = O_WRONLY | O_CREAT | O_TRUNC,
-   [APPEND] = O_WRONLY | O_CREAT | O_APPEND,
-   [HEREDOC] = 0,
-};
-
 static int	get_token_fd(t_token *redir)
 {
-	return (open(redir->data, redir_flag_table[redir->type], 0644));
+	return (open(redir->data, g_redir_flag_table[redir->type], 0644));
 }
 
-static t_merror apply_redir(t_token *redir)
+static t_merror	apply_redir(t_token *redir)
 {
 	int	fd;
 
@@ -58,9 +57,9 @@ static t_merror apply_redir(t_token *redir)
 	return (SUCCESS);
 }
 
-t_merror handle_redirs(t_vector *redirs)
+t_merror	handle_redirs(t_vector *redirs)
 {
-	t_length index;
+	t_length	index;
 
 	index = 0;
 	while (index < redirs->size)

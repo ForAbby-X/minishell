@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 13:45:19 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/22 01:22:15 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/24 00:40:39 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static void	free_str_lst(char ***str_lst)
 		*str_lst = NULL;
 	}
 }
-
 
 static char	*search_file_path(char *file, char **path_list)
 {
