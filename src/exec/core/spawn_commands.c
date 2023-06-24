@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 01:07:22 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 01:08:08 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/24 02:08:03 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,6 @@ static void	apply_pipe_redirect(int cpid, int prev_pipe_rd, int pipefd[2])
 			close(prev_pipe_rd);
 		close(pipefd[1]);
 	}
-}
-
-void	set_exit_code(int exit_code)
-{
-	fprintf(stderr, "EXIT STATUS : %i\n", exit_code);
 }
 
 int	wait_childs(t_length childs_count, pid_t watch_cpid)

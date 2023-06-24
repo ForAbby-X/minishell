@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/24 01:08:02 by olimarti         ###   ########.fr        #
+#    Updated: 2023/06/24 02:03:29 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ OBJDIR	=	./obj
 SRC		=	main.c \
 			token.c \
 			command.c\
+			error.c\
 			\
 			parsing/utils.c \
 			parsing/error.c \

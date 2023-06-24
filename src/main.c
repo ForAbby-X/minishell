@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/24 00:39:24 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/24 02:06:09 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,5 @@ int	main(
 		return (1);
 	error = __launch_minishell(&minishell);
 	__destroy_minishell(&minishell);
-	return (error);
+	return (get_exit_code());
 }

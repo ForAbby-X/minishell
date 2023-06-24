@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 15:40:35 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/24 02:07:01 by olimarti         ###   ########.fr       */
+/*   Created: 2023/06/24 01:26:00 by olimarti          #+#    #+#             */
+/*   Updated: 2023/06/24 02:07:31 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_H
-# define ERROR_H
+#include "error.h"
 
-# include <string.h>
-# include <stdio.h>
+int	g_exit_code = 0;
 
-typedef enum e_merror {
-	SUCCESS,
-	FAILURE,
-	MEMORY_ERROR,
-	PARSING_ERROR,
-	CHILD_ERROR,
-}	t_merror;
+void	set_exit_code(int exit_code)
+{
+	fprintf(stderr, "EXIT STATUS : %i\n", exit_code);
+	g_exit_code = exit_code;
+}
 
-void	set_exit_code(int exit_code);
-int		get_exit_code(void);
-
-#endif
+int	get_exit_code(void)
+{
+	return (g_exit_code);
+}
