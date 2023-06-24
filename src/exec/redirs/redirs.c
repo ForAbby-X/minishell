@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 00:28:11 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 00:57:28 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/24 02:16:57 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static t_merror	redir_error(t_token *redir, char *const str)
 	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("\n", STDERR_FILENO);
+	set_exit_code(1);
 	return (FAILURE);
 }
 
