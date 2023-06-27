@@ -6,14 +6,12 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:56:09 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/26 06:45:20 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/27 13:03:41 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "heredoc.h"
 #include "exec.h"
-
-
 
 static t_merror	open_heredocs_command(t_vector *redirs, t_vector *heredocs)
 {
@@ -41,7 +39,6 @@ static t_merror	open_heredocs_command(t_vector *redirs, t_vector *heredocs)
 	}
 	return (error);
 }
-
 
 static t_merror	open_heredocs(t_vector *commands, t_vector	*heredocs)
 {

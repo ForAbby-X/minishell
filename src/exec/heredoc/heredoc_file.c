@@ -6,25 +6,11 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 23:19:12 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/26 05:35:58 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/27 13:15:22 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "heredoc.h"
-
-//custom strcpy that return lenght
-static int	ft_strcpy(char *dst, char *src)
-{
-	size_t	i;
-
-	i = 0;
-	while (src[i] != 0)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	return (i);
-}
 
 static char	*name_gen(char *directory, char *basename, int nb)
 {
@@ -38,11 +24,11 @@ static char	*name_gen(char *directory, char *basename, int nb)
 		return (NULL);
 	result = malloc(sizeof(char) * (ft_strlen(directory) + ft_strlen(basename)
 				+ ft_strlen(nb_alpha) + 2));
-	i = ft_strcpy(result + i, directory);
+	i = ft_strcpyl(result + i, directory);
 	result[i] = '/';
 	i++;
-	i += ft_strcpy(result + i, basename);
-	i += ft_strcpy(result + i, nb_alpha);
+	i += ft_strcpyl(result + i, basename);
+	i += ft_strcpyl(result + i, nb_alpha);
 	result[i] = '\0';
 	free(nb_alpha);
 	return (result);
