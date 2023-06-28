@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/20 21:20:48 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/28 21:18:18 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ static inline t_merror	__expand_var_quoted(
 	t_token	token;
 
 	token.type = WORD;
-	token.data = ft_strdup(var);
+	if (var)
+		token.data = ft_strdup(var);
+	else
+		token.data = ft_strdup("");
 	if (token.data == NULL)
 		return (MEMORY_ERROR);
 	vector_insert(tokens, &token, *index);
@@ -104,12 +107,15 @@ static inline t_merror	__expand_var(
 	start = ptr;
 	while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
 		ptr++;
-	tmp = *ptr;
-	*ptr = '\0';
+	tmp = *(ptr + (ptr == start));
+	*(ptr + (ptr == start)) = '\0';
+	if (ptr == start)
+		return (*str += 2, __expand_var_quoted(tokens, index, start - 1),
+			*(ptr + 1) = tmp, SUCCESS);
 	var = getenv(start); // REPLACE WITH CUSTOM GETENV
 	*ptr = tmp;
 	*str = ptr;
-	if (var == NULL)
+	if (var == NULL && token->type == WORD)
 		return (SUCCESS);
 	if (token->type == WORD)
 		return (__expand_var_word(tokens, index, var));

@@ -6,7 +6,7 @@
 #    By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/20 17:58:17 by alde-fre         ###   ########.fr        #
+#    Updated: 2023/06/28 18:15:39 by alde-fre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ OBJDIR	=	./obj
 SRC		=	main.c \
 			token.c \
 			command.c\
+			word.c \
 			\
 			parsing/utils.c \
 			parsing/error.c \
@@ -33,6 +34,7 @@ SRC		=	main.c \
 
 INC		= 	minishell.h \
 			token.h \
+			word.h \
 			redirs.h \
 			parsing.h \
 			command.h \

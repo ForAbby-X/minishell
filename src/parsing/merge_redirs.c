@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:27:15 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/20 17:26:23 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:02:05 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_merror	merge_redirs(t_vector *const tokens)
 		if (is_tok_operator(last_token)
 			&& last_token->type != PIPE && is_tok_alpha(token))
 		{
+			if (last_token->type == HEREDOC && token->type != WORD)
+				last_token->type = HEREDOC_NO_EXPAND;
 			free(last_token->data);
 			last_token->data = ft_strdup(token->data);
 			token_destroy(vector_erase(tokens, index));

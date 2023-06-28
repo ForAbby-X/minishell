@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:31 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/20 15:55:40 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:19:05 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,3 @@ t_merror	merge_redirs(t_vector *const tokens);
 t_merror	split_to_commands(t_vector *const tokens, t_vector *const commands);
 
 #endif
-
-//CECI | EST | UN | TEST | OUI NON

@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 02:26:36 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/20 20:08:49 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:03:08 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static char const *const	g_type_write[] = {
 	"DOUBLE_QUOTED",
 	"SEPARATOR",
 	"HEREDOC",
+	"HEREDOC_NO_EXPAND",
 	"APPEND",
 	"IN",
 	"OUT",
@@ -33,6 +34,7 @@ typedef enum e_type_token {
 	DOUBLE_QUOTED,
 	SEPARATOR,
 	HEREDOC,
+	HEREDOC_NO_EXPAND,
 	APPEND,
 	IN,
 	OUT,
