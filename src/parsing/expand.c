@@ -6,11 +6,12 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/28 21:18:18 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/29 11:03:51 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include "environement.h"
 
 static inline t_merror	__expand_var_word(
 	t_vector *const tokens,
@@ -90,7 +91,8 @@ static inline t_merror	__expand_var(
 	t_vector *const tokens,
 	t_length *const index,
 	t_token *const token,
-	char **const str)
+	char **const str,
+	t_vector const *const env)
 {
 	char	*ptr;
 	char	*start;
@@ -102,24 +104,21 @@ static inline t_merror	__expand_var(
 		return (*str += 2, __expand_var_quoted(tokens, index, "PROCESS_PID"));
 	if (*ptr == '?')
 		return (*str += 2, __expand_var_quoted(tokens, index, "ERROR_CODE"));
-	if (ft_isdigit(*ptr))
-		return (*str += 2, SUCCESS);
+	if (ft_isdigit(*ptr) || !(ft_isalnum(*ptr) || *ptr == '_'))
+		return (*str += 2, tmp = *(ptr + 1), *(ptr + 1) = 0,
+			__expand_var_quoted(tokens, index, ptr - 1), *(ptr + 1) = tmp, 0);
 	start = ptr;
 	while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
 		ptr++;
-	tmp = *(ptr + (ptr == start));
-	*(ptr + (ptr == start)) = '\0';
-	if (ptr == start)
-		return (*str += 2, __expand_var_quoted(tokens, index, start - 1),
-			*(ptr + 1) = tmp, SUCCESS);
-	var = getenv(start); // REPLACE WITH CUSTOM GETENV
+	tmp = *ptr;
+	*ptr = '\0';
+	var = ft_get_env(start); // REPLACE WITH CUSTOM GETENV
 	*ptr = tmp;
-	*str = ptr;
 	if (var == NULL && token->type == WORD)
-		return (SUCCESS);
+		return (*str = ptr, SUCCESS);
 	if (token->type == WORD)
-		return (__expand_var_word(tokens, index, var));
-	return (__expand_var_quoted(tokens, index, var));
+		return (*str = ptr, __expand_var_word(tokens, index, var));
+	return (*str = ptr, __expand_var_quoted(tokens, index, var));
 }
 
 t_merror	expand_token(

@@ -6,7 +6,7 @@
 #    By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/28 18:15:39 by alde-fre         ###   ########.fr        #
+#    Updated: 2023/06/29 10:30:56 by alde-fre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,8 @@ SRC		=	main.c \
 			token.c \
 			command.c\
 			word.c \
+			 \
+			environement/ft_get_env.c \
 			\
 			parsing/utils.c \
 			parsing/error.c \
@@ -44,7 +46,7 @@ OBJ		= 	$(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
 
 # compiler
-CC		= cc
+CC		= clang
 CFLAGS	= -MMD -MP -Wall -Wextra -Werror
 
 # vector library
