@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 01:07:22 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/28 20:31:46 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:19:49 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ int	wait_childs(t_length childs_count, pid_t watch_cpid)
 		i ++;
 		fprintf(stderr,"END WAIT\n");
 	}
-	set_exit_code(WEXITSTATUS(watch_status));
+	if (WIFSIGNALED(watch_status))
+		set_exit_code(128 + WTERMSIG(watch_status));
+	else
+		set_exit_code(WEXITSTATUS(watch_status));
 	return (watch_status);
 }
 
