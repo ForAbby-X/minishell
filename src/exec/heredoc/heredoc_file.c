@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 23:19:12 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/27 13:15:22 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/28 19:06:07 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,10 @@ static int	read_write(char *limiter, int in_fd, int out_fd)
 	int		limiter_len;
 
 	ft_putstr_fd("heredoc>", 0);
+	errno = 0;
 	line = get_next_line(in_fd);
 	limiter_len = ft_strlen(limiter);
-	while (line != 0 && (ft_strncmp(limiter, line, limiter_len) != 0
+	while (line != 0 && !errno && (ft_strncmp(limiter, line, limiter_len) != 0
 			|| line[limiter_len] != '\n'))
 	{
 		ft_putstr_fd("heredoc>", 0);
@@ -93,6 +94,8 @@ static int	read_write(char *limiter, int in_fd, int out_fd)
 		line = get_next_line(in_fd);
 	}
 	free(line);
+	if (errno != 0)
+		return (-1);
 	return (0);
 }
 
@@ -108,6 +111,9 @@ t_merror	heredoc_file(char *limiter, char **filename)
 	if (read_write(limiter, STDIN_FILENO, fd) != 0)
 	{
 		close(fd);
+		unlink(*filename);
+		free(*filename);
+		*filename = NULL;
 		return (FAILURE);
 	}
 	close(fd);

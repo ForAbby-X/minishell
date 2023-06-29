@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/27 13:15:05 by olimarti         ###   ########.fr        #
+#    Updated: 2023/06/29 15:03:27 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,8 @@ SRC		=	main.c \
 			exec/heredoc/heredoc_file.c \
 			exec/heredoc/heredoc.c \
 			utils/string.c \
+			signals/signals.c \
+			signals/handlers.c \
 
 INC		= 	minishell.h \
 			token.h \
