@@ -6,11 +6,12 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 01:07:22 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 02:08:03 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:19:49 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+#include "signal_handlers.h"
 
 t_merror	spawn_last_command(t_exec_command *command, t_vector *env,
 	int in_fd, pid_t *cpid)
@@ -77,8 +78,12 @@ int	wait_childs(t_length childs_count, pid_t watch_cpid)
 			watch_status = wstatus;
 		}
 		i ++;
+		fprintf(stderr,"END WAIT\n");
 	}
-	set_exit_code(WEXITSTATUS(watch_status));
+	if (WIFSIGNALED(watch_status))
+		set_exit_code(128 + WTERMSIG(watch_status));
+	else
+		set_exit_code(WEXITSTATUS(watch_status));
 	return (watch_status);
 }
 

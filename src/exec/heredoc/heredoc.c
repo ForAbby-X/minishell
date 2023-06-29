@@ -6,12 +6,13 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:56:09 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/27 13:03:41 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:05:29 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "heredoc.h"
 #include "exec.h"
+#include "signal_handlers.h"
 
 static t_merror	open_heredocs_command(t_vector *redirs, t_vector *heredocs)
 {
@@ -73,9 +74,13 @@ t_merror	exec_heredocs_layer(t_vector *commands, t_vector *env)
 	heredocs = vector_create(sizeof(char *));
 	if (heredocs.buffer == NULL)
 		return (MEMORY_ERROR);
+	set_hd_signal_handlers();
 	error = open_heredocs(commands, &heredocs);
 	if (error == 0)
+	{
+		set_ignore_signal_handlers();
 		error = exec_piped_commands(commands->data, commands->size, env);
+	}
 	exec_command_display(commands->data);
 	vector_for_each(&heredocs, (void (*)(t_object))delete_hd);
 	vector_destroy(&heredocs);

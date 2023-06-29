@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 01:26:00 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/29 15:09:06 by olimarti         ###   ########.fr       */
+/*   Created: 2023/06/29 14:58:39 by olimarti          #+#    #+#             */
+/*   Updated: 2023/06/29 15:18:33 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error.h"
+#include "signal_handlers.h"
 
-int	g_exit_code = 0;
-
-void	set_exit_code(int exit_code)
+void	prompt_on_sigint(int sig)
 {
-	fprintf(stderr, "\nEXIT STATUS : %i\n", exit_code);
-	g_exit_code = exit_code;
+	(void) sig;
+
+	ft_putchar_fd('\n', STDIN_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	set_exit_code(128 + sig);
 }
 
-int	get_exit_code(void)
+void	hd_on_sigint(int sig)
 {
-	return (g_exit_code);
+	(void) sig;
+
+	set_exit_code(128 + sig);
 }
