@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 00:59:11 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 00:59:32 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/27 13:08:32 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	exec_command_destroy(void *const object)
 
 	vector_for_each(&command->args, &arg_destroy);
 	vector_destroy(&command->args);
-	vector_for_each(&command->redirs, &token_display);
+	vector_for_each(&command->redirs, &token_destroy);
 	vector_destroy(&command->redirs);
 }
 
@@ -62,6 +62,6 @@ void	exec_command_clear(void *const object)
 
 	vector_for_each(&command->args, &arg_destroy);
 	vector_clear(&command->args);
-	vector_for_each(&command->redirs, &token_display);
+	vector_for_each(&command->redirs, &token_destroy);
 	vector_clear(&command->redirs);
 }

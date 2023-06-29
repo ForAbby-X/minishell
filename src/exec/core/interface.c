@@ -6,12 +6,22 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 00:40:54 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 01:01:06 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/27 13:07:11 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include "command.h"
+#include "heredoc.h"
+
+static void	custom_exec_command_destroy(void *const object)
+{
+	t_exec_command *const	command = object;
+
+	vector_for_each(&command->args, &arg_destroy);
+	vector_destroy(&command->args);
+	vector_destroy(&command->redirs);
+}
 
 static t_merror
 	command_to_exec_cmd(t_command *const command, t_exec_command *exec_cmd)
@@ -72,8 +82,8 @@ t_merror	exec_commands(t_vector *commands, t_vector *env)
 
 	if (convert_vect_commands(commands, &converted_cmd) != SUCCESS)
 		return (MEMORY_ERROR);
-	result = exec_piped_commands(converted_cmd.data, commands->size, env);
-	vector_for_each(&converted_cmd, exec_command_destroy);
+	result = exec_heredocs_layer(&converted_cmd, env);
+	vector_for_each(&converted_cmd, custom_exec_command_destroy);
 	vector_destroy(&converted_cmd);
 	return (result);
 }
