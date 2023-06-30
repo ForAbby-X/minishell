@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:31 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/29 19:58:27 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/30 19:08:50 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ int			is_tok_operator(t_token const *const token);
 t_merror	pars_error(char *const str);
 t_merror	check_tok_error(t_vector *const tokens);
 
+int			is_expand_except(char const c);
+//fuck this function, did it only because of missing room
+t_merror	expand_exceptions(
+				t_vector *const tokens,
+				t_length *const index,
+				char **const str);
 t_merror	expand_token(
 				t_vector *const tokens,
 				t_length *const index,

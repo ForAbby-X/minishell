@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/30 15:54:05 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/30 19:28:52 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static inline t_merror	__expand_var(
 		return (*str += 2, __expand_var_quoted(tokens, index, "ERROR_CODE"));
 	if (ft_isdigit(*ptr) || !(ft_isalnum(*ptr) || *ptr == '_'))
 		return (*str += 2, tmp = *(ptr + 1), *(ptr + 1) = 0,
-			__expand_var_quoted(tokens, index, ptr - 1),*(ptr + 1) = tmp, 0);
+			__expand_var_quoted(tokens, index, ptr - 1), *(ptr + 1) = tmp, 0);
 	start = ptr;
 	while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
 		ptr++;
@@ -115,10 +115,8 @@ static inline t_merror	__expand_var(
 	*ptr = '\0';
 	var = ft_get_env(env, start);
 	*ptr = tmp;
-	if (var == NULL && ((t_token *)vector_get(tokens, *index))->type == WORD)
-		return (*str = ptr, SUCCESS);
-	if (((t_token *)vector_get(tokens, *index))->type == WORD)
-		return (*str = ptr, __expand_var_word(tokens, index, var));
+	if (((t_token *)vector_get(tokens, *index - 1))->type == WORD)\
+		return (*str = ptr, !var || __expand_var_word(tokens, index, var));
 	return (*str = ptr, __expand_var_quoted(tokens, index, var));
 }
 

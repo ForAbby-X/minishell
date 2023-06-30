@@ -6,7 +6,7 @@
 #    By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/29 10:30:56 by alde-fre         ###   ########.fr        #
+#    Updated: 2023/06/30 19:09:27 by alde-fre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC		=	main.c \
 			parsing/utils.c \
 			parsing/error.c \
 			parsing/lexer.c \
+			parsing/expand_exceptions.c \
 			parsing/expand.c \
 			parsing/parser.c \
 			parsing/merge_tokens.c \
