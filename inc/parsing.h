@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:31 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/28 17:19:05 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:58:27 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,13 @@ t_merror	check_tok_error(t_vector *const tokens);
 t_merror	expand_token(
 				t_vector *const tokens,
 				t_length *const index,
-				t_token *const token);
+				t_token *const token,
+				t_vector const *const env);
 
-t_merror	parser(char const *const line, t_vector *const commands);
+t_merror	parser(
+				char const *const line,
+				t_vector *const commands,
+				t_vector const *const env);
 t_merror	lexer(char const *const line, t_vector *const tokens);
 t_merror	merge_all_alpha(t_vector *const tokens);
 t_merror	merge_redirs(t_vector *const tokens);

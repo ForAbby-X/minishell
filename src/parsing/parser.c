@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 01:29:55 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/28 19:26:41 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:58:09 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ static inline int	__is_tok_expandable(t_token *const token)
 		&& ft_strchr(token->data, '$'));
 }
 
-static inline t_merror	__expand_all(t_vector *const tokens)
+static inline t_merror	__expand_all(
+	t_vector *const tokens,
+	t_vector const *const env)
 {
 	t_token		*token;
 	t_length	index;
@@ -51,7 +53,7 @@ static inline t_merror	__expand_all(t_vector *const tokens)
 		token = vector_get(tokens, index);
 		flag += token->type == HEREDOC;
 		if (flag == 0 && __is_tok_expandable(token)
-			&& expand_token(tokens, &index, token))
+			&& expand_token(tokens, &index, token, env))
 			return (FAILURE);
 		if (!is_tok_alpha(token) && token->type != HEREDOC)
 			flag = 0;
@@ -60,7 +62,10 @@ static inline t_merror	__expand_all(t_vector *const tokens)
 	return (SUCCESS);
 }
 
-t_merror	parser(char const *const line, t_vector *const commands)
+t_merror	parser(
+	char const *const line,
+	t_vector *const commands,
+	t_vector const *const env)
 {
 	t_vector	tokens;
 	t_merror	error;
@@ -70,7 +75,7 @@ t_merror	parser(char const *const line, t_vector *const commands)
 		return (MEMORY_ERROR);
 	error = lexer(line, &tokens);
 	printf("\n");
-	if (error || __expand_all(&tokens) || merge_all_alpha(&tokens)
+	if (error || __expand_all(&tokens, env) || merge_all_alpha(&tokens)
 		|| __remove_separators(&tokens))
 	{
 		vector_for_each(&tokens, &token_destroy);

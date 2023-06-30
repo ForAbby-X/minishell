@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 10:23:16 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/29 10:38:21 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/29 20:07:30 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ char	*ft_get_env(t_vector const *const env, char const *const var)
 	str = vector_get(env, 0);
 	while (*str)
 	{
-		if (ft_strncmp(*str, var, -1) == 0)
+		if (ft_strncmp(*str, var, ft_strlen(var)) == 0)
 			return (ft_strchr(*str, '=') + 1);
-		(*str)++;
+		str++;
 	}
 	return (NULL);
 }

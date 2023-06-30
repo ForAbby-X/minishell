@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/20 17:48:59 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:58:49 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static inline t_merror	__launch_minishell(t_minishell *const minishell)
 		if (line && line[0])
 		{
 			add_history(line);
-			error = parser(line, &minishell->commands);
+			error = parser(line, &minishell->commands, &minishell->env);
 			if (error == SUCCESS)
 				vector_for_each(&minishell->commands, &command_display);
 		}
