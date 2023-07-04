@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 21:48:41 by olivier           #+#    #+#             */
-/*   Updated: 2023/07/03 18:15:11 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/05 00:50:33 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ t_merror	run_command(t_exec_command *command, t_vector *env)
 		err = ft_execvpe(*(char **)(command->args.data), &(command->args), env);
 	if (err == -2)
 		run_command_error(command, "command not found", 127);
-	else
+	else if (err == -1)
 		run_command_error(command, strerror(errno), 126);
+	else if (err == -3)
+		set_exit_code(0);
 	return (FAILURE);
 }

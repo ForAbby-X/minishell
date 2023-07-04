@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:25:45 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 01:00:23 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/05 01:01:06 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,16 @@
 
 char	*ft_getenv(t_vector *const env, const char *name)
 {
-	t_length	i;
-	int			name_len;
-	char		*current;
+	char	**str;
+	int		name_len;
 
-	i = 0;
+	str = vector_get(env, 0);
 	name_len = ft_strlen(name);
-	while (i < env->size)
+	while (*str)
 	{
-		current = *env_get(env, i);
-		if (!ft_strncmp(current, name, name_len) && current[name_len] == '=')
-			return (ft_strtrim(current + name_len + 1, "\t "));
-		i++;
+		if (!ft_strncmp(*str, name, name_len) && (*str)[name_len] == '=')
+			return (ft_strtrim((*str) + name_len + 1, "\t "));
+		str++;
 	}
 	return (NULL);
 }
