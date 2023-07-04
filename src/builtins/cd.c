@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/04 16:32:11 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/04 17:38:38 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,26 @@
 #include "errno.h"
 #include "env.h"
 
+static inline t_merror	cd_err(char *str)
+{
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putchar_fd('\n', STDERR_FILENO);
+	set_exit_code(1);
+	return (FAILURE);
+}
+
 t_merror	builtin_cd(int argc, char **argv, t_vector *env)
 {
-	char	*path;
+	char		*path;
+	t_merror	err;
 
+	err = SUCCESS;
 	if (argc > 2)
-	{
-		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
-	}
+		err = cd_err("cd: too many arguments");
 	else if (argc == 2)
 	{
 		if (argv[1] == NULL || argv[1][0] == '\0')
-			ft_putstr_fd("cd: null directory\n", STDERR_FILENO);
+			err = cd_err("cd: null directory");
 		else
 			chdir(argv[1]);
 	}
@@ -36,8 +44,10 @@ t_merror	builtin_cd(int argc, char **argv, t_vector *env)
 		if (path)
 			chdir(path);
 		else
-			ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
+			err = cd_err("cd: HOME not set");
+		free(path);
 	}
-	set_exit_code(0);
-	return (SUCCESS);
+	if (err == SUCCESS)
+		set_exit_code(0);
+	return (err);
 }

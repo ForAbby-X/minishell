@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 00:36:30 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/04 16:08:34 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/04 16:35:46 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ typedef t_builtin_cmd_ptr	(*t_pm)();
 t_merror			builtin_echo(int argc, char **argv, t_vector *env);
 t_merror			builtin_exit(int argc, char **argv, t_vector *env);
 t_merror			builtin_cd(int argc, char **argv, t_vector *env);
+t_merror			builtin_pwd(int argc, char **argv, t_vector *env);
+
 t_builtin_cmd_ptr	get_builtin_cmd(char *name);
 
 #endif
