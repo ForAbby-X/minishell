@@ -12,8 +12,6 @@
 
 #include "signal_handlers.h"
 
-
-
 void	set_prompt_signal_handlers(void)
 {
 	struct sigaction	sa;

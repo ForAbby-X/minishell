@@ -16,7 +16,6 @@ int	g_exit_code = 0;
 
 void	set_exit_code(int exit_code)
 {
-	//fprintf(stderr, "\nEXIT STATUS : %i\n", exit_code);
 	g_exit_code = exit_code;
 }
 

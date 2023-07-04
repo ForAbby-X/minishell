@@ -88,68 +88,10 @@ int	main(
 {
 	t_minishell	minishell;
 	t_merror	error;
+
 	if (!isatty(STDIN_FILENO) || __init_minishell(&minishell, argc, argv, env))
 		return (1);
 	error = __launch_minishell(&minishell);
 	__destroy_minishell(&minishell);
 	return (get_exit_code());
 }
-
-// static inline t_merror	__launch_minishell(t_minishell *const minishell)
-// {
-// 	char		*line;
-// 	t_merror	error;
-
-// 	error = SUCCESS;
-// 	while (error == SUCCESS || error == PARSING_ERROR || error == FAILURE)
-// 	{
-// 		set_prompt_signal_handlers();
-// 		line = readline("minishell$ ");
-// 		if (line && line[0])
-// 		{
-// 			add_history(line);
-// 			error = parser(line, &minishell->commands);
-// 			if (error == SUCCESS)
-// 				vector_for_each(&minishell->commands, &command_display);
-// 			error |= exec_commands(&(minishell->commands), &(minishell->env));
-// 		}
-// 		vector_for_each(&minishell->commands, &command_destroy);
-// 		vector_clear(&minishell->commands);
-// 		free(line);
-// 		if (line == NULL)
-// 			break ;
-// 	}
-// 	return (SUCCESS);
-// }
-
-
-
-
-// fun() is a function with
-// // return type ptr
-// t_builtin_cmd_ptr	fun(void)
-// {
-// 	return (builtin_echo);
-// }
-
-// 	//t_merror	(*func)(int, char**, t_vector*);
-// int	main(
-// 	int argc,
-// 	char **argv,
-// 	char **env)
-// {
-// 	t_minishell				minishell;
-// 	t_merror				error;
-// 	t_builtin_cmd_ptr		func;
-
-// 	if (!isatty(STDIN_FILENO) || __init_minishell(&minishell, argc, argv, env))
-// 		return (1);
-// 	//error = __launch_minishell(&minishell);
-// 	func = get_builtin_cmd("echo");
-// 	if (func != NULL)
-// 	{
-// 		func(argc, argv, &(minishell.env));
-// 	}
-// 	__destroy_minishell(&minishell);
-// 	return (get_exit_code());
-// }

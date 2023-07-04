@@ -15,7 +15,6 @@
 void	prompt_on_sigint(int sig)
 {
 	(void) sig;
-
 	ft_putchar_fd('\n', STDIN_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -26,6 +25,5 @@ void	prompt_on_sigint(int sig)
 void	hd_on_sigint(int sig)
 {
 	(void) sig;
-
 	set_exit_code(128 + sig);
 }

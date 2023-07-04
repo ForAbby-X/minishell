@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/07/03 16:58:34 by olimarti         ###   ########.fr        #
+#    Updated: 2023/07/04 12:40:45 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRC		=	main.c \
 			signals/signals.c \
 			signals/handlers.c \
 			builtins/echo.c \
+			builtins/exit.c \
 			builtins/builtins.c \
 			exec/exec/builtins_exec.c
 

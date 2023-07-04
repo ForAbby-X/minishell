@@ -78,7 +78,6 @@ int	wait_childs(t_length childs_count, pid_t watch_cpid)
 			watch_status = wstatus;
 		}
 		i ++;
-		//fprintf(stderr,"END WAIT\n");
 	}
 	if (WIFSIGNALED(watch_status))
 		set_exit_code(128 + WTERMSIG(watch_status));

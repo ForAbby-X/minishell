@@ -35,7 +35,6 @@ t_merror	run_command(t_exec_command *command, t_vector *env)
 	t_builtin_cmd_ptr	builtin_func;
 
 	builtin_func = NULL;
-
 	restore_default_signal_handlers();
 	if (handle_redirs(&(command->redirs)) != SUCCESS)
 		return (FAILURE);

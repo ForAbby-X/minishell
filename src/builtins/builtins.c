@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 14:35:07 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/04 12:36:53 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/04 12:41:05 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_builtin_map
 
 static t_builtin_map const	g_builtins_list[] = {
 {"echo", builtin_echo},
+{"exit", builtin_exit},
 {NULL, NULL}
 };
 

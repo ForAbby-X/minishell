@@ -28,7 +28,6 @@ void	set_prompt_signal_handlers(void);
 void	restore_default_signal_handlers(void);
 void	set_hd_signal_handlers(void);
 
-
 void	prompt_on_sigint(int sig);
 void	hd_on_sigint(int sig);
 
