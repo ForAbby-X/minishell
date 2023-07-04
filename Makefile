@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/06/29 15:03:27 by olimarti         ###   ########.fr        #
+#    Updated: 2023/07/03 16:58:34 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,9 @@ SRC		=	main.c \
 			utils/string.c \
 			signals/signals.c \
 			signals/handlers.c \
+			builtins/echo.c \
+			builtins/builtins.c \
+			exec/exec/builtins_exec.c
 
 INC		= 	minishell.h \
 			token.h \

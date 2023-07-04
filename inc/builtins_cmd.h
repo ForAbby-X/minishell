@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   builtins_cmd.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 01:26:00 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/03 17:30:55 by olimarti         ###   ########.fr       */
+/*   Created: 2023/06/24 00:36:30 by olimarti          #+#    #+#             */
+/*   Updated: 2023/07/03 16:24:13 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error.h"
+#ifndef BUILTINS_CMD_H
+# define BUILTINS_CMD_H
 
-int	g_exit_code = 0;
+# include "error.h"
+# include "vector.h"
+# include "libft.h"
 
-void	set_exit_code(int exit_code)
-{
-	//fprintf(stderr, "\nEXIT STATUS : %i\n", exit_code);
-	g_exit_code = exit_code;
-}
+typedef t_merror			(*t_builtin_cmd_ptr)(int, char**, t_vector*);
+typedef t_builtin_cmd_ptr	(*t_pm)();
 
-int	get_exit_code(void)
-{
-	return (g_exit_code);
-}
+t_merror			builtin_echo(int argc, char **argv, t_vector *env);
+t_builtin_cmd_ptr	get_builtin_cmd(char *name);
+
+#endif

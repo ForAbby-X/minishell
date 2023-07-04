@@ -1,34 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   string.c                                           :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/27 13:12:48 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/03 15:21:09 by olimarti         ###   ########.fr       */
+/*   Created: 2023/07/03 14:35:07 by olimarti          #+#    #+#             */
+/*   Updated: 2023/07/04 12:36:53 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "builtins_cmd.h"
 #include "utils.h"
 
-int	ft_strcpyl(char *dst, char *src)
+typedef struct s_builtin_map
 {
-	size_t	i;
+	char				*name;
+	t_builtin_cmd_ptr	func;
+}	t_builtin_map;
+
+static t_builtin_map const	g_builtins_list[] = {
+{"echo", builtin_echo},
+{NULL, NULL}
+};
+
+t_builtin_cmd_ptr	get_builtin_cmd(char *name)
+{
+	int	i;
 
 	i = 0;
-	while (src[i] != 0)
+	while (g_builtins_list[i].name != NULL
+		&& ft_strcmp(name, g_builtins_list[i].name) != 0)
 	{
-		dst[i] = src[i];
 		i++;
 	}
-	return (i);
-}
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 || *s2)
-		if (*s1++ != *s2++)
-			return ((unsigned char)*--s1 - (unsigned char)*--s2);
-	return (0);
+	return (g_builtins_list[i].func);
 }
