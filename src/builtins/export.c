@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/05 02:20:49 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/05 14:45:28 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,34 @@
 #include "utils.h"
 #include "errno.h"
 #include "env.h"
+
+static void	_display_env_sorted(t_vector *env)
+{
+	char	**last;
+	char	**str;
+	char	**less;
+
+	last = NULL;
+	less = vector_get(env, 0);
+	while (less != NULL)
+	{
+		str = vector_get(env, 0);
+		while (*str != NULL && last != NULL && ft_strcmp(*str, *last) <= 0)
+			str++;
+		less = str;
+		while (*str != NULL)
+		{
+			if (ft_strcmp(*str, *less) < 0
+				&& (last == NULL || ft_strcmp(*str, *last) > 0))
+				less = str;
+			str ++;
+		}
+		if (less == last || *less == NULL)
+			return ;
+		printf("%s\n", *less);
+		last = less;
+	}
+}
 
 static int	_is_valid_name(char *name, char *end)
 {
@@ -58,7 +86,6 @@ static t_merror	_set_env_var(char *var, char	*sep, t_vector *env)
 	return (SUCCESS);
 }
 
-
 t_merror	builtin_export(int argc, char **argv, t_vector *env)
 {
 	int			i;
@@ -67,6 +94,8 @@ t_merror	builtin_export(int argc, char **argv, t_vector *env)
 
 	i = 1;
 	err = SUCCESS;
+	if (argc == 1)
+		return (_display_env_sorted(env), set_exit_code(0), SUCCESS);
 	while (i < argc)
 	{
 		if (argv[i] != NULL)
