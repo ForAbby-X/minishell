@@ -20,7 +20,7 @@ OBJ = ${SRC:.c=.o}
 
 OBJ_BONUS = ${SRC_BONUS:.c=.o}
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 
 COMPILE = clang $(CFLAGS) -c
 

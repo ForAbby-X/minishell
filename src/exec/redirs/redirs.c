@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 00:28:11 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 02:16:57 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/04 12:21:30 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,30 @@ t_merror	handle_redirs(t_vector *redirs)
 		index++;
 	}
 	return (SUCCESS);
+}
+
+t_merror	restore_redirs(int saved_stdin, int saved_stdout)
+{
+	t_merror	error;
+
+	error = SUCCESS;
+	if (saved_stdin != STDIN_FILENO)
+	{
+		if (dup2(saved_stdin, STDIN_FILENO) == -1)
+		{
+			perror("Failed to restore stdin");
+			error |= FATAL_ERROR;
+		}
+		close(saved_stdin);
+	}
+	if (saved_stdout != STDOUT_FILENO)
+	{
+		if (dup2(saved_stdout, STDOUT_FILENO) == -1)
+		{
+			perror("Failed to restore stdin");
+			error |= FATAL_ERROR;
+		}
+		close(saved_stdout);
+	}
+	return (error);
 }

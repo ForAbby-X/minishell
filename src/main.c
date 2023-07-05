@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:51:58 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/29 14:52:46 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/03 16:54:48 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	main(
 {
 	t_minishell	minishell;
 	t_merror	error;
+
 	if (!isatty(STDIN_FILENO) || __init_minishell(&minishell, argc, argv, env))
 		return (1);
 	error = __launch_minishell(&minishell);

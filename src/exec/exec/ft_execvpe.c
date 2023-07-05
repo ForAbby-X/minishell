@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 12:46:44 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 00:39:40 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/05 00:48:54 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_execvpe(char *file, t_vector const *argv, t_vector *const env)
 	if (file == NULL)
 	{
 		errno = 14;
-		return (-1);
+		return (-3);
 	}
 	path = get_command_path(file, env);
 	if (path == NULL)
