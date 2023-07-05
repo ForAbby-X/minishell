@@ -6,13 +6,13 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/05 14:45:28 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:02:15 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins_cmd.h"
 #include "utils.h"
-#include "errno.h"
+#include "error.h"
 #include "env.h"
 
 static void	_display_env_sorted(t_vector *env)
@@ -58,59 +58,46 @@ static int	_is_valid_name(char *name, char *end)
 	return (1);
 }
 
-static void	_remove_env_var_size(char *name, t_vector *env, int name_len)
+static t_merror	_export_var(char *var, t_vector *env)
 {
-	char		**str;
-	t_length	i;
+	char		*sep;
 
-	i = 0;
-	str = vector_get(env, 0);
-	while (i + 1 < env->size)
+	sep = ft_strchr(var, '=');
+	if (sep == NULL)
 	{
-		if (ft_strncmp(str[i], name, name_len) == 0 && str[i][name_len] == '=')
-			vector_erase(env, i);
-		++i;
+		ft_putstr_fd("export: \"", STDERR_FILENO);
+		ft_putstr_fd(var, STDERR_FILENO);
+		return (_set_err("\" not a valid identifier", 1, FAILURE));
 	}
-}
-
-static t_merror	_set_env_var(char *var, char	*sep, t_vector *env)
-{
-	char	*copy;
-
-	copy = ft_strdup(var);
-	if (copy == NULL)
-		return (FAILURE);
-	_remove_env_var_size(var, env, sep - var);
-	if (vector_insert(env, &copy, env->size - 1) == NULL)
-		return (free(copy), FAILURE);
+	else if (_is_valid_name(var, sep))
+	{
+		if (set_env_var(var, sep, env) == MEMORY_ERROR)
+			return (_set_err("export: memory error", 1, FAILURE));
+	}
+	else
+	{
+		ft_putstr_fd("export: \"", STDERR_FILENO);
+		ft_putstr_fd(var, STDERR_FILENO);
+		return (_set_err("\" not a valid identifier", 1, FAILURE));
+	}
 	return (SUCCESS);
 }
 
 t_merror	builtin_export(int argc, char **argv, t_vector *env)
 {
-	int			i;
-	char		*sep;
 	t_merror	err;
 
-	i = 1;
 	err = SUCCESS;
 	if (argc == 1)
 		return (_display_env_sorted(env), set_exit_code(0), SUCCESS);
-	while (i < argc)
+	while (*++argv)
 	{
-		if (argv[i] != NULL)
+		if (*argv != NULL)
 		{
-			sep = ft_strchr(argv[i], '=');
-			if (sep == NULL)
-				return (FAILURE);
-			if (_is_valid_name(argv[i], sep))
-				err |= (_set_env_var(argv[i], sep, env));
+			err |= _export_var(*argv, env);
 		}
-		++i;
 	}
-	if (err)
-		set_exit_code(1);
-	else
+	if (err == SUCCESS)
 		set_exit_code(0);
 	return (err);
 }

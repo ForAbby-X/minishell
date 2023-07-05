@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:25:45 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/05 01:01:06 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:03:02 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,34 @@ char	*ft_getenv(t_vector *const env, const char *name)
 		str++;
 	}
 	return (NULL);
+}
+
+static void	_remove_env_var_size(char *name, t_vector *env, int name_len)
+{
+	char		**str;
+	t_length	i;
+
+	i = 0;
+	str = vector_get(env, 0);
+	while (i + 1 < env->size)
+	{
+		if (ft_strncmp(str[i], name, name_len) == 0 && str[i][name_len] == '=')
+			vector_erase(env, i);
+		++i;
+	}
+}
+
+t_merror	set_env_var(char *var, char	*sep, t_vector *env)
+{
+	char	*copy;
+
+	copy = ft_strdup(var);
+	if (copy == NULL)
+		return (MEMORY_ERROR);
+	_remove_env_var_size(var, env, sep - var);
+	if (vector_insert(env, &copy, env->size - 1) == NULL)
+		return (free(copy), FAILURE);
+	return (SUCCESS);
 }
 
 char	**env_add(t_vector *const vector, char	*const obj)

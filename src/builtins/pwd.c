@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/04 17:41:48 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:05:00 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "errno.h"
 #include "env.h"
 
-static char	*get_pwd(t_vector *env)
+static char	*get_pwd(void)
 {
 	char		*path;
 	size_t		size;
@@ -45,7 +45,10 @@ t_merror	builtin_pwd(int argc, char **argv, t_vector *env)
 {
 	char	*path;
 
-	path = get_pwd(env);
+	(void) env;
+	(void) argv;
+	(void) argc;
+	path = get_pwd();
 	if (path == NULL)
 	{
 		ft_putstr_fd("pwd: error retrieving current directory\n", STDERR_FILENO);
