@@ -15,16 +15,15 @@
 #include "signal_handlers.h"
 
 static t_merror	run_builtin_command(t_builtin_cmd_ptr builtin_func,
-	t_exec_command *command, t_vector *env)
+	t_command *command, t_vector *env)
 {
 	int			saved_stdin;
 	int			saved_stdout;
 	t_merror	result;
 
+	if (vector_addback(&command->words, &(char *){0}) == NULL)
+		return (MEMORY_ERROR);
 	restore_default_signal_handlers();
-	builtin_func = get_builtin_cmd(*(char **)(command->args.data));
-	if (builtin_func == NULL)
-		return (FAILURE);
 	saved_stdin = dup(STDIN_FILENO);
 	if (saved_stdin == -1)
 		return (FAILURE);
@@ -37,20 +36,20 @@ static t_merror	run_builtin_command(t_builtin_cmd_ptr builtin_func,
 			return (FATAL_ERROR);
 		return (FAILURE);
 	}
-	result = builtin_func(command->args.size - 1, command->args.data, env);
+	result = builtin_func(command->words.size - 1, command->words.data, env);
 	if (restore_redirs(saved_stdin, saved_stdout) == FATAL_ERROR)
 		return (FATAL_ERROR);
 	return (result);
 }
 
-t_merror	exec_builtins_layer(t_exec_command *commands,
+t_merror	exec_builtins_layer(t_command *commands,
 	t_length commands_count, t_vector *env)
 {
 	t_builtin_cmd_ptr	func;
 
 	func = NULL;
 	if (commands_count == 1)
-		func = get_builtin_cmd(*(char **)(commands->args.data));
+		func = get_builtin_cmd(*(char **)(commands->words.data));
 	if (func != NULL)
 		return (run_builtin_command(func, commands, env));
 	return (exec_piped_commands(commands, commands_count, env));

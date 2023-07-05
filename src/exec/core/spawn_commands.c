@@ -13,7 +13,7 @@
 #include "exec.h"
 #include "signal_handlers.h"
 
-t_merror	spawn_last_command(t_exec_command *command, t_vector *env,
+t_merror	spawn_last_command(t_command *command, t_vector *env,
 	int in_fd, pid_t *cpid)
 {
 	*cpid = fork();
@@ -86,7 +86,7 @@ int	wait_childs(t_length childs_count, pid_t watch_cpid)
 	return (watch_status);
 }
 
-t_merror	exec_piped_commands(t_exec_command *commands,
+t_merror	exec_piped_commands(t_command *commands,
 	t_length commands_count, t_vector *env)
 {
 	int			pipefd[2];

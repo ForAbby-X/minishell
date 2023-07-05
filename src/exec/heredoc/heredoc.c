@@ -33,6 +33,7 @@ static t_merror	open_heredocs_command(t_vector *redirs, t_vector *heredocs)
 			if (error == 0)
 			{
 				error = vector_addback(heredocs, &filename) == NULL;
+				free(redir->data);
 				redir->data = filename;
 			}
 		}
@@ -52,7 +53,7 @@ static t_merror	open_heredocs(t_vector *commands, t_vector	*heredocs)
 	while (error == SUCCESS && i < commands->size)
 	{
 		error = open_heredocs_command(
-				&(((t_exec_command *)vector_get(commands, i))->redirs),
+				&(((t_command *)vector_get(commands, i))->redirs),
 				heredocs);
 		i ++;
 	}
@@ -63,7 +64,6 @@ static void	delete_hd(char **path)
 {
 	fprintf(stderr, "DELETE TMP FILE : %s\n", *path);
 	unlink(*path);
-	free(*path);
 }
 
 t_merror	exec_heredocs_layer(t_vector *commands, t_vector *env)

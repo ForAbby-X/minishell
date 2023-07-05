@@ -12,7 +12,7 @@
 
 #include "exec.h"
 
-int	ft_execvpe(char *file, t_vector const *argv, t_vector *const env)
+int	ft_execvpe(char *file, t_vector *argv, t_vector *const env)
 {
 	char	*path;
 

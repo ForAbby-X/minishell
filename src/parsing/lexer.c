@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:08 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/20 17:58:56 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/28 19:24:02 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ static inline t_merror	__lexer_separator(
 		t_vector *const tokens)
 {
 	t_token			token;
+	t_token *const	test = vector_get(tokens, vector_size(tokens) - 1);
 
 	while (is_separator(line[*index]))
 		(*index)++;
-	if (vector_size(tokens) == 0)
+	if (vector_size(tokens) == 0 || (test && test->type == HEREDOC))
 		return (SUCCESS);
 	token.type = SEPARATOR;
 	token.data = NULL;
@@ -71,6 +72,7 @@ static inline t_merror	__lexer_quotes(
 			return (free(token.data), MEMORY_ERROR);
 		return (SUCCESS);
 	}
+	pars_error((char [2]){char_type, '\0'});
 	return (PARSING_ERROR);
 }
 

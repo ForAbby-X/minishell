@@ -6,11 +6,12 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/20 21:20:48 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/30 19:28:52 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include "env.h"
 
 static inline t_merror	__expand_var_word(
 	t_vector *const tokens,
@@ -30,7 +31,7 @@ static inline t_merror	__expand_var_word(
 			var++;
 		temp = *var;
 		*var = '\0';
-		token.data = ft_strdup(start);
+		token.data = start;
 		if (token.data == NULL)
 			return (MEMORY_ERROR);
 		*var = temp;
@@ -46,12 +47,15 @@ static inline t_merror	__expand_var_word(
 static inline t_merror	__expand_var_quoted(
 	t_vector *const tokens,
 	t_length *index,
-	char const *const var)
+	char *var)
 {
 	t_token	token;
 
 	token.type = WORD;
-	token.data = ft_strdup(var);
+	if (var)
+		token.data = var;
+	else
+		token.data = ft_strdup("");
 	if (token.data == NULL)
 		return (MEMORY_ERROR);
 	vector_insert(tokens, &token, *index);
@@ -86,8 +90,8 @@ static inline t_merror	__expand_word(
 static inline t_merror	__expand_var(
 	t_vector *const tokens,
 	t_length *const index,
-	t_token *const token,
-	char **const str)
+	char **const str,
+	t_vector const *const env)
 {
 	char	*ptr;
 	char	*start;
@@ -95,31 +99,32 @@ static inline t_merror	__expand_var(
 	char	tmp;
 
 	ptr = *str + 1;
+	if (*ptr == 0)
+		return (*str += 1, __expand_var_quoted(tokens, index, "$"));
 	if (*ptr == '$')
 		return (*str += 2, __expand_var_quoted(tokens, index, "PROCESS_PID"));
 	if (*ptr == '?')
 		return (*str += 2, __expand_var_quoted(tokens, index, "ERROR_CODE"));
-	if (ft_isdigit(*ptr))
-		return (*str += 2, SUCCESS);
+	if (ft_isdigit(*ptr) || !(ft_isalnum(*ptr) || *ptr == '_'))
+		return (*str += 2, tmp = *(ptr + 1), *(ptr + 1) = 0,
+			__expand_var_quoted(tokens, index, ptr - 1), *(ptr + 1) = tmp, 0);
 	start = ptr;
 	while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
 		ptr++;
 	tmp = *ptr;
 	*ptr = '\0';
-	var = getenv(start); // REPLACE WITH CUSTOM GETENV
+	var = ft_getenv(env, start);
 	*ptr = tmp;
-	*str = ptr;
-	if (var == NULL)
-		return (SUCCESS);
-	if (token->type == WORD)
-		return (__expand_var_word(tokens, index, var));
-	return (__expand_var_quoted(tokens, index, var));
+	if (((t_token *)vector_get(tokens, *index - 1))->type == WORD)\
+		return (*str = ptr, !var || __expand_var_word(tokens, index, var));
+	return (*str = ptr, __expand_var_quoted(tokens, index, var));
 }
 
 t_merror	expand_token(
 	t_vector *const tokens,
 	t_length *const index,
-	t_token *const token)
+	t_token *const token,
+	t_vector const *const env)
 {
 	t_token	temp;
 	char	*start;
@@ -131,7 +136,7 @@ t_merror	expand_token(
 	{
 		if (*start == '$')
 		{
-			if (__expand_var(tokens, index, &temp, &start))
+			if (__expand_var(tokens, index, &start, env))
 				return (MEMORY_ERROR);
 		}
 		else if (__expand_word(tokens, index, &temp, &start))

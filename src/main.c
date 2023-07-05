@@ -59,10 +59,10 @@ static inline t_merror	__launch_minishell(t_minishell *const minishell)
 		if (line && line[0])
 		{
 			add_history(line);
-			error = parser(line, &minishell->commands);
+			error = parser(line, &minishell->commands, &minishell->env);
 			if (error == SUCCESS)
-				vector_for_each(&minishell->commands, &command_display);
-			error |= exec_commands(&(minishell->commands), &(minishell->env));
+				error |= exec_commands(&(minishell->commands),
+						&(minishell->env));
 		}
 		vector_for_each(&minishell->commands, &command_destroy);
 		vector_clear(&minishell->commands);
@@ -87,11 +87,10 @@ int	main(
 	char **env)
 {
 	t_minishell	minishell;
-	t_merror	error;
 
 	if (!isatty(STDIN_FILENO) || __init_minishell(&minishell, argc, argv, env))
 		return (1);
-	error = __launch_minishell(&minishell);
+	__launch_minishell(&minishell);
 	__destroy_minishell(&minishell);
 	return (get_exit_code());
 }

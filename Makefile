@@ -22,10 +22,11 @@ SRC		=	main.c \
 			token.c \
 			command.c\
 			error.c\
-			\
+			word.c \
 			parsing/utils.c \
 			parsing/error.c \
 			parsing/lexer.c \
+			parsing/expand_exceptions.c \
 			parsing/expand.c \
 			parsing/parser.c \
 			parsing/merge_tokens.c \
@@ -36,7 +37,6 @@ SRC		=	main.c \
 			exec/path/path_utils.c \
 			exec/exec/ft_execvpe.c \
 			exec/exec/args.c \
-			exec/exec/exec_command.c \
 			exec/core/run_command.c \
 			exec/core/spawn_commands.c \
 			exec/core/interface.c \
@@ -59,6 +59,7 @@ SRC		=	main.c \
 
 INC		= 	minishell.h \
 			token.h \
+			word.h \
 			redirs.h \
 			parsing.h \
 			env.h \
@@ -70,8 +71,7 @@ DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
 
 # compiler
 CC		= clang
-CFLAGS	= -MMD -MP -Wall -Wextra -g
-# -Werror
+CFLAGS	= -MMD -MP -Wall -Wextra #-Werror
 
 # vector library
 VECTOR		= ./c-vectorlib/

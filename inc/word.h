@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   interface.c                                        :+:      :+:    :+:   */
+/*   word.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 00:40:54 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/29 14:55:01 by olimarti         ###   ########.fr       */
+/*   Created: 2023/06/28 18:08:40 by alde-fre          #+#    #+#             */
+/*   Updated: 2023/06/28 18:14:45 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-#include "command.h"
-#include "heredoc.h"
+#ifndef WORD_H
+# define WORD_H
 
-t_merror	exec_commands(t_vector *commands, t_vector *env)
-{
-	t_vector	converted_cmd;
-	t_merror	result;
+# include "vector.h"
 
-	result = exec_heredocs_layer(commands, env);
-	return (result);
-}
+void	word_display(void *const object);
+void	word_destroy(void *const object);
+
+#endif

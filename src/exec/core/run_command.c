@@ -19,9 +19,9 @@
 #include <unistd.h>
 
 t_merror
-	run_command_error(t_exec_command *command, char *const str, int exit_code)
+	run_command_error(t_command *command, char *const str, int exit_code)
 {
-	ft_putstr_fd(*(char **)vector_get(&(command->args), 0), STDERR_FILENO);
+	ft_putstr_fd(*(char **)vector_get(&(command->words), 0), STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
@@ -29,20 +29,24 @@ t_merror
 	return (FAILURE);
 }
 
-t_merror	run_command(t_exec_command *command, t_vector *env)
+t_merror	run_command(t_command *command, t_vector *env)
 {
 	int					err;
 	t_builtin_cmd_ptr	builtin_func;
 
 	builtin_func = NULL;
 	restore_default_signal_handlers();
+	if (vector_addback(&command->words, &(char *){0}) == NULL)
+		return (FAILURE);
 	if (handle_redirs(&(command->redirs)) != SUCCESS)
 		return (FAILURE);
-	builtin_func = get_builtin_cmd(*(char **)(command->args.data));
+	builtin_func = get_builtin_cmd(*(char **)(command->words.data));
 	if (builtin_func != NULL)
-		return (builtin_func(command->args.size - 1, command->args.data, env));
+		return (builtin_func(command->words.size - 1,
+				command->words.data, env));
 	else
-		err = ft_execvpe(*(char **)(command->args.data), &(command->args), env);
+		err = ft_execvpe(*(char **)(command->words.data),
+				&(command->words), env);
 	if (err == -2)
 		run_command_error(command, "command not found", 127);
 	else if (err == -1)

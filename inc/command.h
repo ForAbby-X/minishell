@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 11:22:43 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/22 21:48:39 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/06/28 19:11:20 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@
 # include "vector.h"
 # include "error.h"
 # include "token.h"
+# include "word.h"
 
 typedef struct s_command
 {
-	t_vector		tokens;
-	t_vector		redirs;
+	t_vector	words;
+	t_vector	redirs;
 }	t_command;
 
 void		command_display(void *const object);

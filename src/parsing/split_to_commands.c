@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 00:52:45 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/20 17:53:05 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/06/28 19:11:21 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@ static inline t_merror	__split_redirs(
 	t_token *const token,
 	t_command *const command)
 {
+	char	*str;
+
 	if (is_tok_operator(token))
-		return (vector_addback(&command->redirs, token) != NULL);
-	return (vector_addback(&command->tokens, token) != NULL);
+		return (vector_addback(&command->redirs, token) == NULL);
+	str = ft_strdup(token->data);
+	return (vector_addback(&command->words, &str) == NULL);
 }
 
 t_merror	split_to_commands(t_vector *const tokens, t_vector *const commands)
@@ -43,8 +46,8 @@ t_merror	split_to_commands(t_vector *const tokens, t_vector *const commands)
 				return (MEMORY_ERROR);
 			selected++;
 		}
-		else
-			__split_redirs(token, command);
+		else if (__split_redirs(token, command))
+			return (MEMORY_ERROR);
 		index++;
 	}
 	return (SUCCESS);

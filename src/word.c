@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   interface.c                                        :+:      :+:    :+:   */
+/*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 00:40:54 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/29 14:55:01 by olimarti         ###   ########.fr       */
+/*   Created: 2023/06/28 18:10:19 by alde-fre          #+#    #+#             */
+/*   Updated: 2023/06/28 18:16:57 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-#include "command.h"
-#include "heredoc.h"
+#include "word.h"
 
-t_merror	exec_commands(t_vector *commands, t_vector *env)
+void	word_display(void *const object)
 {
-	t_vector	converted_cmd;
-	t_merror	result;
+	char *const *const	word = object;
 
-	result = exec_heredocs_layer(commands, env);
-	return (result);
+	printf("[\e[94m%s\e[0m] ", *word);
+}
+
+void	word_destroy(void *const object)
+{
+	char *const *const	word = object;
+
+	free(*word);
 }

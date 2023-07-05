@@ -12,7 +12,7 @@
 
 #include "env.h"
 
-char	*ft_getenv(t_vector *const env, const char *name)
+char	*ft_getenv(t_vector const *const env, const char *name)
 {
 	char	**str;
 	int		name_len;

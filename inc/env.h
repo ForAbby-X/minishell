@@ -23,7 +23,7 @@ char		**env_add(t_vector *const vector, char	*const obj)
 char		**env_get(t_vector *const vector, t_length const index)
 			__attribute__((always_inline));
 
-char		*ft_getenv(t_vector *const vector, const char *name);
+char		*ft_getenv(t_vector const *const env, const char *name);
 
 t_merror	set_env_var(char *var, char	*sep, t_vector *env);
 
