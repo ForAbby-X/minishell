@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 14:35:07 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/05 01:06:02 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/05 01:43:20 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static t_builtin_map const	g_builtins_list[] = {
 {"pwd", builtin_pwd},
 {"env", builtin_env},
 {"unset", builtin_unset},
+{"export", builtin_export},
 {NULL, NULL}
 };
 

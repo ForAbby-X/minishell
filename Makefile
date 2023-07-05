@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/07/05 00:33:57 by olimarti         ###   ########.fr        #
+#    Updated: 2023/07/05 01:24:24 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ SRC		=	main.c \
 			builtins/pwd.c \
 			builtins/env.c \
 			builtins/unset.c \
+			builtins/export.c \
 			builtins/empty.c \
 			builtins/builtins.c \
 			exec/exec/builtins_exec.c

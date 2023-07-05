@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/05 00:39:19 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/05 02:21:29 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "errno.h"
 #include "env.h"
 
-void	remove_var(char	*name, t_vector *env)
+static void	_remove_var(char	*name, t_vector *env)
 {
 	int			name_len;
 	char		**str;
@@ -40,7 +40,7 @@ t_merror	builtin_unset(int argc, char **argv, t_vector *env)
 	while (i < argc)
 	{
 		if (argv[i] != NULL && argv[i][0] != '\0')
-			remove_var(argv[i], env);
+			_remove_var(argv[i], env);
 		++i;
 	}
 	set_exit_code(0);
