@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 00:28:11 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/04 12:21:30 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/08 19:20:09 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static t_merror	apply_redir(t_token *redir)
 	fd = get_token_fd(redir);
 	if (fd == -1)
 		return (FAILURE);
-	if (redir->type == IN | redir->type == HEREDOC)
+	if (redir->type == IN | redir->type == HEREDOC
+		| redir->type == HEREDOC_NO_EXPAND)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
 			return (close(fd), FAILURE);
