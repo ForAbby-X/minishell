@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 23:19:12 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/08 19:11:49 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/08 19:52:17 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ static int	create_heredoc_file(int *fd, char **filepath)
 	return (0);
 }
 
-t_merror	heredoc_file(char *limiter, char **filename, t_vector *env, int expandable)
+t_merror
+	heredoc_file(char *limiter, char **filename, t_vector *env, int expandable)
 {
 	int		fd;
 

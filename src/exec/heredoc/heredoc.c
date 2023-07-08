@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:56:09 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/08 19:18:31 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/08 19:51:33 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include "signal_handlers.h"
 #include "builtins_cmd.h"
 
-static t_merror	open_heredocs_command(t_vector *redirs, t_vector *heredocs, t_vector *env)
+static t_merror
+	open_heredocs_command(t_vector *redirs, t_vector *heredocs, t_vector *env)
 {
 	t_length	i;
 	char		*filename;

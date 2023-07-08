@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 19:37:23 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/08 19:31:02 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/08 19:52:42 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_merror	string_expander(char *in_str, char **out_str, t_vector *env)
 			if (in_str != start)
 			{
 				*in_str = '\0';
-				if (_join_var(out_str, start) ==	MEMORY_ERROR)
+				if (_join_var(out_str, start) == MEMORY_ERROR)
 					return (MEMORY_ERROR);
 			}
 			in_str ++;
