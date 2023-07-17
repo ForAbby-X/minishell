@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:56:09 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/04 16:33:01 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/08 19:51:33 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include "signal_handlers.h"
 #include "builtins_cmd.h"
 
-static t_merror	open_heredocs_command(t_vector *redirs, t_vector *heredocs)
+static t_merror
+	open_heredocs_command(t_vector *redirs, t_vector *heredocs, t_vector *env)
 {
 	t_length	i;
 	char		*filename;
@@ -27,9 +28,10 @@ static t_merror	open_heredocs_command(t_vector *redirs, t_vector *heredocs)
 	redir = (t_token *)vector_get(redirs, i);
 	while (error == 0 && redir)
 	{
-		if (redir->type == HEREDOC)
+		if (redir->type == HEREDOC || redir->type == HEREDOC_NO_EXPAND)
 		{
-			error = heredoc_file(redir->data, &filename);
+			error = heredoc_file(redir->data, &filename, env,
+					(redir->type != HEREDOC_NO_EXPAND));
 			if (error == 0)
 			{
 				error = vector_addback(heredocs, &filename) == NULL;
@@ -43,7 +45,8 @@ static t_merror	open_heredocs_command(t_vector *redirs, t_vector *heredocs)
 	return (error);
 }
 
-static t_merror	open_heredocs(t_vector *commands, t_vector	*heredocs)
+static t_merror
+	open_heredocs(t_vector *commands, t_vector	*heredocs, t_vector *env)
 {
 	t_merror		error;
 	t_length		i;
@@ -54,7 +57,7 @@ static t_merror	open_heredocs(t_vector *commands, t_vector	*heredocs)
 	{
 		error = open_heredocs_command(
 				&(((t_command *)vector_get(commands, i))->redirs),
-				heredocs);
+				heredocs, env);
 		i ++;
 	}
 	return (error);
@@ -76,7 +79,7 @@ t_merror	exec_heredocs_layer(t_vector *commands, t_vector *env)
 	if (heredocs.buffer == NULL)
 		return (MEMORY_ERROR);
 	set_hd_signal_handlers();
-	error = open_heredocs(commands, &heredocs);
+	error = open_heredocs(commands, &heredocs, env);
 	if (error == 0)
 	{
 		set_ignore_signal_handlers();

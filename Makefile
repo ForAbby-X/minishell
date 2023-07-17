@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/07/05 01:24:24 by olimarti         ###   ########.fr        #
+#    Updated: 2023/07/08 19:11:34 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,9 @@ SRC		=	main.c \
 			exec/core/interface.c \
 			exec/redirs/redirs.c \
 			exec/heredoc/heredoc_file.c \
+			exec/heredoc/heredoc_utils.c \
 			exec/heredoc/heredoc.c \
+			exec/heredoc/heredoc_expand.c \
 			utils/string.c \
 			signals/signals.c \
 			signals/handlers.c \
@@ -71,7 +73,7 @@ DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
 
 # compiler
 CC		= clang
-CFLAGS	= -MMD -MP -Wall -Wextra #-Werror
+CFLAGS	= -MMD -MP -Wall -Wextra -g3#-Werror
 
 # vector library
 VECTOR		= ./c-vectorlib/
