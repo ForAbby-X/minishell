@@ -1,0 +1,6 @@
+[submodule "c-vectorlib"]
+	path = c-vectorlib
+	url = git@github.com:olimarmite/c-vectorlib.git
+[submodule "libft"]
+	path = libft
+	url = git@github.com:olimarmite/libft.git
