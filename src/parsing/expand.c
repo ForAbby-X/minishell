@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/07/17 15:18:51 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:18:45 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,15 +105,15 @@ static inline t_merror	__expand_var(
 	char	tmp;
 
 	ptr = *str + 1;
-	if (*ptr == 0)
-		return (*str += 1, __expand_var_quoted(norm.toks, index, "$"));
-	if (*ptr == '$')
-		return (*str += 2, __expand_var_quoted(norm.toks, index, "PROCESS_ID"));
-	if (*ptr == '?')
-		return (*str += 2, __expand_var_quoted(norm.toks, index, "ERROR_CODE"));
-	if (ft_isdigit(*ptr) || !ft_isalnum(*ptr))
+	printf("expanding var 0\n");
+	if (ft_strchr("?$\0", *ptr))
+		return (*str += (2 - (*ptr == '\0')),
+			__expand_var_quoted(norm.toks, index, exp_get_var(*ptr)));
+	printf("expanding var 1\n");
+	if (ft_isdigit(*ptr) || !(ft_isalnum(*ptr) || *ptr == '_'))
 		return (*str += 2, tmp = *(ptr + 1), *(ptr + 1) = 0, \
 		__expand_var_quoted(norm.toks, index, ptr - 1), *(ptr + 1) = tmp, 0);
+	printf("expanding var 2\n");
 	start = ptr;
 	while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
 		ptr++;
@@ -123,6 +123,7 @@ static inline t_merror	__expand_var(
 	*ptr = tmp;
 	if (norm.tok.type == WORD)
 		return (*str = ptr, !var || __expand_var_word(norm.toks, index, var));
+	printf("expanding var 3\n");
 	return (*str = ptr, __expand_var_quoted(norm.toks, index, var));
 }
 
@@ -133,21 +134,33 @@ t_merror	expand_token(
 	t_vector const *const env)
 {
 	t_token	temp;
+	t_token	*lisa;
 	char	*start;
 
 	temp = *token;
 	start = token->data;
 	vector_erase(tokens, *index);
+	lisa = vector_get(tokens, *index);
+	while (lisa && (lisa->type == SEPARATOR || (token && lisa == token)))
+		lisa++;
 	while (*start)
 	{
 		if (*start == '$')
 		{
+			// if (lisa && *(start + 1) == '\0'
+			// 	&& (lisa->type == DOUBLE_QUOTED || lisa->type == SINGLE_QUOTED))
+			// {
+			// 	start++;
+			// 	__expand_var_quoted(tokens, index, NULL);
+			// }
 			if (__expand_var((t_norm){tokens, temp}, index, &start, env))
 				return (MEMORY_ERROR);
 		}
 		else if (__expand_word(tokens, index, &temp, &start))
 			return (MEMORY_ERROR);
 	}
+	vector_for_each(tokens, &token_display);
+	printf("\n");
 	free(temp.data);
 	return (SUCCESS);
 }

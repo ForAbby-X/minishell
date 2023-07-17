@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 01:30:36 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/28 17:30:41 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:42:09 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_merror	check_tok_error(t_vector *const tokens)
 			&& last_token->type != PIPE)
 			return (pars_error(token->data));
 		else if (index == vector_size(tokens) - 1 && is_tok_operator(token))
-			return (pars_error("\\n"));
+			return (pars_error("newline"));
 		last_token = token;
 		index++;
 	}

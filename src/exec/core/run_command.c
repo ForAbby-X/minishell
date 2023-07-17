@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_command.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 21:48:41 by olivier           #+#    #+#             */
-/*   Updated: 2023/07/05 00:50:33 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:22:10 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_merror	run_command(t_command *command, t_vector *env)
 
 	builtin_func = NULL;
 	restore_default_signal_handlers();
-	if (vector_addback(&command->words, &(char *){0}) == NULL)
+	if (vector_addback(&command->words, &(char *){NULL}) == NULL)
 		return (FAILURE);
 	if (handle_redirs(&(command->redirs)) != SUCCESS)
 		return (FAILURE);
