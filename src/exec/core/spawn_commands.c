@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 01:07:22 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/03 18:16:19 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/17 20:35:23 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	wait_childs(t_length childs_count, pid_t watch_cpid)
 	int			watch_status;
 
 	i = 0;
+	watch_status = 0;
 	while (i < childs_count)
 	{
 		if (wait(&wstatus) == watch_cpid)
@@ -96,7 +97,7 @@ t_merror	exec_piped_commands(t_command *commands,
 
 	prev_pipe_rd = STDIN_FILENO;
 	i = 0;
-	while (i < commands_count - 1)
+	while (commands_count && i < commands_count - 1)
 	{
 		if (pipe(pipefd) == -1)
 			return (close(prev_pipe_rd), perror("pipe error"), FAILURE);
@@ -109,8 +110,8 @@ t_merror	exec_piped_commands(t_command *commands,
 		prev_pipe_rd = pipefd[0];
 		i++;
 	}
-	if (spawn_last_command(commands + i, env, prev_pipe_rd, &cpid)
-		== CHILD_ERROR)
+	if (commands_count && spawn_last_command(commands + i, env,
+			prev_pipe_rd, &cpid) == CHILD_ERROR)
 		return (CHILD_ERROR);
 	wait_childs(commands_count, cpid);
 	return (SUCCESS);

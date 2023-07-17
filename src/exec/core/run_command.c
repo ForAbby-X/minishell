@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 21:48:41 by olivier           #+#    #+#             */
-/*   Updated: 2023/07/05 00:50:33 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:30:05 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_merror	run_command(t_command *command, t_vector *env)
 		return (FAILURE);
 	if (handle_redirs(&(command->redirs)) != SUCCESS)
 		return (FAILURE);
-	builtin_func = get_builtin_cmd(*(char **)(command->words.data));
+	builtin_func = get_builtin_cmd(command);
 	if (builtin_func != NULL)
 		return (builtin_func(command->words.size - 1,
 				command->words.data, env));
