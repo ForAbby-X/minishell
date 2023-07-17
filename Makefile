@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
+#    By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/07/08 19:11:34 by olimarti         ###   ########.fr        #
+#    Updated: 2023/07/17 16:18:52 by alde-fre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ OBJ		= 	$(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
 
 # compiler
-CC		= clang
+CC		= cc
 CFLAGS	= -MMD -MP -Wall -Wextra -g3#-Werror
 
 # vector library
