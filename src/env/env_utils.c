@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:25:45 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/05 17:03:02 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/18 17:39:57 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_getenv(t_vector const *const env, const char *name)
 	while (*str)
 	{
 		if (!ft_strncmp(*str, name, name_len) && (*str)[name_len] == '=')
-			return (ft_strtrim((*str) + name_len + 1, "\t "));
+			return (ft_strchr(*str, '=') + 1);
 		str++;
 	}
 	return (NULL);
@@ -35,7 +35,7 @@ static void	_remove_env_var_size(char *name, t_vector *env, int name_len)
 
 	i = 0;
 	str = vector_get(env, 0);
-	while (i + 1 < env->size)
+	while (env->size && i < env->size - 1)
 	{
 		if (ft_strncmp(str[i], name, name_len) == 0 && str[i][name_len] == '=')
 			vector_erase(env, i);
@@ -56,7 +56,7 @@ t_merror	set_env_var(char *var, char	*sep, t_vector *env)
 	return (SUCCESS);
 }
 
-char	**env_add(t_vector *const vector, char	*const obj)
+char	**env_add(t_vector *const vector, char *const obj)
 {
 	return ((char **)vector_addback(vector, obj));
 }
