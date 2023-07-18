@@ -6,13 +6,14 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 14:35:07 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/17 18:29:35 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/18 20:40:40 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins_cmd.h"
 #include "utils.h"
 #include "exec.h"
+#include "stdio.h"
 
 typedef struct s_builtin_map
 {
@@ -43,6 +44,8 @@ t_builtin_cmd_ptr	get_builtin_cmd(t_command *cmd)
 	if (cmd->words.size == 0)
 		return (builtin_empty);
 	name = *((char **)cmd->words.data);
+	if (name == NULL)
+		return (builtin_empty);
 	while (g_builtins_list[i].name != NULL
 		&& ft_strcmp(name, g_builtins_list[i].name) != 0)
 	{
