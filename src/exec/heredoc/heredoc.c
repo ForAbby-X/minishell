@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:56:09 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/08 19:51:33 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/18 20:45:10 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ t_merror	exec_heredocs_layer(t_vector *commands, t_vector *env)
 		set_ignore_signal_handlers();
 		error = exec_builtins_layer(commands->data, commands->size, env);
 	}
-	vector_for_each(&heredocs, (void (*)(t_object))delete_hd);
+	if (error != CHILD_ERROR)
+		vector_for_each(&heredocs, (void (*)(t_object))delete_hd);
 	vector_destroy(&heredocs);
 	return (error);
 }
