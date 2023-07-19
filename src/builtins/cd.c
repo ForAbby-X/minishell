@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/04 17:38:38 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/19 18:30:34 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ t_merror	builtin_cd(int argc, char **argv, t_vector *env)
 
 	err = SUCCESS;
 	if (argc > 2)
-		err = cd_err("cd: too many arguments");
+		err = cd_err("bash: cd: too many arguments");
 	else if (argc == 2)
 	{
 		if (argv[1] == NULL || argv[1][0] == '\0')
-			err = cd_err("cd: null directory");
+			err = cd_err("bash: cd: null directory");
 		else
 			chdir(argv[1]);
 	}
@@ -44,8 +44,7 @@ t_merror	builtin_cd(int argc, char **argv, t_vector *env)
 		if (path)
 			chdir(path);
 		else
-			err = cd_err("cd: HOME not set");
-		free(path);
+			err = cd_err("bash: cd: HOME not set");
 	}
 	if (err == SUCCESS)
 		set_exit_code(0);

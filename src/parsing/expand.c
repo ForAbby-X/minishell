@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/07/18 18:24:47 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/19 18:26:48 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,15 @@ static inline t_merror	__expand_var_word(
 static inline t_merror	__expand_var_quoted(
 	t_vector *const tokens,
 	t_length *index,
-	char *var)
+	char *var,
+	int flag)
 {
 	t_token	token;
 
 	token.type = WORD;
 	token.data = ft_strdup(var);
+	if (flag)
+		free(var);
 	if (token.data == NULL)
 		return (MEMORY_ERROR);
 	vector_insert(tokens, &token, *index);
@@ -103,11 +106,11 @@ static inline t_merror	__expand_var(
 
 	ptr = *str + 1;
 	if (ft_strchr("?$\0", *ptr))
-		return (*str += (2 - (*ptr == '\0')),
-			__expand_var_quoted(norm.toks, index, exp_get_var(*ptr)));
+		return (*str += (1 + (*ptr != '\0')),
+			__expand_var_quoted(norm.toks, index, exp_get_var(*ptr), 1));
 	if (ft_isdigit(*ptr) || !(ft_isalnum(*ptr) || *ptr == '_'))
 		return (*str += 2, tmp = *(ptr + 1), *(ptr + 1) = 0, \
-		__expand_var_quoted(norm.toks, index, ptr - 1), *(ptr + 1) = tmp, 0);
+		__expand_var_quoted(norm.toks, index, ptr - 1, 0), *(ptr + 1) = tmp, 0);
 	start = ptr;
 	while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
 		ptr++;
@@ -120,7 +123,7 @@ static inline t_merror	__expand_var(
 		return (SUCCESS);
 	if (norm.tok.type == WORD)
 		return (__expand_var_word(norm.toks, index, var));
-	return (__expand_var_quoted(norm.toks, index, var));
+	return (__expand_var_quoted(norm.toks, index, var, 0));
 }
 
 t_merror	expand_token(
@@ -132,18 +135,20 @@ t_merror	expand_token(
 	t_token	temp;
 	t_token	*lisa;
 	char	*start;
+	int		flag;
 
 	temp = *token;
 	start = token->data;
 	vector_erase(tokens, *index);
 	lisa = vector_get(tokens, *index);
+	flag = (lisa
+			&& (lisa->type == DOUBLE_QUOTED || lisa->type == SINGLE_QUOTED));
 	while (*start)
 	{
 		if (*start == '$')
 		{
-			if (lisa && *(start + 1) == 0
-				&& (lisa->type == DOUBLE_QUOTED || lisa->type == SINGLE_QUOTED))
-				return (__expand_var_quoted(tokens, index, ""));
+			if (*(start + 1) == '\0' && flag)
+				return (__expand_var_quoted(tokens, index, "", 0));
 			else if (__expand_var((t_norm){tokens, temp}, index, &start, env))
 				return (MEMORY_ERROR);
 		}

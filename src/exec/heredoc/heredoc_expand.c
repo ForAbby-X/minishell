@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 19:37:23 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/08 19:52:42 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/19 16:28:30 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "heredoc.h"
 
-static t_merror	_join_var(char **str, char *var)
+static inline t_merror	_join_var(char **str, char *var)
 {
 	char	*tmp;
 
@@ -28,9 +28,11 @@ static t_merror	_join_var(char **str, char *var)
 	return (SUCCESS);
 }
 
-static t_merror	__expand_var(char **in_str, char **out_str, t_vector *env)
+static inline t_merror	__expand_var(
+		char **in_str,
+		char **out_str,
+		t_vector *env)
 {
-	char		*var;
 	char		*start;
 	char		tmp;
 	t_merror	err;
@@ -39,7 +41,7 @@ static t_merror	__expand_var(char **in_str, char **out_str, t_vector *env)
 	if (**in_str == 0)
 		return (++(*in_str), _join_var(out_str, "$"));
 	if (**in_str == '$')
-		return (++(*in_str), _join_var(out_str, "PROCESS_PID"));
+		return (++(*in_str), _join_var(out_str, "PID"));
 	if (**in_str == '?')
 		return (++(*in_str), _join_var(out_str, "ERROR_CODE"));
 	if (ft_isdigit(**in_str) || !(ft_isalnum(**in_str) || **in_str == '_'))
@@ -49,9 +51,7 @@ static t_merror	__expand_var(char **in_str, char **out_str, t_vector *env)
 		++(*in_str);
 	tmp = **in_str;
 	**in_str = '\0';
-	var = ft_getenv(env, start);
-	err = _join_var(out_str, var) != SUCCESS;
-	free(var);
+	err = _join_var(out_str, ft_getenv(env, start)) != SUCCESS;
 	**in_str = tmp;
 	return (err);
 }

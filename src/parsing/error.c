@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 01:30:36 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/07/17 17:42:09 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/19 15:58:59 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_merror	pars_error(char *const str)
 	ft_putstr_fd("bash: syntax error near unexpected token `", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	write(STDERR_FILENO, "\'\n", 2);
+	set_exit_code(2);
 	return (PARSING_ERROR);
 }
 
