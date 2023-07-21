@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/07/19 18:26:48 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/21 18:23:48 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,12 +148,12 @@ t_merror	expand_token(
 		if (*start == '$')
 		{
 			if (*(start + 1) == '\0' && flag)
-				return (__expand_var_quoted(tokens, index, "", 0));
+				return (*index += 1, free(temp.data), SUCCESS);
 			else if (__expand_var((t_norm){tokens, temp}, index, &start, env))
-				return (MEMORY_ERROR);
+				return (free(temp.data), MEMORY_ERROR);
 		}
 		else if (__expand_word(tokens, index, &temp, &start))
-			return (MEMORY_ERROR);
+			return (free(temp.data), MEMORY_ERROR);
 	}
 	return (free(temp.data), SUCCESS);
 }

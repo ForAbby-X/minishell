@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 19:04:15 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/07/19 18:01:36 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/20 12:27:19 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ char	*exp_get_var(char const c)
 	else if (c == '$')
 		return (ft_getpid());
 	else if (c == '?')
-		return (ft_strdup("ERROR_CODE"));
+		return (ft_itoa(get_exit_code()));
 	return (NULL);
 }
