@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 23:19:12 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/08 19:17:06 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/21 18:56:34 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	hd_prompt(char *limiter, int out_fd, t_vector *env, int expandable)
 		free(line);
 		line = get_next_line(STDIN_FILENO);
 	}
+	if (line == NULL)
+		
 	free(line);
 	return (errno);
 }

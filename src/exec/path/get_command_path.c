@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_command_path.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 13:45:19 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 00:40:39 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/19 15:46:35 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,13 @@ char	*get_command_path(char *file, t_vector *const env)
 	char	*path;
 
 	if (ft_strchr(file, '/'))
-	{
 		return (ft_strdup(file));
-	}
 	paths_str = ft_getenv(env, "PATH");
 	path = NULL;
 	if (paths_str == NULL)
 		return (NULL);
 	path_list = parse_paths(paths_str);
 	path = search_file_path(file, path_list);
-	free(paths_str);
 	free_str_lst(&path_list);
 	return (path);
 }
