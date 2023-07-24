@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+         #
+#    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/07/17 16:18:52 by alde-fre         ###   ########.fr        #
+#    Updated: 2023/07/24 01:46:34 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,8 @@ SRC		=	main.c \
 			parsing/merge_redirs.c \
 			parsing/split_to_commands.c \
 			env/env_utils.c \
+			env/env_create.c \
+			env/env_destroy.c \
 			exec/path/get_command_path.c \
 			exec/path/path_utils.c \
 			exec/exec/ft_execvpe.c \
@@ -72,7 +74,7 @@ OBJ		= 	$(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
 
 # compiler
-CC		= cc
+CC		= clang
 CFLAGS	= -MMD -MP -Wall -Wextra -g3#-Werror
 
 # vector library
