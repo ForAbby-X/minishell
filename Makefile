@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/07/24 01:46:34 by olimarti         ###   ########.fr        #
+#    Updated: 2023/07/24 06:00:03 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ SRC		=	main.c \
 			exec/heredoc/heredoc.c \
 			exec/heredoc/heredoc_expand.c \
 			utils/string.c \
+			utils/numbers.c \
 			signals/signals.c \
 			signals/handlers.c \
 			builtins/echo.c \

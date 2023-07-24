@@ -6,11 +6,12 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:12:48 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/04 15:43:22 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/24 06:00:36 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "libft.h"
 
 int	ft_strcpyl(char *dst, char *src)
 {
@@ -33,37 +34,18 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-static inline void	skip_whitepaces(char **str)
+int	ft_putstrendl_fd_check(char *s, int fd)
 {
-	while ((**str >= 9 && **str <= 13) || **str == 32)
-		++*str;
+	int	len;
+
+	len = ft_strlen(s);
+	return ((write(fd, s, len) != len) | (write(fd, "\n", 1) != 1));
 }
 
-int	ft_atoi_validate(char *str, int *result)
+int	ft_putstr_fd_check(char *s, int fd)
 {
-	long	value;
-	int		sign;
+	int	len;
 
-	value = 0;
-	sign = 1;
-	skip_whitepaces(&str);
-	if (*str == '+' || *str == '-')
-	{
-		if (str[1] < '0' && str[1] > '9')
-			return (1);
-		if (*str == '-')
-			sign = sign * -1;
-		str++;
-	}
-	while (*str >= '0' && *str <= '9')
-	{
-		value = value * 10 + (*str - '0');
-		if (value - (sign == -1) > 2147483647)
-			return (1);
-		str++;
-	}
-	skip_whitepaces(&str);
-	if (*str != 0)
-		return (1);
-	return (*result = value * sign, 0);
+	len = ft_strlen(s);
+	return ((write(fd, s, len) != len));
 }

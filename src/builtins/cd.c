@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/22 04:37:58 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/24 04:47:12 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,9 @@
 #include "errno.h"
 #include "env.h"
 
-static inline t_merror	cd_err(char *str)
+static inline t_merror	__cd_err(char *str)
 {
-	ft_putstr_fd("cd: ", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
-	set_exit_code(1);
+	_set_err("cd", (char *[]){str}, 1, 1);
 	return (FAILURE);
 }
 
@@ -49,7 +46,7 @@ static t_merror	change_dir(char *path, t_vector *env)
 	if (tmp == NULL)
 		tmp = "";
 	if (chdir(path) == -1)
-		return (cd_err(strerror(errno)));
+		return (__cd_err(strerror(errno)));
 	path = getcwd(NULL, 0);
 	if (!path)
 		return (MEMORY_ERROR);
@@ -65,7 +62,7 @@ t_merror	builtin_cd(int argc, char **argv, t_vector *env)
 
 	err = SUCCESS;
 	if (argc > 2)
-		err = cd_err("too many arguments");
+		err = __cd_err("too many arguments");
 	else if (argc == 2)
 	{
 		if (argv[1] != NULL && argv[1][0] != '\0')
@@ -77,7 +74,7 @@ t_merror	builtin_cd(int argc, char **argv, t_vector *env)
 		if (path)
 			err = change_dir(path, env);
 		else
-			err = cd_err("HOME not set");
+			err = __cd_err("HOME not set");
 	}
 	if (err == SUCCESS)
 		set_exit_code(0);

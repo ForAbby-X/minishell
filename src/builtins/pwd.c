@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/05 17:05:00 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/24 05:51:51 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,13 @@ t_merror	builtin_pwd(int argc, char **argv, t_vector *env)
 		set_exit_code(1);
 		return (FAILURE);
 	}
-	ft_putstr_fd(path, STDOUT_FILENO);
-	ft_putchar_fd('\n', STDOUT_FILENO);
+	if (ft_putstrendl_fd_check(path, STDOUT_FILENO))
+	{
+		_set_err("pwd",
+			(char*[]){"write error: ", strerror(errno)}, 2, 1);
+		free(path);
+		return (FAILURE);
+	}
 	set_exit_code(0);
 	free(path);
 	return (SUCCESS);
