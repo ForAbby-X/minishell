@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 00:35:44 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 01:45:18 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/24 20:46:09 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_merror	_init_env(char **env, t_vector *const vector)
 
 void		_env_destroy(t_vector *env)
 			__attribute__((always_inline));
-
 
 char		**env_add(t_vector *const vector, char	*const obj)
 			__attribute__((always_inline));

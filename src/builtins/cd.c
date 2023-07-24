@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 04:47:12 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 01:10:40 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,14 @@ static t_merror	change_dir(char *path, t_vector *env)
 	if (tmp == NULL)
 		tmp = "";
 	if (chdir(path) == -1)
-		return (__cd_err(strerror(errno)));
+	{
+		_set_err("cd", (char *[]){path, ": ", strerror(errno)}, 3, 1);
+		return (FAILURE);
+	}
 	path = getcwd(NULL, 0);
 	if (!path)
 		return (MEMORY_ERROR);
-	err =_set_env_vars(tmp, path, env);
+	err = _set_env_vars(tmp, path, env);
 	free(path);
 	return (err);
 }

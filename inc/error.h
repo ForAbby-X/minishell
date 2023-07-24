@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:40:35 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/07/24 04:49:38 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 01:00:30 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,5 @@ typedef enum e_merror {
 void				set_exit_code(int exit_code);
 int					get_exit_code(void);
 void				_set_err(char *cmd, char *err[], int count, int code);
-
 
 #endif
