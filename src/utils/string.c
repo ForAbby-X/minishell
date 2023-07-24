@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:12:48 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 06:00:36 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/24 06:28:44 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_putstrendl_fd_check(char *s, int fd)
 	int	len;
 
 	len = ft_strlen(s);
-	return ((write(fd, s, len) != len) | (write(fd, "\n", 1) != 1));
+	return ((write(fd, s, len) != len) || (write(fd, "\n", 1) != 1));
 }
 
 int	ft_putstr_fd_check(char *s, int fd)
