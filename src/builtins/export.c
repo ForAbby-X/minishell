@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 20:46:48 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 01:58:28 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,14 @@ static void	_display_env_sorted(t_vector *env)
 
 static int	_is_valid_name(char *name, char *end)
 {
-	if (name == NULL || ft_isdigit(*name) || name == end)
+	if (name == NULL || ft_isdigit(*name) || name == end || *name == '+')
 		return (0);
 	while (name < end && name != NULL)
 	{
 		if (!ft_isalnum(*name) && *name != '_')
 		{
-			return (0);
+			if ((name + 1 != end) || *name != '+')
+				return (0);
 		}
 		name ++;
 	}
@@ -70,21 +71,28 @@ static int	_is_valid_name(char *name, char *end)
 static t_merror	_export_var(char *var, t_vector *env)
 {
 	char		*sep;
+	char		*tmp;
 
+	tmp = NULL;
 	sep = ft_strchr(var, '=');
 	if (sep == NULL)
-	{
 		return (__export_err(var, " not a valid identifier"));
-	}
 	else if (_is_valid_name(var, sep))
 	{
-		if (set_env_var(var, sep, env) == MEMORY_ERROR)
-			return (__export_err("memory error", NULL));
+		if (sep > var && sep[-1] == '+')
+		{
+			sep[-1] = '\0';
+			tmp = ft_strjoin(var, sep);
+			sep[-1] = '+';
+			sep = tmp + (sep - var) - 1;
+			var = tmp;
+		}
+		if (!var || set_env_var(var, sep, env) == MEMORY_ERROR)
+			return (free(tmp), __export_err("memory error", NULL));
+		free(tmp);
 	}
 	else
-	{
 		return (__export_err(var, " not a valid identifier"));
-	}
 	return (SUCCESS);
 }
 
