@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/25 01:58:28 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 03:04:56 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ t_merror	builtin_export(int argc, char **argv, t_vector *env)
 			err |= _export_var(*argv, env);
 		}
 	}
-	if (err == SUCCESS)
-		set_exit_code(0);
-	return (err);
+	if (err != SUCCESS)
+		return (FAILURE);
+	set_exit_code(0);
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/25 02:45:13 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 03:06:28 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ static t_merror	_set_env_vars(char *oldpwd, char *pwd, t_vector *env)
 	return (SUCCESS);
 }
 
-static t_merror	change_dir(char *path, t_vector *env)
+static t_merror	_change_dir(char *path, t_vector *env)
 {
 	char		*tmp;
+	char		*new_pwd;
 	t_merror	err;
 
 	tmp = ft_getenv(env, "PWD");
@@ -50,15 +51,16 @@ static t_merror	change_dir(char *path, t_vector *env)
 		_set_err("cd", (char *[]){path, ": ", strerror(errno)}, 3, 1);
 		return (FAILURE);
 	}
-	path = getcwd(NULL, 0);
-	if (!path)
+	new_pwd = getcwd(NULL, 0);
+	if (!new_pwd)
 	{
 		_set_err("cd", (char *[]){"error retrieving current directory: ",
 			strerror(errno)}, 2, 0);
+		_set_env_vars(tmp, path, env);
 		return (FAILURE);
 	}
-	err = _set_env_vars(tmp, path, env);
-	free(path);
+	err = _set_env_vars(tmp, new_pwd, env);
+	free(new_pwd);
 	return (err);
 }
 
@@ -73,17 +75,18 @@ t_merror	builtin_cd(int argc, char **argv, t_vector *env)
 	else if (argc == 2)
 	{
 		if (argv[1] != NULL && argv[1][0] != '\0')
-			err = change_dir(argv[1], env);
+			err = _change_dir(argv[1], env);
 	}
 	else
 	{
 		path = ft_getenv(env, "HOME");
 		if (path)
-			err = change_dir(path, env);
+			err = _change_dir(path, env);
 		else
 			err = __cd_err("HOME not set");
 	}
-	if (err == SUCCESS)
-		set_exit_code(0);
-	return (err);
+	if (err != SUCCESS)
+		return (FAILURE);
+	set_exit_code(0);
+	return (SUCCESS);
 }
