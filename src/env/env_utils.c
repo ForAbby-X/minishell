@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:25:45 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/18 17:39:57 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/24 02:58:37 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ static void	_remove_env_var_size(char *name, t_vector *env, int name_len)
 	while (env->size && i < env->size - 1)
 	{
 		if (ft_strncmp(str[i], name, name_len) == 0 && str[i][name_len] == '=')
+		{
+			free(*((char **)vector_get(env, i)));
 			vector_erase(env, i);
+		}
 		++i;
 	}
 }

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 01:26:00 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/19 18:29:27 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/24 05:19:33 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "error.h"
 #include "libft.h"
+#include "utils.h"
 
 int	g_exit_code = 0;
 
@@ -25,11 +26,47 @@ int	get_exit_code(void)
 	return (g_exit_code);
 }
 
-t_merror	_set_err(char *str, int code, t_merror status)
+static	char	*_multi_strjoin(char *tab[], int count)
 {
-	ft_putstr_fd("bash:", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
+	int		i;
+	int		lenght;
+	char	*str;
+
+	i = 0;
+	lenght = 0;
+	while (i < count)
+	{
+		lenght += ft_strlen(tab[i]);
+		i++;
+	}
+	str = malloc((lenght + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	i = 0;
+	lenght = 0;
+	while (i < count)
+	{
+		lenght += ft_strcpyl(str + lenght, tab[i]);
+		++i;
+	}
+	str[lenght] = 0;
+	return (str);
+}
+
+void	_set_err(char *cmd, char *err[], int count, int code)
+{
+	char	*tmp;
+	char	*tmp2;
+
 	set_exit_code(code);
-	return (status);
+	tmp2 = NULL;
+	tmp = _multi_strjoin(err, count);
+	if (tmp)
+		tmp2 = _multi_strjoin((char *[]){"bash: ", cmd, ": ", tmp, "\n"}, 5);
+	if (tmp2)
+		ft_putstr_fd(tmp2, STDERR_FILENO);
+	else
+		ft_putstr_fd("bash: internal error", STDERR_FILENO);
+	free(tmp);
+	free(tmp2);
 }

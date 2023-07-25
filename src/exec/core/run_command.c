@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_command.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 21:48:41 by olivier           #+#    #+#             */
-/*   Updated: 2023/07/17 17:22:10 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/24 05:16:13 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,8 @@
 t_merror
 	run_command_error(t_command *command, char *const str, int exit_code)
 {
-	ft_putstr_fd(*(char **)vector_get(&(command->words), 0), STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	set_exit_code(exit_code);
+	_set_err(*(char **)vector_get(&(command->words), 0),
+		(char *[]){str}, 1, exit_code);
 	return (FAILURE);
 }
 

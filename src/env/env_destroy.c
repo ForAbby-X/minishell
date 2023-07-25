@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   interface.c                                        :+:      :+:    :+:   */
+/*   env_destroy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 00:40:54 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 06:32:01 by olimarti         ###   ########.fr       */
+/*   Created: 2023/07/24 01:38:38 by olimarti          #+#    #+#             */
+/*   Updated: 2023/07/24 20:47:09 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-#include "command.h"
-#include "heredoc.h"
+#include "env.h"
 
-t_merror	exec_commands(t_vector *commands, t_vector *env)
+static void	__env_entry_destroy(void *const object)
 {
-	t_merror	result;
+	free(*((char **)object));
+}
 
-	result = exec_heredocs_layer(commands, env);
-	return (result);
+inline void	_env_destroy(t_vector *env)
+{
+	vector_for_each(env, &__env_entry_destroy);
 }

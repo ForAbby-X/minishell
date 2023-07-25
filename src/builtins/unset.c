@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/05 02:21:29 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/24 03:01:48 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ static void	_remove_var(char	*name, t_vector *env)
 	while (i + 1 < env->size)
 	{
 		if (ft_strncmp(str[i], name, name_len) == 0 && str[i][name_len] == '=')
+		{
+			free(*((char **)vector_get(env, i)));
 			vector_erase(env, i);
+		}
 		++i;
 	}
 }
