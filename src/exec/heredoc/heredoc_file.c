@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_file.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 23:19:12 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/08 19:52:17 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/21 18:52:02 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,10 @@ static char	*heredoc_file_name(char *directory)
 	path = name_gen(directory, HEREDOC_PREFIX, i);
 	while (access(path, F_OK) == 0)
 	{
+		free(path);
+		path = NULL;
+		if (i == (int)(0xFFFFFFFF >> 1))
+			return (free(path), "/tmp/\"c la sose\"");
 		free(path);
 		path = name_gen(directory, HEREDOC_PREFIX, i);
 		i++;

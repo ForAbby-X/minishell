@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:56:09 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/18 20:45:10 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 03:55:04 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,8 @@ static t_merror
 	return (error);
 }
 
-static void	delete_hd(char **path)
+static void	_delete_hd(char **path)
 {
-	fprintf(stderr, "DELETE TMP FILE : %s\n", *path);
 	unlink(*path);
 }
 
@@ -86,7 +85,7 @@ t_merror	exec_heredocs_layer(t_vector *commands, t_vector *env)
 		error = exec_builtins_layer(commands->data, commands->size, env);
 	}
 	if (error != CHILD_ERROR)
-		vector_for_each(&heredocs, (void (*)(t_object))delete_hd);
+		vector_for_each(&heredocs, (void (*)(t_object))_delete_hd);
 	vector_destroy(&heredocs);
 	return (error);
 }

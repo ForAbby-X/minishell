@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/04 17:38:38 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 03:06:28 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,53 @@
 #include "errno.h"
 #include "env.h"
 
-static inline t_merror	cd_err(char *str)
+static inline t_merror	__cd_err(char *str)
 {
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
-	set_exit_code(1);
+	_set_err("cd", (char *[]){str}, 1, 1);
 	return (FAILURE);
+}
+
+static t_merror	_set_env_vars(char *oldpwd, char *pwd, t_vector *env)
+{
+	oldpwd = ft_strjoin("OLDPWD=", oldpwd);
+	if (!oldpwd)
+		return (MEMORY_ERROR);
+	printf("[%s]\n", oldpwd);
+	set_env_var(oldpwd, ft_strchr(oldpwd, '='), env);
+	free(oldpwd);
+	pwd = ft_strjoin("PWD=", pwd);
+	if (!pwd)
+		return (MEMORY_ERROR);
+	set_env_var(pwd, ft_strchr(pwd, '='), env);
+	free(pwd);
+	return (SUCCESS);
+}
+
+static t_merror	_change_dir(char *path, t_vector *env)
+{
+	char		*tmp;
+	char		*new_pwd;
+	t_merror	err;
+
+	tmp = ft_getenv(env, "PWD");
+	if (tmp == NULL)
+		tmp = "";
+	if (chdir(path) == -1)
+	{
+		_set_err("cd", (char *[]){path, ": ", strerror(errno)}, 3, 1);
+		return (FAILURE);
+	}
+	new_pwd = getcwd(NULL, 0);
+	if (!new_pwd)
+	{
+		_set_err("cd", (char *[]){"error retrieving current directory: ",
+			strerror(errno)}, 2, 0);
+		_set_env_vars(tmp, path, env);
+		return (FAILURE);
+	}
+	err = _set_env_vars(tmp, new_pwd, env);
+	free(new_pwd);
+	return (err);
 }
 
 t_merror	builtin_cd(int argc, char **argv, t_vector *env)
@@ -30,24 +71,22 @@ t_merror	builtin_cd(int argc, char **argv, t_vector *env)
 
 	err = SUCCESS;
 	if (argc > 2)
-		err = cd_err("cd: too many arguments");
+		err = __cd_err("too many arguments");
 	else if (argc == 2)
 	{
-		if (argv[1] == NULL || argv[1][0] == '\0')
-			err = cd_err("cd: null directory");
-		else
-			chdir(argv[1]);
+		if (argv[1] != NULL && argv[1][0] != '\0')
+			err = _change_dir(argv[1], env);
 	}
 	else
 	{
 		path = ft_getenv(env, "HOME");
 		if (path)
-			chdir(path);
+			err = _change_dir(path, env);
 		else
-			err = cd_err("cd: HOME not set");
-		free(path);
+			err = __cd_err("HOME not set");
 	}
-	if (err == SUCCESS)
-		set_exit_code(0);
-	return (err);
+	if (err != SUCCESS)
+		return (FAILURE);
+	set_exit_code(0);
+	return (SUCCESS);
 }

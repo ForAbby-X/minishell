@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/04 19:44:24 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/24 05:48:17 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,42 @@
 
 static inline t_merror	__env_err(char *str)
 {
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
-	set_exit_code(1);
+	_set_err("env", (char *[]){str}, 1, 1);
 	return (FAILURE);
 }
 
-void	env_var_display(void *const object)
+int	env_var_display(void *const object)
 {
 	char *const	*line = object;
 
 	if (*line)
 	{
-		ft_putstr_fd(*line, STDOUT_FILENO);
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		return (ft_putstrendl_fd_check(*line, STDOUT_FILENO));
 	}
+	return (0);
 }
 
 t_merror	builtin_env(int argc, char **argv, t_vector *env)
 {
+	t_length	index;
+
 	(void) argv;
 	if (argc > 1)
 	{
 		__env_err("env: too many arguments");
 		return (FAILURE);
 	}
-	vector_for_each(env, env_var_display);
+	index = 0;
+	while (index < env->size)
+	{
+		if (env_var_display(env->data + env->type_size * index))
+		{
+			_set_err("env",
+				(char*[]){"write error: ", strerror(errno)}, 2, 125);
+			return (FAILURE);
+		}
+		index++;
+	}
 	set_exit_code(0);
 	return (SUCCESS);
 }
