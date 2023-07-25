@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 03:34:10 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/08 19:52:05 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 05:45:29 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include "exec.h"
 # include "libft.h"
 # include "utils.h"
+
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # include <unistd.h>
 # include <fcntl.h>
@@ -31,6 +35,6 @@ t_merror
 	heredoc_file(char *limiter, char **filename, t_vector *env, int expandable);
 t_merror	exec_heredocs_layer(t_vector *commands, t_vector *env);
 t_merror	string_expander(char *in_str, char **out_str, t_vector *env);
-int			hd_prompt(char *limiter, int out_fd, t_vector *env, int expandable);
+t_merror	hd_prompt(char *limiter, int out_fd, t_vector *env, int expandable);
 
 #endif

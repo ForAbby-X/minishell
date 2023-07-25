@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 21:48:41 by olivier           #+#    #+#             */
-/*   Updated: 2023/07/25 03:31:09 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 t_merror
 	run_command_error(t_command *command, char *const str, int exit_code)
 {
-	_set_err(*(char **)vector_get(&(command->words), 0),
+	set_err(*(char **)vector_get(&(command->words), 0),
 		(char *[]){str}, 1, exit_code);
 	return (FAILURE);
 }

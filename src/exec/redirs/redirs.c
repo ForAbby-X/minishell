@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 00:28:11 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 05:21:10 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int const	g_redir_flag_table[] = {
 
 static t_merror	redir_error(t_token *redir, char *const str)
 {
-	_set_err(redir->data, (char *[]){str}, 1, 1);
+	set_err(redir->data, (char *[]){str}, 1, 1);
 	return (FAILURE);
 }
 

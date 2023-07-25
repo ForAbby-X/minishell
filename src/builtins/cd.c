@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/25 03:06:28 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static inline t_merror	__cd_err(char *str)
 {
-	_set_err("cd", (char *[]){str}, 1, 1);
+	set_err("cd", (char *[]){str}, 1, 1);
 	return (FAILURE);
 }
 
@@ -48,13 +48,13 @@ static t_merror	_change_dir(char *path, t_vector *env)
 		tmp = "";
 	if (chdir(path) == -1)
 	{
-		_set_err("cd", (char *[]){path, ": ", strerror(errno)}, 3, 1);
+		set_err("cd", (char *[]){path, ": ", strerror(errno)}, 3, 1);
 		return (FAILURE);
 	}
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd)
 	{
-		_set_err("cd", (char *[]){"error retrieving current directory: ",
+		set_err("cd", (char *[]){"error retrieving current directory: ",
 			strerror(errno)}, 2, 0);
 		_set_env_vars(tmp, path, env);
 		return (FAILURE);

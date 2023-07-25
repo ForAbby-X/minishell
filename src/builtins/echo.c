@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 11:20:27 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 06:10:37 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static inline int	__echo_putstr(char *str)
 {
 	if (ft_putstr_fd_check(str, STDOUT_FILENO))
 	{
-		_set_err("echo",
+		set_err("echo",
 			(char*[]){"write error: ", strerror(errno)}, 2, 1);
 		return (1);
 	}

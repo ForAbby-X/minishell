@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/25 03:04:56 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 23:02:50 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 static inline t_merror	__export_err(char *str, char *str2)
 {
 	if (!str2)
-		_set_err("export", (char *[]){str}, 1, 1);
+		set_err("export", (char *[]){str}, 1, 1);
 	else
-		_set_err("export", (char *[]){"\"", str, "\"", str2}, 4, 1);
+		set_err("export", (char *[]){"`", str, "'", str2}, 4, 1);
 	return (FAILURE);
 }
 

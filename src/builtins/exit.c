@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 05:10:47 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static inline t_merror	__exit_err(char *str, int code)
 {
-	_set_err("exit", (char *[]){str}, 1, code);
+	set_err("exit", (char *[]){str}, 1, code);
 	return (FAILURE);
 }
 
@@ -40,7 +40,7 @@ t_merror	builtin_exit(int argc, char **argv, t_vector *env)
 		}
 		else
 		{
-			_set_err("exit",
+			set_err("exit",
 				(char *[]){argv[1], ": numeric argument required"}, 2, 2);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 01:26:00 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 05:19:33 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 23:02:18 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,11 @@ static	char	*_multi_strjoin(char *tab[], int count)
 	return (str);
 }
 
-void	_set_err(char *cmd, char *err[], int count, int code)
+void	display_err(char *cmd, char **err, int count)
 {
 	char	*tmp;
 	char	*tmp2;
 
-	set_exit_code(code);
 	tmp2 = NULL;
 	tmp = _multi_strjoin(err, count);
 	if (tmp)
@@ -69,4 +68,10 @@ void	_set_err(char *cmd, char *err[], int count, int code)
 		ft_putstr_fd("bash: internal error", STDERR_FILENO);
 	free(tmp);
 	free(tmp2);
+}
+
+void	set_err(char *cmd, char **err, int count, int code)
+{
+	set_exit_code(code);
+	display_err(cmd, err, count);
 }
