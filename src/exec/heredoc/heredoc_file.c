@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_file.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 23:19:12 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/21 18:52:02 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*heredoc_file_name(char *directory)
 		free(path);
 		path = NULL;
 		if (i == (int)(0xFFFFFFFF >> 1))
-			return (free(path), "/tmp/\"c la sose\"");
+			return (free(path), NULL);
 		free(path);
 		path = name_gen(directory, HEREDOC_PREFIX, i);
 		i++;
@@ -77,20 +77,22 @@ static int	create_heredoc_file(int *fd, char **filepath)
 t_merror
 	heredoc_file(char *limiter, char **filename, t_vector *env, int expandable)
 {
-	int		fd;
+	int			fd;
+	t_merror	err;
 
 	if (create_heredoc_file(&fd, filename) != 0)
 	{
-		perror("cannot open heredoc");
+		set_err("heredoc", (char *[]){"cannot create file"}, 1, 1);
 		return (FAILURE);
 	}
-	if (hd_prompt(limiter, fd, env, expandable) != 0)
+	err = hd_prompt(limiter, fd, env, expandable);
+	if (err != SUCCESS)
 	{
 		close(fd);
 		unlink(*filename);
 		free(*filename);
 		*filename = NULL;
-		return (FAILURE);
+		return (err);
 	}
 	close(fd);
 	return (SUCCESS);

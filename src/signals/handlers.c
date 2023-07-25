@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:58:39 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/29 15:18:33 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 05:51:04 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,5 @@ void	hd_on_sigint(int sig)
 {
 	(void) sig;
 	set_exit_code(128 + sig);
+	close(STDIN_FILENO);
 }

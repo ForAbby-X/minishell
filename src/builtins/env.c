@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 05:48:17 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static inline t_merror	__env_err(char *str)
 {
-	_set_err("env", (char *[]){str}, 1, 1);
+	set_err("env", (char *[]){str}, 1, 1);
 	return (FAILURE);
 }
 
@@ -47,7 +47,7 @@ t_merror	builtin_env(int argc, char **argv, t_vector *env)
 	{
 		if (env_var_display(env->data + env->type_size * index))
 		{
-			_set_err("env",
+			set_err("env",
 				(char*[]){"write error: ", strerror(errno)}, 2, 125);
 			return (FAILURE);
 		}
