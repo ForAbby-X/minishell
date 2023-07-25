@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 12:24:24 by olimarti          #+#    #+#             */
-/*   Updated: 2023/05/09 01:12:21 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/19 15:35:46 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ static int	ft_strcpy(char *dst, char *src)
 
 char	**parse_paths(char *path_str)
 {
-	char	**paths;
-
-	paths = ft_split(path_str, ':');
-	return (paths);
+	return (ft_split(path_str, ':'));
 }
 
 char	*join_path(char *dir, char *prog_name)

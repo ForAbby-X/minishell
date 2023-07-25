@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/30 19:28:52 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/25 01:00:47 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static inline t_merror	__expand_var_word(
 			var++;
 		temp = *var;
 		*var = '\0';
-		token.data = start;
+		token.data = ft_strdup(start);
 		if (token.data == NULL)
 			return (MEMORY_ERROR);
 		*var = temp;
@@ -47,15 +47,15 @@ static inline t_merror	__expand_var_word(
 static inline t_merror	__expand_var_quoted(
 	t_vector *const tokens,
 	t_length *index,
-	char *var)
+	char *var,
+	int flag)
 {
 	t_token	token;
 
 	token.type = WORD;
-	if (var)
-		token.data = var;
-	else
-		token.data = ft_strdup("");
+	token.data = ft_strdup(var);
+	if (flag)
+		free(var);
 	if (token.data == NULL)
 		return (MEMORY_ERROR);
 	vector_insert(tokens, &token, *index);
@@ -87,8 +87,14 @@ static inline t_merror	__expand_word(
 	return (SUCCESS);
 }
 
+typedef struct s_norm
+{
+	t_vector	*toks;
+	t_token		tok;
+}	t_norm;
+
 static inline t_merror	__expand_var(
-	t_vector *const tokens,
+	t_norm norm,
 	t_length *const index,
 	char **const str,
 	t_vector const *const env)
@@ -99,15 +105,12 @@ static inline t_merror	__expand_var(
 	char	tmp;
 
 	ptr = *str + 1;
-	if (*ptr == 0)
-		return (*str += 1, __expand_var_quoted(tokens, index, "$"));
-	if (*ptr == '$')
-		return (*str += 2, __expand_var_quoted(tokens, index, "PROCESS_PID"));
-	if (*ptr == '?')
-		return (*str += 2, __expand_var_quoted(tokens, index, "ERROR_CODE"));
+	if (ft_strchr("?$\0", *ptr))
+		return (*str += (1 + (*ptr != '\0')),
+			__expand_var_quoted(norm.toks, index, exp_get_var(*ptr), 1));
 	if (ft_isdigit(*ptr) || !(ft_isalnum(*ptr) || *ptr == '_'))
-		return (*str += 2, tmp = *(ptr + 1), *(ptr + 1) = 0,
-			__expand_var_quoted(tokens, index, ptr - 1), *(ptr + 1) = tmp, 0);
+		return (*str += 2, tmp = *(ptr + 1), *(ptr + 1) = 0, \
+		__expand_var_quoted(norm.toks, index, ptr - 1, 0), *(ptr + 1) = tmp, 0);
 	start = ptr;
 	while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
 		ptr++;
@@ -115,9 +118,12 @@ static inline t_merror	__expand_var(
 	*ptr = '\0';
 	var = ft_getenv(env, start);
 	*ptr = tmp;
-	if (((t_token *)vector_get(tokens, *index - 1))->type == WORD)\
-		return (*str = ptr, !var || __expand_var_word(tokens, index, var));
-	return (*str = ptr, __expand_var_quoted(tokens, index, var));
+	*str = ptr;
+	if (var == NULL)
+		return (SUCCESS);
+	if (norm.tok.type == WORD)
+		return (__expand_var_word(norm.toks, index, var));
+	return (__expand_var_quoted(norm.toks, index, var, 0));
 }
 
 t_merror	expand_token(
@@ -127,21 +133,27 @@ t_merror	expand_token(
 	t_vector const *const env)
 {
 	t_token	temp;
+	t_token	*lisa;
 	char	*start;
+	int		flag;
 
 	temp = *token;
 	start = token->data;
 	vector_erase(tokens, *index);
+	lisa = vector_get(tokens, *index);
+	flag = (lisa
+			&& (lisa->type == DOUBLE_QUOTED || lisa->type == SINGLE_QUOTED));
 	while (*start)
 	{
 		if (*start == '$')
 		{
-			if (__expand_var(tokens, index, &start, env))
-				return (MEMORY_ERROR);
+			if (*(start + 1) == '\0' && flag)
+				return (*index += 1, free(temp.data), SUCCESS);
+			else if (__expand_var((t_norm){tokens, temp}, index, &start, env))
+				return (free(temp.data), MEMORY_ERROR);
 		}
 		else if (__expand_word(tokens, index, &temp, &start))
-			return (MEMORY_ERROR);
+			return (free(temp.data), MEMORY_ERROR);
 	}
-	free(temp.data);
-	return (SUCCESS);
+	return (free(temp.data), SUCCESS);
 }

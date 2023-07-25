@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 01:07:22 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/17 20:35:23 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/25 03:31:25 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ t_merror	exec_piped_commands(t_command *commands,
 		prev_pipe_rd = pipefd[0];
 		i++;
 	}
-	if (commands_count && spawn_last_command(commands + i, env,
-			prev_pipe_rd, &cpid) == CHILD_ERROR)
+	if (commands_count && i < commands_count && spawn_last_command(commands + i,
+			env, prev_pipe_rd, &cpid) == CHILD_ERROR)
 		return (CHILD_ERROR);
 	wait_childs(commands_count, cpid);
 	return (SUCCESS);
