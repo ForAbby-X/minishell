@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/26 03:04:43 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_merror	builtin_env(int argc, char **argv, t_vector *env)
 	(void) argv;
 	if (argc > 1)
 	{
-		__env_err("env: too many arguments");
+		__env_err("too many arguments");
 		return (FAILURE);
 	}
 	index = 0;

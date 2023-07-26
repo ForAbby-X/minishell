@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/07/24 06:00:03 by olimarti         ###   ########.fr        #
+#    Updated: 2023/07/26 00:38:37 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRC		=	main.c \
 			env/env_utils.c \
 			env/env_create.c \
 			env/env_destroy.c \
+			env/env_shlvl.c \
 			exec/path/get_command_path.c \
 			exec/path/path_utils.c \
 			exec/exec/ft_execvpe.c \

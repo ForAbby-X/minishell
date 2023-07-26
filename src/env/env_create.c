@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 01:43:51 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 02:50:41 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/26 03:29:55 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,10 @@ t_merror	_init_env(char **env, t_vector *const vector)
 		err = MEMORY_ERROR;
 	if (err)
 		_env_destroy(vector);
+	if (err == SUCCESS && handle_shlvl(vector) != SUCCESS)
+	{
+		display_err("warning",
+			(char *[]){"failed to initialize SHLVL environment variable"}, 1);
+	}
 	return (err);
 }
