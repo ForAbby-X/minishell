@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/26 05:00:08 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/26 06:50:12 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static t_merror	go_oldpwd(t_vector *env)
 	{
 		set_err("cd",
 			(char*[]){"write error: ", strerror(errno)}, 2, 1);
+		err = FAILURE;
 	}
 	return (err);
 }

@@ -1,19 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/25 23:02:50 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/26 07:10:43 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins_cmd.h"
-#include "utils.h"
-#include "error.h"
-#include "env.h"
+#include "builtins_export.h"
 
 static inline t_merror	__export_err(char *str, char *str2)
 {
@@ -22,34 +20,6 @@ static inline t_merror	__export_err(char *str, char *str2)
 	else
 		set_err("export", (char *[]){"`", str, "'", str2}, 4, 1);
 	return (FAILURE);
-}
-
-static void	_display_env_sorted(t_vector *env)
-{
-	char	**last;
-	char	**str;
-	char	**less;
-
-	last = NULL;
-	less = vector_get(env, 0);
-	while (less != NULL)
-	{
-		str = vector_get(env, 0);
-		while (*str != NULL && last != NULL && ft_strcmp(*str, *last) <= 0)
-			str++;
-		less = str;
-		while (*str != NULL)
-		{
-			if (ft_strcmp(*str, *less) < 0
-				&& (last == NULL || ft_strcmp(*str, *last) > 0))
-				less = str;
-			str ++;
-		}
-		if (less == last || *less == NULL)
-			return ;
-		printf("%s\n", *less);
-		last = less;
-	}
 }
 
 static int	_is_valid_name(char *name, char *end)
@@ -102,7 +72,11 @@ t_merror	builtin_export(int argc, char **argv, t_vector *env)
 
 	err = SUCCESS;
 	if (argc == 1)
-		return (_display_env_sorted(env), set_exit_code(0), SUCCESS);
+	{
+		set_exit_code(0);
+		display_env_sorted(env);
+		return (SUCCESS);
+	}
 	while (*++argv)
 	{
 		if (*argv != NULL)

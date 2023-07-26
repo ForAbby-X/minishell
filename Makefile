@@ -6,7 +6,7 @@
 #    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/07/26 00:38:37 by olimarti         ###   ########.fr        #
+#    Updated: 2023/07/26 07:01:08 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,8 @@ SRC		=	main.c \
 			builtins/pwd.c \
 			builtins/env.c \
 			builtins/unset.c \
-			builtins/export.c \
+			builtins/export/core.c \
+			builtins/export/display.c \
 			builtins/empty.c \
 			builtins/builtins.c \
 			exec/exec/builtins_exec.c
@@ -76,8 +77,8 @@ OBJ		= 	$(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
 
 # compiler
-CC		= clang
-CFLAGS	= -MMD -MP -Wall -Wextra -g3#-Werror
+CC		= cc
+CFLAGS	= -MMD -MP -Wall -Wextra -g3 -Werror
 
 # vector library
 VECTOR		= ./c-vectorlib/
