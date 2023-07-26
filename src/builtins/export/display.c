@@ -1,58 +1,59 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/26 06:42:03 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/26 07:03:06 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins_cmd.h"
-#include "utils.h"
-#include "errno.h"
-#include "env.h"
-
-static inline t_merror	__env_err(char *str)
-{
-	set_err("env", (char *[]){str}, 1, 1);
-	return (FAILURE);
-}
 
 static inline int	__env_var_display(void *const object)
 {
 	char *const	*line = object;
 
+	errno = 0;
 	if (*line)
 	{
-		return (ft_putstrendl_fd_check(*line, STDOUT_FILENO));
+		if (ft_putstrendl_fd_check(*line, STDOUT_FILENO))
+		{
+			set_err("export",
+				(char*[]){"write error: ", strerror(errno)}, 2, 1);
+			return (1);
+		}
 	}
 	return (0);
 }
 
-t_merror	builtin_env(int argc, char **argv, t_vector *env)
+void	display_env_sorted(t_vector *env)
 {
-	t_length	index;
+	char	**last;
+	char	**str;
+	char	**less;
 
-	(void) argv;
-	if (argc > 1)
+	last = NULL;
+	less = vector_get(env, 0);
+	while (less != NULL)
 	{
-		__env_err("too many arguments");
-		return (FAILURE);
-	}
-	index = 0;
-	while (index < env->size)
-	{
-		if (__env_var_display(env->data + env->type_size * index))
+		str = vector_get(env, 0);
+		while (*str != NULL && last != NULL && ft_strcmp(*str, *last) <= 0)
+			str++;
+		less = str;
+		while (*str != NULL)
 		{
-			set_err("env",
-				(char*[]){"write error: ", strerror(errno)}, 2, 125);
-			return (FAILURE);
+			if (ft_strcmp(*str, *less) < 0
+				&& (last == NULL || ft_strcmp(*str, *last) > 0))
+				less = str;
+			str ++;
 		}
-		index++;
+		if (less == last || *less == NULL)
+			return ;
+		if (__env_var_display(less))
+			return ;
+		last = less;
 	}
-	set_exit_code(0);
-	return (SUCCESS);
 }
