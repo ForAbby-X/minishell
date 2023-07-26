@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 02:26:36 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/07/26 03:18:36 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/26 08:01:29 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ int		ft_atoi_validate(char *str, int *result);
 int		legal_number(char *str, int *result);
 int		ft_putstrendl_fd_check(char *s, int fd);
 int		ft_putstr_fd_check(char *s, int fd);
+char	*multi_strjoin(char *tab[], int count);
 
 #endif
