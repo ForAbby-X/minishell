@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/26 05:00:08 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,12 @@ static t_merror	_set_env_vars(char *oldpwd, char *pwd, t_vector *env)
 	oldpwd = ft_strjoin("OLDPWD=", oldpwd);
 	if (!oldpwd)
 		return (MEMORY_ERROR);
-	printf("[%s]\n", oldpwd);
-	set_env_var(oldpwd, ft_strchr(oldpwd, '='), env);
-	free(oldpwd);
 	pwd = ft_strjoin("PWD=", pwd);
 	if (!pwd)
-		return (MEMORY_ERROR);
+		return (free(oldpwd), MEMORY_ERROR);
+	set_env_var(oldpwd, ft_strchr(oldpwd, '='), env);
 	set_env_var(pwd, ft_strchr(pwd, '='), env);
+	free(oldpwd);
 	free(pwd);
 	return (SUCCESS);
 }
@@ -55,12 +54,31 @@ static t_merror	_change_dir(char *path, t_vector *env)
 	if (!new_pwd)
 	{
 		set_err("cd", (char *[]){"error retrieving current directory: ",
-			strerror(errno)}, 2, 0);
+			strerror(errno)}, 2, 1);
 		_set_env_vars(tmp, path, env);
 		return (FAILURE);
 	}
 	err = _set_env_vars(tmp, new_pwd, env);
 	free(new_pwd);
+	return (err);
+}
+
+static t_merror	go_oldpwd(t_vector *env)
+{
+	char		*path;
+	t_merror	err;
+
+	path = ft_getenv(env, "OLDPWD");
+	if (path)
+		err = _change_dir(path, env);
+	else
+		err = __cd_err("OLDPWD not set");
+	path = ft_getenv(env, "PWD");
+	if (err == SUCCESS && path && ft_putstrendl_fd_check(path, STDOUT_FILENO))
+	{
+		set_err("cd",
+			(char*[]){"write error: ", strerror(errno)}, 2, 1);
+	}
 	return (err);
 }
 
@@ -74,7 +92,9 @@ t_merror	builtin_cd(int argc, char **argv, t_vector *env)
 		err = __cd_err("too many arguments");
 	else if (argc == 2)
 	{
-		if (argv[1] != NULL && argv[1][0] != '\0')
+		if (argv[1] != NULL && ft_strcmp(argv[1], "-") == 0)
+			err = go_oldpwd(env);
+		else if (argv[1] != NULL && argv[1][0] != '\0')
 			err = _change_dir(argv[1], env);
 	}
 	else
