@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/26 04:34:27 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_merror	builtin_pwd(int argc, char **argv, t_vector *env)
 	if (path == NULL)
 	{
 		set_err("pwd", (char *[]){"error retrieving current directory: ",
-			strerror(errno)}, 2, 0);
+			strerror(errno)}, 2, 1);
 		return (FAILURE);
 	}
 	if (ft_putstrendl_fd_check(path, STDOUT_FILENO))

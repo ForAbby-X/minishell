@@ -6,19 +6,13 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:39:37 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/26 02:46:17 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/26 06:10:56 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins_cmd.h"
 #include "utils.h"
 #include "errno.h"
-
-static inline t_merror	__exit_err(char *str, int code)
-{
-	set_err("exit", (char *[]){str}, 1, code);
-	return (FAILURE);
-}
 
 t_merror	builtin_exit(int argc, char **argv, t_vector *env)
 {
@@ -34,7 +28,7 @@ t_merror	builtin_exit(int argc, char **argv, t_vector *env)
 			{
 				if (get_exit_code() == 0)
 					set_exit_code(1);
-				__exit_err("too many arguments", get_exit_code());
+				display_err("exit", (char *[]){"too many arguments"}, 1);
 				return (FAILURE);
 			}
 		}
