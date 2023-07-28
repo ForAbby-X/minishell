@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 01:30:36 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/07/19 15:58:59 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/26 20:29:57 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,8 @@ t_merror	check_tok_error(t_vector *const tokens)
 		last_token = token;
 		index++;
 	}
+	printf("TOKENS ERROR: ");
+	vector_for_each(tokens, &token_display);
+	printf("\n");
 	return (SUCCESS);
 }

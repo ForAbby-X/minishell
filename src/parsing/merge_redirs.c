@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:27:15 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/28 18:02:05 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/26 20:35:02 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,8 @@ t_merror	merge_redirs(t_vector *const tokens)
 		last_token = token;
 		index++;
 	}
+	printf("TOKENS REDIR: ");
+	vector_for_each(tokens, &token_display);
+	printf("\n");
 	return (SUCCESS);
 }

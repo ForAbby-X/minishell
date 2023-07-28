@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 03:22:08 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/28 19:24:02 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/26 21:09:55 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,5 +141,8 @@ t_merror	lexer(char const *const line, t_vector *const tokens)
 		if (error)
 			return (error);
 	}
+	printf("TOKENS LEXER: ");
+	vector_for_each(tokens, &token_display);
+	printf("\n");
 	return (error);
 }

@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 01:29:55 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/07/19 15:09:22 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/26 21:04:19 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ static inline t_merror	__remove_separators(t_vector *const tokens)
 		else
 			index++;
 	}
+	printf("TOKENS SEPARATOR: ");
+	vector_for_each(tokens, &token_display);
+	printf("\n");
 	return (SUCCESS);
 }
 
@@ -44,12 +47,14 @@ static inline t_merror	__expand_all(
 {
 	t_token		*token;
 	t_length	index;
+	t_length	old_index;
 	int			flag;
 
 	index = 0;
 	flag = 0;
 	while (index < vector_size(tokens))
 	{
+		old_index = index;
 		token = vector_get(tokens, index);
 		flag += token->type == HEREDOC;
 		if (flag == 0 && __is_tok_expandable(token)
@@ -57,8 +62,12 @@ static inline t_merror	__expand_all(
 			return (FAILURE);
 		if (!is_tok_alpha(token) && token->type != HEREDOC)
 			flag = 0;
-		index++;
+		if (old_index == index)
+			index++;
 	}
+	printf("TOKENS EXPAND: ");
+	vector_for_each(tokens, &token_display);
+	printf("\n");
 	return (SUCCESS);
 }
 
@@ -88,5 +97,6 @@ t_merror	parser(
 	}
 	error |= (merge_redirs(&tokens) || split_to_commands(&tokens, commands));
 	vector_for_each(&tokens, &token_destroy);
+	vector_for_each(commands, &command_display);
 	return (vector_destroy(&tokens), error);
 }
