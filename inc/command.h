@@ -17,6 +17,8 @@
 # include "error.h"
 # include "token.h"
 # include "word.h"
+# include "utils.h"
+# include "ft_printf.h"
 
 typedef struct s_command
 {

@@ -14,7 +14,8 @@
 
 t_merror	pars_error(char *const str)
 {
-	ft_putstr_fd("bash: syntax error near unexpected token `", STDERR_FILENO);
+	ft_putstr_fd("minishell: syntax error near unexpected token `",
+		STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	write(STDERR_FILENO, "\'\n", 2);
 	set_exit_code(2);

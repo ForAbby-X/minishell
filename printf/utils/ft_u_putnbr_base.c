@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args.c                                             :+:      :+:    :+:   */
+/*   ft_u_putnbr_base.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 01:00:33 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 01:00:48 by olimarti         ###   ########.fr       */
+/*   Created: 2022/12/19 20:27:13 by olimarti          #+#    #+#             */
+/*   Updated: 2022/12/20 12:12:11 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-#include "ft_printf.h"
+#include "utils.h"
 
-void	arg_display(void *const object)
+int	ft_put_u_nbr_base(unsigned long n, unsigned long base,
+		const char *base_alphabet)
 {
-	char const **const	arg = object;
+	int	out;
 
-	ft_printf("[%s]", *arg);
-}
-
-void	arg_destroy(void *const object)
-{
-	char **const	arg = object;
-
-	free(*arg);
+	out = 0;
+	if (n < base)
+	{
+		ft_putchar(base_alphabet[n % base]);
+		out += 1;
+	}
+	else
+	{
+		out = 1 + out + ft_putnbr_base(n / base, base, base_alphabet);
+		ft_putchar(base_alphabet[n % base]);
+	}
+	return (out);
 }

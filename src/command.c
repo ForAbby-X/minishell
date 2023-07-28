@@ -16,11 +16,11 @@ void	command_display(void *const object)
 {
 	t_command *const	command = object;
 
-	printf("--Command--\nwords: ");
+	ft_printf("--Command--\nwords: ");
 	vector_for_each(&command->words, &word_display);
-	printf("\nredirs : ");
+	ft_printf("\nredirs : ");
 	vector_for_each(&command->redirs, &token_display);
-	printf("\n");
+	ft_printf("\n");
 }
 
 t_merror	command_init(t_command *const command)

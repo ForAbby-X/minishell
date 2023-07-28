@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args.c                                             :+:      :+:    :+:   */
+/*   ft_printf_ptr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 01:00:33 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 01:00:48 by olimarti         ###   ########.fr       */
+/*   Created: 2022/12/19 19:55:43 by olimarti          #+#    #+#             */
+/*   Updated: 2022/12/20 13:37:37 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-#include "ft_printf.h"
+#include "printers.h"
 
-void	arg_display(void *const object)
+int	ft_printf_ptr(va_list *argptr)
 {
-	char const **const	arg = object;
+	unsigned long	current_arg;
 
-	ft_printf("[%s]", *arg);
-}
-
-void	arg_destroy(void *const object)
-{
-	char **const	arg = object;
-
-	free(*arg);
+	current_arg = va_arg(*argptr, unsigned long);
+	if (current_arg == 0)
+		return (ft_putstr("(nil)"));
+	ft_putstr("0x");
+	return (2 + ft_put_u_nbr_base(current_arg, 16, HEX_LC_ALPHABET));
 }

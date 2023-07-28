@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   word.c                                             :+:      :+:    :+:   */
+/*   ft_printf_hex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/28 18:10:19 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/28 18:16:57 by alde-fre         ###   ########.fr       */
+/*   Created: 2022/12/19 19:55:43 by olimarti          #+#    #+#             */
+/*   Updated: 2022/12/20 13:38:07 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "word.h"
-#include "ft_printf.h"
+#include "printers.h"
 
-void	word_display(void *const object)
+int	ft_printf_hex(va_list *argptr, int uppercase)
 {
-	char *const *const	word = object;
+	char	*alphabet;
 
-	ft_printf("[\e[94m%s\e[0m] ", *word);
-}
-
-void	word_destroy(void *const object)
-{
-	char *const *const	word = object;
-
-	free(*word);
+	if (uppercase)
+		alphabet = HEX_UC_ALPHABET;
+	else
+		alphabet = HEX_LC_ALPHABET;
+	return (ft_putnbr_base(va_arg(*argptr, unsigned int), 16, alphabet));
 }

@@ -1,0 +1,8 @@
+*.o
+*.d
+*.a
+.vscode
+.print_rule
+obj
+libvector.a
+EXEC
