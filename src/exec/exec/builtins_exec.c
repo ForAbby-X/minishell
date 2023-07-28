@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:34:50 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/04 12:28:24 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:30:32 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_merror	exec_builtins_layer(t_command *commands,
 
 	func = NULL;
 	if (commands_count == 1)
-		func = get_builtin_cmd(*(char **)(commands->words.data));
+		func = get_builtin_cmd(commands);
 	if (func != NULL)
 		return (run_builtin_command(func, commands, env));
 	return (exec_piped_commands(commands, commands_count, env));

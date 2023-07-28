@@ -42,8 +42,5 @@ t_merror	check_tok_error(t_vector *const tokens)
 		last_token = token;
 		index++;
 	}
-	printf("TOKENS ERROR: ");
-	vector_for_each(tokens, &token_display);
-	printf("\n");
 	return (SUCCESS);
 }

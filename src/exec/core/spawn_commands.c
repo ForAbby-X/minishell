@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 01:07:22 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/17 17:30:24 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/26 00:22:28 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,11 @@ int	wait_childs(t_length childs_count, pid_t watch_cpid)
 		i ++;
 	}
 	if (WIFSIGNALED(watch_status))
+	{
+		if (WCOREDUMP(watch_status))
+			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 		set_exit_code(128 + WTERMSIG(watch_status));
+	}
 	else
 		set_exit_code(WEXITSTATUS(watch_status));
 	return (watch_status);

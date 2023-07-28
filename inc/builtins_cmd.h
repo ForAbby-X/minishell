@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cmd.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 00:36:30 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/19 18:28:55 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:31:05 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 # define BUILTINS_CMD_H
 
 # include "error.h"
+# include "env.h"
 # include "vector.h"
 # include "libft.h"
+# include "command.h"
+# include "utils.h"
+# include "errno.h"
 
 typedef t_merror			(*t_builtin_cmd_ptr)(int, char**, t_vector*);
 typedef t_builtin_cmd_ptr	(*t_pm)();
@@ -29,6 +33,6 @@ t_merror			builtin_unset(int argc, char **argv, t_vector *env);
 t_merror			builtin_export(int argc, char **argv, t_vector *env);
 t_merror			builtin_empty(int argc, char **argv, t_vector *env);
 
-t_builtin_cmd_ptr	get_builtin_cmd(char *name);
+t_builtin_cmd_ptr	get_builtin_cmd(t_command *cmd);
 
 #endif

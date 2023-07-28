@@ -29,9 +29,6 @@ static inline t_merror	__remove_separators(t_vector *const tokens)
 		else
 			index++;
 	}
-	printf("TOKENS SEPARATOR: ");
-	vector_for_each(tokens, &token_display);
-	printf("\n");
 	return (SUCCESS);
 }
 
@@ -65,9 +62,6 @@ static inline t_merror	__expand_all(
 		if (old_index == index)
 			index++;
 	}
-	printf("TOKENS EXPAND: ");
-	vector_for_each(tokens, &token_display);
-	printf("\n");
 	return (SUCCESS);
 }
 

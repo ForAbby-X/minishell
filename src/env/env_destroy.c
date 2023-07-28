@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handlers.c                                         :+:      :+:    :+:   */
+/*   env_destroy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/29 14:58:39 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/25 05:51:04 by olimarti         ###   ########.fr       */
+/*   Created: 2023/07/24 01:38:38 by olimarti          #+#    #+#             */
+/*   Updated: 2023/07/24 20:47:09 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "signal_handlers.h"
+#include "env.h"
 
-void	prompt_on_sigint(int sig)
+static void	__env_entry_destroy(void *const object)
 {
-	(void) sig;
-	ft_putchar_fd('\n', STDIN_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	set_exit_code(128 + sig);
+	free(*((char **)object));
 }
 
-void	hd_on_sigint(int sig)
+inline void	_env_destroy(t_vector *env)
 {
-	(void) sig;
-	set_exit_code(128 + sig);
-	close(STDIN_FILENO);
+	vector_for_each(env, &__env_entry_destroy);
 }

@@ -22,11 +22,7 @@ static int const	g_redir_flag_table[] = {
 
 static t_merror	redir_error(t_token *redir, char *const str)
 {
-	ft_putstr_fd(redir->data, STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	set_exit_code(1);
+	set_err(redir->data, (char *[]){str}, 1, 1);
 	return (FAILURE);
 }
 

@@ -52,8 +52,5 @@ t_merror	merge_all_alpha(t_vector *const tokens)
 		last_token = token;
 		index++;
 	}
-	printf("TOKENS MERGE: ");
-	vector_for_each(tokens, &token_display);
-	printf("\n");
 	return (SUCCESS);
 }

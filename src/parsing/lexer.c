@@ -141,8 +141,5 @@ t_merror	lexer(char const *const line, t_vector *const tokens)
 		if (error)
 			return (error);
 	}
-	printf("TOKENS LEXER: ");
-	vector_for_each(tokens, &token_display);
-	printf("\n");
 	return (error);
 }

@@ -33,6 +33,9 @@ SRC		=	main.c \
 			parsing/merge_redirs.c \
 			parsing/split_to_commands.c \
 			env/env_utils.c \
+			env/env_create.c \
+			env/env_destroy.c \
+			env/env_shlvl.c \
 			exec/path/get_command_path.c \
 			exec/path/path_utils.c \
 			exec/exec/ft_execvpe.c \
@@ -46,6 +49,7 @@ SRC		=	main.c \
 			exec/heredoc/heredoc.c \
 			exec/heredoc/heredoc_expand.c \
 			utils/string.c \
+			utils/numbers.c \
 			signals/signals.c \
 			signals/handlers.c \
 			builtins/echo.c \
@@ -54,7 +58,8 @@ SRC		=	main.c \
 			builtins/pwd.c \
 			builtins/env.c \
 			builtins/unset.c \
-			builtins/export.c \
+			builtins/export/core.c \
+			builtins/export/display.c \
 			builtins/empty.c \
 			builtins/builtins.c \
 			exec/exec/builtins_exec.c
@@ -73,7 +78,7 @@ DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
 
 # compiler
 CC		= cc
-CFLAGS	= -MMD -MP -Wall -Wextra -g3#-Werror
+CFLAGS	= -MMD -MP -Wall -Wextra -g3 -Werror
 
 # vector library
 VECTOR		= ./c-vectorlib/

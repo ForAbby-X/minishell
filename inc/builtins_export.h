@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handlers.c                                         :+:      :+:    :+:   */
+/*   builtins_export.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/29 14:58:39 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/25 05:51:04 by olimarti         ###   ########.fr       */
+/*   Created: 2023/07/26 07:09:02 by olimarti          #+#    #+#             */
+/*   Updated: 2023/07/26 07:10:24 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "signal_handlers.h"
+#ifndef BUILTINS_EXPORT_H
+# define BUILTINS_EXPORT_H
 
-void	prompt_on_sigint(int sig)
-{
-	(void) sig;
-	ft_putchar_fd('\n', STDIN_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	set_exit_code(128 + sig);
-}
+# include "vector.h"
 
-void	hd_on_sigint(int sig)
-{
-	(void) sig;
-	set_exit_code(128 + sig);
-	close(STDIN_FILENO);
-}
+void	display_env_sorted(t_vector *env);
+
+#endif

@@ -37,8 +37,5 @@ t_merror	merge_redirs(t_vector *const tokens)
 		last_token = token;
 		index++;
 	}
-	printf("TOKENS REDIR: ");
-	vector_for_each(tokens, &token_display);
-	printf("\n");
 	return (SUCCESS);
 }

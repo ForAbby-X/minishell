@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 21:48:41 by olivier           #+#    #+#             */
-/*   Updated: 2023/07/17 17:22:10 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,8 @@
 t_merror
 	run_command_error(t_command *command, char *const str, int exit_code)
 {
-	ft_putstr_fd(*(char **)vector_get(&(command->words), 0), STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	set_exit_code(exit_code);
+	set_err(*(char **)vector_get(&(command->words), 0),
+		(char *[]){str}, 1, exit_code);
 	return (FAILURE);
 }
 
@@ -40,7 +37,7 @@ t_merror	run_command(t_command *command, t_vector *env)
 		return (FAILURE);
 	if (handle_redirs(&(command->redirs)) != SUCCESS)
 		return (FAILURE);
-	builtin_func = get_builtin_cmd(*(char **)(command->words.data));
+	builtin_func = get_builtin_cmd(command);
 	if (builtin_func != NULL)
 		return (builtin_func(command->words.size - 1,
 				command->words.data, env));

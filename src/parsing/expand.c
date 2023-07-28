@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
 /*   Updated: 2023/07/28 17:07:44 by alde-fre         ###   ########.fr       */
@@ -158,5 +158,3 @@ t_merror	expand_token(
 	}
 	return (free(temp.data), SUCCESS);
 }
-
-//clear; valgrind --show-leak-kinds=all --leak-check=full --suppressions=minishell.supp ./minishell

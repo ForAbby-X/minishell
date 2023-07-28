@@ -6,7 +6,7 @@
 /*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:56:09 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/21 18:28:13 by alde-fre         ###   ########.fr       */
+/*   Updated: 2023/07/25 03:55:04 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static t_merror
 	return (error);
 }
 
-static inline void	__delete_hd(char **path)
+static void	_delete_hd(char **path)
 {
 	unlink(*path);
 }
@@ -84,7 +84,8 @@ t_merror	exec_heredocs_layer(t_vector *commands, t_vector *env)
 		set_ignore_signal_handlers();
 		error = exec_builtins_layer(commands->data, commands->size, env);
 	}
-	vector_for_each(&heredocs, (void (*)(t_object))__delete_hd);
+	if (error != CHILD_ERROR)
+		vector_for_each(&heredocs, (void (*)(t_object))_delete_hd);
 	vector_destroy(&heredocs);
 	return (error);
 }
