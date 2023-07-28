@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:36:27 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/07/25 01:00:47 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:07:44 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,28 @@ static inline t_merror	__expand_var_word(
 	t_length *index,
 	char *var)
 {
-	t_token	token;
 	char	temp;
-	char	*start;
+	char	*str[2];
 
 	while (*var)
 	{
 		while (*var && is_separator(*var))
 			var++;
-		start = var;
+		if (*var == '\0')
+			return (vector_insert(tokens, &(t_token){NULL, SEPARATOR}, *index)
+				, *index += 1, SUCCESS);
+		str[0] = var;
 		while (*var && !is_separator(*var))
 			var++;
 		temp = *var;
 		*var = '\0';
-		token.data = ft_strdup(start);
-		if (token.data == NULL)
+		str[1] = ft_strdup(str[0]);
+		if (str[1] == NULL)
 			return (MEMORY_ERROR);
 		*var = temp;
-		token.type = WORD;
 		if (is_separator(*var))
 			vector_insert(tokens, &(t_token){NULL, SEPARATOR}, *index);
-		vector_insert(tokens, &token, *index);
+		vector_insert(tokens, &(t_token){str[1], WORD}, *index);
 		*index += 1 + is_separator(*var);
 	}
 	return (SUCCESS);

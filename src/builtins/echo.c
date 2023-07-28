@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 11:20:27 by olimarti          #+#    #+#             */
 /*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
@@ -30,6 +30,7 @@ t_merror	builtin_echo(int argc, char **argv, t_vector *env)
 	int	index;
 	int	display_nl;
 
+	// sleep(5);
 	(void) env;
 	index = 1;
 	display_nl = 1;

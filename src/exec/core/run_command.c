@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   run_command.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 21:48:41 by olivier           #+#    #+#             */
 /*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 00:28:11 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/28 16:58:16 by alde-fre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,11 @@ static t_merror	apply_redir(t_token *redir)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
 			return (close(fd), FAILURE);
-		close(fd);
 	}
 	else if (redir->type == OUT | redir->type == APPEND)
 	{
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			return (close(fd), FAILURE);
-		close(fd);
 	}
 	close(fd);
 	return (SUCCESS);
