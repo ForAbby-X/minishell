@@ -30,7 +30,6 @@ t_merror	builtin_echo(int argc, char **argv, t_vector *env)
 	int	index;
 	int	display_nl;
 
-	// sleep(5);
 	(void) env;
 	index = 1;
 	display_nl = 1;

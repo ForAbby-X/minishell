@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:12:48 by olimarti          #+#    #+#             */
-/*   Updated: 2023/07/24 06:28:44 by olimarti         ###   ########.fr       */
+/*   Updated: 2023/07/26 07:48:15 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,31 @@ int	ft_putstr_fd_check(char *s, int fd)
 
 	len = ft_strlen(s);
 	return ((write(fd, s, len) != len));
+}
+
+char	*multi_strjoin(char *tab[], int count)
+{
+	int		i;
+	int		lenght;
+	char	*str;
+
+	i = 0;
+	lenght = 0;
+	while (i < count)
+	{
+		lenght += ft_strlen(tab[i]);
+		i++;
+	}
+	str = malloc((lenght + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	i = 0;
+	lenght = 0;
+	while (i < count)
+	{
+		lenght += ft_strcpyl(str + lenght, tab[i]);
+		++i;
+	}
+	str[lenght] = 0;
+	return (str);
 }

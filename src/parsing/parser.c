@@ -91,6 +91,5 @@ t_merror	parser(
 	}
 	error |= (merge_redirs(&tokens) || split_to_commands(&tokens, commands));
 	vector_for_each(&tokens, &token_destroy);
-	vector_for_each(commands, &command_display);
 	return (vector_destroy(&tokens), error);
 }
