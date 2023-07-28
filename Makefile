@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+         #
+#    By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/25 09:39:09 by alde-fre          #+#    #+#              #
-#    Updated: 2023/07/17 16:18:52 by alde-fre         ###   ########.fr        #
+#    Updated: 2023/07/28 20:27:30 by olimarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,7 @@ DEPENDS :=	$(patsubst %.o,%.d,$(OBJ))
 
 # compiler
 CC		= cc
-CFLAGS	= -MMD -MP -Wall -Wextra -g3 -Werror
+CFLAGS	= -MMD -MP -Wall -Wextra -Werror
 
 # vector library
 VECTOR		= ./c-vectorlib/
