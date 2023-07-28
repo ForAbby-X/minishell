@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   word.c                                             :+:      :+:    :+:   */
+/*   ft_printf_int.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/28 18:10:19 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/28 18:16:57 by alde-fre         ###   ########.fr       */
+/*   Created: 2022/12/19 19:55:43 by olimarti          #+#    #+#             */
+/*   Updated: 2022/12/20 13:37:31 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "word.h"
-#include "ft_printf.h"
+#include "printers.h"
 
-void	word_display(void *const object)
+int	ft_printf_int(va_list *argptr)
 {
-	char *const *const	word = object;
-
-	ft_printf("[\e[94m%s\e[0m] ", *word);
-}
-
-void	word_destroy(void *const object)
-{
-	char *const *const	word = object;
-
-	free(*word);
+	return (ft_putnbr_base(va_arg(*argptr, int), 10, DEC_ALPHABET));
 }

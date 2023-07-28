@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args.c                                             :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 01:00:33 by olimarti          #+#    #+#             */
-/*   Updated: 2023/06/24 01:00:48 by olimarti         ###   ########.fr       */
+/*   Created: 2022/12/20 10:49:32 by olimarti          #+#    #+#             */
+/*   Updated: 2022/12/20 13:36:49 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-#include "ft_printf.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-void	arg_display(void *const object)
-{
-	char const **const	arg = object;
+# include <stddef.h>
+# include <unistd.h>
 
-	ft_printf("[%s]", *arg);
-}
+int	ft_putnbr_base(long n, long base, const char *base_alphabet);
+int	ft_put_u_nbr_base(unsigned long n, unsigned long base,
+		const char *base_alphabet);
 
-void	arg_destroy(void *const object)
-{
-	char **const	arg = object;
+int	ft_putchar(const char c);
+int	ft_putstr(char *s);
 
-	free(*arg);
-}
+#endif

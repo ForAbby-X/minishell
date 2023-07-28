@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   word.c                                             :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/28 18:10:19 by alde-fre          #+#    #+#             */
-/*   Updated: 2023/06/28 18:16:57 by alde-fre         ###   ########.fr       */
+/*   Created: 2022/12/19 20:29:51 by olimarti          #+#    #+#             */
+/*   Updated: 2022/12/20 12:12:08 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "word.h"
-#include "ft_printf.h"
+#include "utils.h"
 
-void	word_display(void *const object)
+int	ft_putstr(char *s)
 {
-	char *const *const	word = object;
+	size_t	len;
 
-	ft_printf("[\e[94m%s\e[0m] ", *word);
-}
-
-void	word_destroy(void *const object)
-{
-	char *const *const	word = object;
-
-	free(*word);
+	if (!s)
+		return (ft_putstr("(null)"));
+	len = 0;
+	while (s[len] != 0)
+		len++;
+	write(1, s, len);
+	return (len);
 }

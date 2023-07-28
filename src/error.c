@@ -34,11 +34,11 @@ void	display_err(char *cmd, char **err, int count)
 	tmp2 = NULL;
 	tmp = multi_strjoin(err, count);
 	if (tmp)
-		tmp2 = multi_strjoin((char *[]){"bash: ", cmd, ": ", tmp, "\n"}, 5);
+		tmp2 = multi_strjoin((char *[]){"minishell: ", cmd, ": ", tmp, "\n"}, 5);
 	if (tmp2)
 		ft_putstr_fd(tmp2, STDERR_FILENO);
 	else
-		ft_putstr_fd("bash: internal error", STDERR_FILENO);
+		ft_putstr_fd("minishell: internal error", STDERR_FILENO);
 	free(tmp);
 	free(tmp2);
 }

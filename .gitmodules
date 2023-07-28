@@ -1,3 +1,0 @@
-[submodule "c-vectorlib"]
-	path = c-vectorlib
-	url = git@github.com:ForAbby-X/c-vectorlib.git

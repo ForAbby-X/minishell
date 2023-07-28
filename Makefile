@@ -92,6 +92,12 @@ LIBFT_LIB	= $(addprefix $(LIBFT),libft.a)
 LIBFT_INC	= -I $(LIBFT)
 LIBFT_LNK	= -l Xext -l X11 -L $(LIBFT) -l llibft -l m
 
+# libft library
+FT_PRINTF		= ./printf/
+FT_PRINTF_LIB	= $(addprefix $(FT_PRINTF),libftprintf.a)
+FT_PRINTF_INC	= -I $(FT_PRINTF)
+FT_PRINTF_LNK	= -l Xext -l X11 -L $(FT_PRINTF) -l libftprintf -l m
+
 all: obj $(NAME)
 
 raw: CFLAGS += -O0
@@ -114,29 +120,34 @@ $(VECTOR_LIB):
 $(LIBFT_LIB):
 	make -C $(LIBFT)
 
+$(FT_PRINTF_LIB):
+	make -C $(FT_PRINTF)
+
 .print:
 	@> $@
 	@echo "\e[1;36mCompiling...\e[0m"
 
-$(NAME): $(OBJ) $(VECTOR_LIB) $(LIBFT_LIB)
+$(NAME): $(OBJ) $(VECTOR_LIB) $(LIBFT_LIB) $(FT_PRINTF_LIB)
 	@echo "\e[1;35mLinking...\e[0m"
-	@$(CC) -o $(NAME) $+ $(VECTOR_LIB) $(LIBFT_LIB) -l readline
+	@$(CC) -o $(NAME) $+ $(VECTOR_LIB) $(LIBFT_LIB) $(FT_PRINTF_LIB) -l readline
 	@echo "\e[1;32m➤" $@ "created succesfully !\e[0m"
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	@echo "\e[0;36m ↳\e[0;36m" $<"\e[0m"
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) $(VECTOR_INC) $(LIBFT_INC) -I $(INCDIR) -c $< -o $@
+	@$(CC) $(CFLAGS) $(VECTOR_INC) $(LIBFT_INC) $(FT_PRINTF_INC) -I $(INCDIR) -c $< -o $@
 
 clean:
 	rm -rf $(OBJDIR)
 	@make -C $(VECTOR) clean
 	@make -C $(LIBFT) clean
+	@make -C $(FT_PRINTF) clean
 
 fclean: clean
 	rm -rf $(NAME)
 	@make -C $(VECTOR) fclean
 	@make -C $(LIBFT) fclean
+	@make -C $(FT_PRINTF) fclean
 
 re: fclean all
 

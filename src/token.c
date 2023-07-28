@@ -12,15 +12,16 @@
 
 #include "token.h"
 #include "libft.h"
+#include "ft_printf.h"
 
 void	token_display(void *const object)
 {
 	t_token *const	token = object;
 
 	if (token->data)
-		printf("[%s, \e[94m%s\e[0m] ", g_type_write[token->type], token->data);
+		ft_printf("[%s, \e[94m%s\e[0m] ", g_type_write[token->type], token->data);
 	else
-		printf("[%s] ", g_type_write[token->type]);
+		ft_printf("[%s] ", g_type_write[token->type]);
 }
 
 void	token_destroy(void *const object)
