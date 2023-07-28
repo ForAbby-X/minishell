@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_file.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-fre <alde-fre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 23:19:12 by olimarti          #+#    #+#             */
 /*   Updated: 2023/07/25 22:39:14 by olimarti         ###   ########.fr       */
